@@ -1,0 +1,134 @@
+﻿/*
+ This file is part of Pozettos.
+
+    Pozettos is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Pozettos is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+		You should have received a copy of the GNU General Public License
+    along with Pozettos.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+/*******************************************
+**            ZONA SERVICIOS              **
+********************************************/
+.zona_historial
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 700px;
+	border: 1px solid #4F8FFF;
+}
+#tbl_servicios button
+{
+	width: 50px;
+	height: 50px;
+	padding: 0px;
+	background: #fff;
+}
+
+/************************
+**     hora inicio     **
+*************************/
+.select_hora
+{
+	width: 50px;
+	text-align: center;
+}
+.boton_hora
+{
+	padding: 0px;
+}
+.imagen_hora
+{
+	width: 20px;
+	height: 20px;
+	border: none;
+}
+/*******************************************
+**            TIMERS                      **
+********************************************/
+.boton_timer
+{
+	padding: 0px;
+	background: none;
+	border: none;
+}
+.imagen_timer
+{
+	width: 15px;
+	height: 15px;
+	border: none;
+}
+.label_timer
+{
+	color: #0f0;
+	font-family: Tahoma;
+	font-weight: bold;
+	font-size: 13pt;
+}
+.input_timer
+{
+	width: 27px;
+}
+/*******************************************
+**            HISTORIAL SERVICIOS         **
+********************************************/
+
+.cuerpo_historial
+{
+	height: 300px;
+	overflow: auto;
+}
+.input_observacion_servicio
+{
+	height: 20px;
+	width: 250px;
+}
+.fila_historial_par
+{
+	background: #d0dfff;
+	height: 25px;
+}
+.fila_historial_impar
+{
+	background: #fff;
+	height: 25px;
+}
+.celda_debe
+{
+	background-color: #f00;
+}
+.celda_pago
+{
+	background-color: #0f0;
+}
+.imagen_delete
+{
+	width: 10px;
+	height: 10px;
+	border: none;
+}
+.boton_delete
+{
+	padding: 0px;
+	background: #fff;
+}
+.imagen_color
+{
+	width: 18px;
+	height: 18px;
+	border: none;
+}
+.boton_color
+{
+	width: 16px;
+	height: 16px;
+}

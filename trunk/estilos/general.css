@@ -1,0 +1,138 @@
+form
+{
+	margin: 0px;
+}
+.label_formulario
+{
+	font-family: Helvetica;
+	font-size: 10pt;
+	font-weight:bold;
+	color: #fff;
+	margin-left:5px;
+	margin-right:5px;
+}
+.fondo_azul
+{
+	background-color:#4F8FFF;
+}
+.fondo_negro
+{
+	background-color:#000;
+}
+.negrilla
+{
+	font-weight: bold;
+}
+.alineacion_centro
+{
+	text-align: center;
+}
+.alineacion_izquierda
+{
+	text-align: left;
+}
+.alineacion_derecha
+{
+	text-align: right;
+}
+.vertical_centro
+{
+	vertical-align: middle;
+}
+.vertical_arriba
+{
+	vertical-align: top;
+}
+.padding_arriba_10
+{
+	padding-top: 10px;
+}
+.margen_arriba_10
+{
+	margin-top: 10px;
+}
+.ancho_scroll
+{
+	width: 15px;
+}
+.tabla_interna
+{
+	margin-left:auto;
+	margin-right:auto;
+	border-spacing: 5px;
+}
+.tabla_centrada
+{
+	margin-left:auto;
+	margin-right:auto;
+}
+.celda_interna
+{
+	padding:5px 0 0;
+	vertical-align: top;
+}
+.boton
+{
+	padding: 0px;
+	border: none;
+}
+.ancho_40
+{
+	width: 40px;
+}
+.ancho_80
+{
+	width: 80px;
+}
+.ancho_100p
+{
+	width: 100%;
+}
+.alto_30
+{
+	height: 30px;
+}
+.letra_9
+{
+	font-size: 9pt;
+}
+.letra_azul
+{
+	color:#4F8FFF;
+}
+.letra_roja
+{
+	color:#f00;
+}
+.verdana
+{
+	font-family: Verdana;
+}
+/*******************************************
+**            TITULO                      **
+********************************************/
+#tbl_titulo
+{
+	/*width: 900px;*/
+	height: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid #4F8FFF;
+}
+#tbl_titulo label
+{
+	font-family: Helvetica;
+	font-size: 13pt;
+	font-weight: bold;
+	color: #4F8FFF;
+}
+#tbl_titulo input[type="image"]
+{
+	width: 40px;
+	height: 40px;
+	border: 1px solid #fff;
+}
+#tbl_titulo input[type="image"]:hover
+{
+	border: 1px solid #ddd;
+}

@@ -1,0 +1,29 @@
+#ColorPickerDiv 
+{
+    display: block;
+    display: none;
+    position: relative;
+    border: 1px solid #777;
+    background: #fff
+}
+
+#ColorPickerDiv TD.color
+{
+	cursor: pointer;
+	font-size: xx-small;
+	font-family: 'Arial' , 'Microsoft Sans Serif';
+}
+#ColorPickerDiv TD.color label
+{
+	cursor: pointer;
+}
+
+.ColorPickerDivSample
+{
+	/*margin: 0px 0px 0px 4px;*/
+	/*border: solid 1px #fff;*/
+	/*padding-left: 15px;	*/
+	/*position: relative;*/
+	cursor: pointer;
+	/*background-image: url("../imagenes/color.jpg");*/
+}

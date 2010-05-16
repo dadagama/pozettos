@@ -24,11 +24,12 @@ $(document).ready(inicializar);
 
 function inicializar()
 {
-	actualizarHoraInicio();
 	url_controlador_modulo = "../modulo_contabilidad/contabilidad.php";
+	actualizarHistorialVentas();
+	/*actualizarHoraInicio();
 	actualizarHistoricoProductos();
 	actualizarHistoricoServicios();
-	obtenerInfoTimers();
+	obtenerInfoTimers();*/
 }
 
 function mostrarPanel()
@@ -36,13 +37,15 @@ function mostrarPanel()
 	ajax('accion=mostrarPanel', false, mostrarNuevoModulo_ajax, false);
 }
 
-function asignarListenersColores(prefijo)
+function asignarListenersColores()
 {
-	var arreglo_filas = document.getElementsByName(prefijo+'_fila');//listeners productos
+	var arreglo_filas = document.getElementsByName('fila_historico');
 	for(var x = 0; x < arreglo_filas.length ; x++)
 	{
-		//el ID tiene la forma ==> vep_fila_#
-		var consecutivo = arreglo_filas[x].id.split("_")[2];
+		//el ID tiene la forma ==> <prefijo>_fila_<id>
+		var arregloIdFila = arreglo_filas[x].id.split("_");
+		var consecutivo = arregloIdFila[2];
+		var prefijo = arregloIdFila[0];
 		$("#"+prefijo+"_color_"+consecutivo).attachColorPicker();
 			$("#"+prefijo+"_color_"+consecutivo).change(
 				function() {cambiarColorFila(this);}
@@ -53,13 +56,27 @@ function asignarListenersColores(prefijo)
 function cambiarColorFila(elemento)
 {
 	//el ID tiene la forma ==> <prefijo>_color_<#>
-	var consecutivo = elemento.id.split("_")[2];
+	var arregloIdFila = elemento.id.split("_");
+	var consecutivo = arregloIdFila[2];
+	var prefijo = arregloIdFila[0];
 	var color = $("#"+elemento.id).getValue();
-	var prefijo = elemento.id.split("_")[0];
 	actualizarCampoColor(consecutivo, color, prefijo);
-	
 }
 
+function actualizarCampoColor(id, color_fila, prefijo)
+{
+	ajax("accion=actualizarCampoColor&prefijo="+prefijo+"&"+prefijo+"_id="+id+"&"+prefijo+"_color_fila="+color_fila, null, actualizarCampoColorAjax, null);
+}
+
+function actualizarCampoColorAjax(actualizo)
+{
+	if(actualizo)
+		actualizarHistorialVentas();
+	else
+		alert("Error actualizando color");
+}
+
+/*
 function actualizarListaClientes(key_code, prefijo)
 {
 	if(key_code == 13)
@@ -76,20 +93,6 @@ function actualizarListaClientes(key_code, prefijo)
 	}
 }
 
-function actualizarCampoColor(id, color_fila, prefijo)
-{
-	ajax("accion=actualizarCampoColor&prefijo="+prefijo+"&"+prefijo+"_id="+id+"&"+prefijo+"_color_fila="+color_fila, null, actualizarCampoColorAjax, null);
-}
-
-function actualizarCampoColorAjax(prefijo_actualizacion)
-{
-	if(prefijo_actualizacion == "vep")
-		actualizarHistoricoProductos();
-	else if(prefijo_actualizacion == "ves")
-		actualizarHistoricoServicios();
-	else
-		alert("error inesperado actualizando color");
-}
 
 function actualizarEstadoDeuda(id_fila, estado, prefijo)
 {
@@ -125,11 +128,11 @@ function actualizarObservacion(key_code, id_fila, prefijo)
 		ajax("accion=actualizarObservacion&prefijo="+prefijo+"&id_fila="+id_fila+"&observacion="+observacion, null, null, null);
 	}
 }
-
+*/
 /**********************************
 ******* ACCIONES PRODUCTOS  *******
 ***********************************/
-
+/*
 function actualizarListaClientesProductoAjax(opciones_clientes)
 {
 	$("#vep_cli_id").children().remove();
@@ -192,96 +195,59 @@ function reiniciarFormularioProducto()
 	$("#vep_total").val(0);
 	$("#vep_buscar_cliente").val("");
 	actualizarListaClientes(13, "vep");
-}
+}*/
 
 /**********************************
 ******* ACCIONES SERVICIOS  *******
 ***********************************/
-
+/*
 function actualizarListaClientesServicioAjax(opciones_clientes)
 {
 	$("#ves_cli_id").children().remove();
 	$("#ves_cli_id").html(opciones_clientes);
-}
+}*/
 
-function agregarFilaServicio()
+//v2
+function agregarFilaServicio(ves_ser_id)
 {
-	var ves_ser_id = $("#ves_ser_id").val();
-	var ves_hora = $("#ves_hora").val();
-	var ves_minuto = $("#ves_minuto").val();
-	var ves_meridiano = $("#ves_meridiano").val();
-	var ves_duracion = $("#ves_duracion").val();
-	var ves_total = $("#ves_total").val();
-	var ves_cli_id = $("#ves_cli_id").val();
-	//alert(ves_ser_id+" - "+ves_hora+":"+ves_minuto+" "+ves_meridiano+" - "+ves_duracion+" - "+ves_total+" - "+ves_cli_id);
-	//se guarda la fecha del producto vendido deacuerdo a
-	//la fecha de la contabilidad abierta actualmente
-	var ves_fecha = "";
 	var fecha_actual = new Date();
 	var anno_actual = fecha_actual.getFullYear();
 	var mes_actual = fecha_actual.getMonth() + 1;
 	if(mes_actual < 10)
 		mes_actual = "0"+mes_actual;
 	var dia_actual = fecha_actual.getDate();
-	if($("#fecha_contabilidad").val() != anno_actual+"-"+mes_actual+"-"+dia_actual)
+	
+	var arregloHoraInicio = obtenerArregloHoraInicio();
+	var ves_duracion = $("#ves_duracion").val();
+	
+	//se guarda la fecha del producto vendido deacuerdo a
+	//la fecha de la contabilidad abierta actualmente
+	var ves_fecha = anno_actual+"-"+mes_actual+"-"+dia_actual;
+	if($("#fecha_contabilidad").val() != ves_fecha)
 		ves_fecha = $("#fecha_contabilidad").val();
 		
 	ajax("accion=agregarFilaServicio&ves_ser_id="+ves_ser_id+
-				"&ves_hora="+ves_hora+
-				"&ves_minuto="+ves_minuto+
-				"&ves_meridiano="+ves_meridiano+
+				"&ves_hora="+arregloHoraInicio[0]+
+				"&ves_minuto="+arregloHoraInicio[1]+
+				"&ves_meridiano="+arregloHoraInicio[2]+
 				"&ves_duracion="+ves_duracion+
-				"&ves_total="+ves_total+
-				"&ves_cli_id="+ves_cli_id+
 				"&ves_fecha="+ves_fecha, null, agregarFilaServicioAjax, null);
 }
 
 function agregarFilaServicioAjax(fila)
 {
+	//alert(fila);
 	if(fila)
 	{
-		actualizarHistoricoServicios();
-		reiniciarFormularioServicio();
+		actualizarHistorialVentas();
+		//reiniciarFormularioServicio();
+		//alert('yes');
 	}
 	else
-		alert('Error al tratar de agregar una fila en servicios');
+		alert('Error al registrar el servicio');
 }
 
-function actualizarHistoricoServicios()
-{
-	ajax("accion=actualizarHistoricoServicios", null, actualizarHistoricoServiciosAjax, null);
-}
-
-function actualizarHistoricoServiciosAjax(info_servicios)
-{
-	$("#ves_historial").children().remove();
-	$("#ves_historial").html(info_servicios);
-	asignarListenersColores('ves');
-}
-
-function reiniciarFormularioServicio()
-{
-	$("#ves_ser_id").val(1);
-	$("#ves_duracion").val('00:00:00');
-	$("#ves_total").val(0);
-	$("#ves_cli_id").val(1);
-	$("#ves_buscar_cliente").val("");
-	actualizarListaClientes(13, "ves");
-}
-
-function actualizarTotalServicio()
-{
-	var servicio = $("#ves_ser_id").val();
-	var duracion = $("#ves_duracion").val();
-	ajax("accion=actualizarTotalServicio&servicio="+servicio+"&duracion="+duracion, null, actualizarTotalServicioAjax, null);
-}
-
-function actualizarTotalServicioAjax(total)
-{
-	$("#ves_total").val(total);
-}
-
-function actualizarHoraInicio()
+function obtenerArregloHoraInicio()
 {
 	var fecha = new Date();
 	var hora = fecha.getHours();
@@ -323,9 +289,54 @@ function actualizarHoraInicio()
 	if(hora == 0)
 		hora = 12;
 	
-	$("#ves_hora").val(""+hora);
-	$("#ves_minuto").val(""+parseInt(minutos_redondeados));
-	$("#ves_meridiano").val(meridiano);
+	var arregloHora = new Array(3);
+	arregloHora[0] = hora;
+	arregloHora[1] = parseInt(minutos_redondeados);
+	arregloHora[2] = meridiano;
+	return arregloHora;
+}
+
+
+function actualizarHistorialVentas()
+{
+	ajax("accion=actualizarHistorialVentas", null, actualizarHistorialVentasAjax, null);
+}
+
+function actualizarHistorialVentasAjax(info_servicios)
+{
+	$("#historial_ventas").children().remove();
+	$("#historial_ventas").html(info_servicios);
+	asignarListenersColores();
+}
+/*
+function reiniciarFormularioServicio()
+{
+	$("#ves_ser_id").val(1);
+	$("#ves_duracion").val('00:00:00');
+	$("#ves_total").val(0);
+	$("#ves_cli_id").val(1);
+	$("#ves_buscar_cliente").val("");
+	actualizarListaClientes(13, "ves");
+}
+
+function actualizarTotalServicio()
+{
+	var servicio = $("#ves_ser_id").val();
+	var duracion = $("#ves_duracion").val();
+	ajax("accion=actualizarTotalServicio&servicio="+servicio+"&duracion="+duracion, null, actualizarTotalServicioAjax, null);
+}
+
+function actualizarTotalServicioAjax(total)
+{
+	$("#ves_total").val(total);
+}
+
+function actualizarHoraInicio()
+{
+	var arregloHoraInicio = obtenerArregloHoraInicio();
+	$("#ves_hora").val(""+arregloHoraInicio[0]);
+	$("#ves_minuto").val(""+arregloHoraInicio[1]);
+	$("#ves_meridiano").val(arregloHoraInicio[2]);
 }
 
 function actualizarDuracionYTotalServicio(id)
@@ -341,11 +352,11 @@ function actualizarDuracionYTotalServicioAjax(actualizo)
 	else
 		alert('Error inesperado actualizando Duracion y total de servicio');
 }
-
+*/
 /**********************************
 ******* ACCIONES TIMERS     *******
 ***********************************/
-
+/*
 var arreglo_CronoID;
 var arreglo_CronoEjecutandose;
 var arreglo_bandera_incrementa;
@@ -519,4 +530,4 @@ function IniciarCrono (pos)
 	//colocar boton y accion de pause
 	$('#img_play_pause_'+pos).attr('src', '../imagenes/pause.jpg');
 	$('#btn_play_pause_'+pos).attr('onClick', 'DetenerCrono('+pos+');');
-}
+}*/

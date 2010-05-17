@@ -23,7 +23,7 @@
 {
 	margin-left: auto;
 	margin-right: auto;
-	width: 800px;
+	width: 900px;
 	border: 1px solid #4F8FFF;
 }
 #tbl_servicios button
@@ -84,8 +84,8 @@
 
 .cuerpo_historial
 {
-	height: 300px;
-	overflow: auto;
+	/*height: 300px;
+	overflow: auto;*/
 }
 .input_observacion_servicio
 {

@@ -2,6 +2,10 @@ form
 {
 	margin: 0px;
 }
+.cursor_cruz
+{
+	cursor: crosshair;
+}
 .label_formulario
 {
 	font-family: Helvetica;
@@ -79,6 +83,18 @@ form
 .ancho_40
 {
 	width: 40px;
+}
+.ancho_45
+{
+	width: 45px;
+}
+.ancho_50
+{
+	width: 50px;
+}
+.ancho_55
+{
+	width: 55px;
 }
 .ancho_80
 {

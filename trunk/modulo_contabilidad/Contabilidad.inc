@@ -41,92 +41,169 @@ class Contabilidad
 /**********************************
 ******* ACCIONES GENERICAS  *******
 ***********************************/
-	/*
-	function actualizarListaClientes($info_cliente)
-	{
-		$sql = "SELECT cli_id, concat(cli_id, \" - \", cli_nombre, \" \", cli_apellido) as cli_nombre
-						FROM pozettos_cliente
-						WHERE cli_id like '$info_cliente'
-						OR cli_nombre like '%$info_cliente%'
-						OR cli_apellido like '%$info_cliente%'
-						OR cli_id = 1
-						ORDER BY cli_id ASC";
 
-		$this->_conexionBD->ejecutarSQL($sql);
+	function obtenerTablaServicios()
+	{
+		$this->_html->tag("table", array("id"=>"tbl_servicios"));
+			$this->_html->tag("tr");
+				$this->_html->tag("td");
+					$this->_html->printSelect($this->_conexionBDAux, "dus_minutos", "dus_texto", "pozettos_duracion_servicio", "", "00:00:00", array("id"=>"hiv_dus_minutos", "class"=>"ancho_80 verdana letra_9 alineacion_centro letra_roja negrilla", "title"=>"Duracion del servicio"));
+				$this->_html->end("td");
+				
+				$sql = "SELECT ser_nombre,ser_url_foto,ser_onclick
+								FROM pozettos_servicio
+								WHERE ser_tipo='servicio'
+								ORDER BY ser_id ASC";
+				$this->_conexionBD->ejecutarSQL($sql);
 		
-		$opciones_select = "";
-		$contador = 0;
-		while($info_cliente = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
-		{
-			$seleccionado = "";
-			if($contador == 0)
-				$seleccionado = "selected";
-			$opciones_select .= "<option value='".$info_cliente['cli_id']."' $seleccionado='$seleccionado'>".$info_cliente['cli_nombre']."</option>";
-			$contador++;
-		}
-		return $opciones_select;
+				$opciones_select = "";
+				$contador = 1;
+				while($info_servicio = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
+				{
+					if($contador % 10 == 0)
+					{
+						$this->_html->end("tr");
+						$this->_html->tag("tr");
+							$this->_html->tag("td");
+							$this->_html->end("td");
+					}
+					$this->_html->tag("td");
+						$this->_html->tag("button", array("onclick"=>$info_servicio['ser_onclick'], "title"=>$info_servicio['ser_nombre']));
+							$this->_html->tag("img", array("src"=>$info_servicio['ser_url_foto']), true);
+						$this->_html->end("button");
+					$this->_html->end("td");
+					$contador++;
+				}
+			$this->_html->end("tr");
+			
+			$this->_html->tag("tr");
+				$this->_html->tag("td");
+					$this->_html->tag("input", array("id"=>"hiv_total", "class"=>"ancho_80 alineacion_centro letra_roja verdana negrilla", "title"=>"Total a pagar", "type"=>"text"), true);
+				$this->_html->end("td");
+				
+				$sql = "SELECT ser_nombre,ser_url_foto,ser_onclick
+								FROM pozettos_servicio
+								WHERE ser_tipo='producto'
+								ORDER BY ser_id ASC";
+				$this->_conexionBD->ejecutarSQL($sql);
+		
+				$opciones_select = "";
+				$contador = 1;
+				while($info_servicio = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
+				{
+					if($contador % 10 == 0)
+					{
+						$this->_html->end("tr");
+						$this->_html->tag("tr");
+							$this->_html->tag("td");
+							$this->_html->end("td");
+					}
+					$this->_html->tag("td");
+						$this->_html->tag("button", array("onclick"=>$info_servicio['ser_onclick'], "title"=>$info_servicio['ser_nombre']));
+							$this->_html->tag("img", array("src"=>$info_servicio['ser_url_foto']), true);
+						$this->_html->end("button");
+					$this->_html->end("td");
+					$contador++;
+				}
+			$this->_html->end("tr");			
+		$this->_html->end("table");
 	}
-*/	
-	function actualizarCampoColor($id, $color_fila, $prefijo)
+	
+	function obtenerOptionsClientes()
 	{
-		if($color_fila == "null")
-			$color_fila = "null";
-		else
-			$color_fila = "'".$color_fila."'";
-		
-		$tabla = "";
-		if($prefijo == "vep")
-			$tabla = "pozettos_venta_producto";
-		else if($prefijo == "ves")
-			$tabla = "pozettos_venta_servicio";
+		$sql = "SELECT cli_id,cli_nombre,cli_apellido
+						FROM pozettos_cliente
+						ORDER BY cli_id DESC";
+		$this->_conexionBD->ejecutarSQL($sql);
 
-		$sql = "UPDATE $tabla
-						SET ".$prefijo."_color_fila = $color_fila
-						WHERE ".$prefijo."_id = '$id'";
+		while($info_option = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
+		{
+			$this->_html->tag("option", array("value"=>$info_option['cli_id']));
+				$this->_html->printText($info_option['cli_id']."&nbsp;->&nbsp;".utf8_encode($info_option['cli_nombre'])." ".utf8_encode($info_option['cli_apellido']));
+			$this->_html->end("option");
+		}
+	}
+
+	function actualizarValor($hiv_id,$valor_nuevo,$nombre_campo)
+	{
+		if(!$valor_nuevo)
+			$valor_nuevo = "0";
+		$sql = "UPDATE pozettos_historico_venta
+						SET $nombre_campo = '$valor_nuevo'
+						WHERE hiv_id = '$hiv_id'";
+		//echo $sql;
 		$this->_conexionBD->ejecutarSQL($sql);
 		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
 			return true;
 		else
 			return false;
 	}
-/*
-	function actualizarEstadoDeuda($prefijo, $id_fila, $estado)
-	{
-		$tabla = "";
-		if($prefijo == "vep")
-			$tabla = "pozettos_venta_producto";
-		else if($prefijo == "ves")
-			$tabla = "pozettos_venta_servicio";
-		$reiniciar_color = "";
-		//FUNCIONALIDAD COMENTADA SIN APROBAR:
-		//Quitar el color de la fila cuando se pague la deuda
-		//if($estado)
-			//$reiniciar_color = ", ".$prefijo."_color_fila = null";
-		$sql = "UPDATE $tabla
-						SET ".$prefijo."_pago = '$estado'
-						$reiniciar_color
-						WHERE ".$prefijo."_id = '$id_fila'";
-		$this->_conexionBD->ejecutarSQL($sql);
-		return $prefijo;
-	}
 	
-	function eliminarFila($id, $prefijo)
+	function actualizarCampoColor($id, $color_fila)
 	{
-		$tabla = "";
-		if($prefijo == "vep")
-			$tabla = "pozettos_venta_producto";
-		else if($prefijo == "ves")
-			$tabla = "pozettos_venta_servicio";
-		
-		$sql = "DELETE FROM $tabla
-						WHERE ".$prefijo."_id = '$id'";
+		if($color_fila == "null")
+			$color_fila = "null";
+		else
+			$color_fila = "'".$color_fila."'";
+
+		$sql = "UPDATE pozettos_historico_venta
+						SET hiv_color_fila = $color_fila
+						WHERE hiv_id = '$id'";
+
 		$this->_conexionBD->ejecutarSQL($sql);
 		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
-			return $prefijo."_fila_".$id;
+			return true;
+		else
+			return false;
+	} 
+
+	function actualizarEstadoPago($id_fila, $hiv_chk_pago, $hiv_chk_gratis, $ultimo_clic)
+	{
+		//echo "==>$hiv_chk_pago, $hiv_chk_gratis, $ultimo_clic";
+		$hiv_pago = 0;
+		$hiv_es_tiempo_gratis = 0;
+		if($ultimo_clic == "pago")
+		{
+			if($hiv_chk_pago == "true")
+			{
+				$hiv_es_tiempo_gratis = 0;
+				$hiv_pago = 1;
+			}
+		}
+		else if($ultimo_clic == "gratis")
+		{
+			if($hiv_chk_gratis == "true")
+			{
+				$hiv_es_tiempo_gratis = 1;
+				$hiv_pago = 0;
+			}
+		}
+	
+		$reiniciar_color = "";
+		$sql = "UPDATE pozettos_historico_venta
+						SET hiv_pago = '$hiv_pago',
+						hiv_es_tiempo_gratis = '$hiv_es_tiempo_gratis'
+						$reiniciar_color
+						WHERE hiv_id = '$id_fila'";
+		echo $sql;
+		$this->_conexionBD->ejecutarSQL($sql);
+		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
+			return true;
 		else
 			return false;
 	}
-
+	
+	function eliminarFila($id)
+	{
+		$sql = "DELETE FROM pozettos_historico_venta
+						WHERE hiv_id = '$id'";
+		$this->_conexionBD->ejecutarSQL($sql);
+		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
+			return "hiv_fila_".$id;
+		else
+			return false;
+	}
+/*
 	function actualizarObservacion($prefijo, $id_fila, $observacion)
 	{
 		$tabla = "";
@@ -142,164 +219,30 @@ class Contabilidad
 		echo $sql;
 	}
 	*/
-/**********************************
-******* ACCIONES PRODUCTOS  *******
-***********************************/
-	/*
-	function agregarFilaProducto($vep_cli_id, $vep_pro_id, $vep_total, $vep_fecha_venta)
-	{
-		if($vep_fecha_venta)
-		{
-			$campo_vep_fecha_venta = ", vep_fecha_venta";
-			$valor_vep_fecha_venta = ", '$vep_fecha_venta'";
-		}
-		$sql = "INSERT INTO pozettos_venta_producto
-						(vep_cli_id, vep_pro_id, vep_total $campo_vep_fecha_venta)
-						VALUES
-						('$vep_cli_id', '$vep_pro_id', '$vep_total' $valor_vep_fecha_venta)";
-		$this->_conexionBD->ejecutarSQL($sql);
-		//echo $sql;
-		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
-			return true;
-		else
-			return false;
-	}
-	
-	function actualizarHistoricoProductos()
-	{
-		$sql = "SELECT	vep1.vep_id,
-										vep1.vep_cli_id,
-										vep1.vep_color_fila, 
-										vep1.vep_pago, 
-										date_format(vep1.vep_fecha_venta, '%l:%i%p') as vep_fecha_venta,
-										vep1.vep_total, 
-										vep1.vep_observacion, 
-										pro_nombre,
-										cli_nombre,
-										(	SELECT SUM(vep2.vep_total)
-											FROM pozettos_venta_producto AS vep2
-											WHERE SUBSTRING( vep2.vep_fecha_venta, 1, 10 ) != '".$this->_fecha_contabilidad."'
-											AND vep2.vep_cli_id = vep1.vep_cli_id
-											AND vep2.vep_pago = 0
-										)AS deuda_producto_vieja,
-										(	SELECT SUM(ves3.ves_total)
-											FROM pozettos_venta_servicio AS ves3
-											WHERE ves3.ves_fecha != '".$this->_fecha_contabilidad."'
-											AND ves3.ves_cli_id = vep1.vep_cli_id
-											AND ves3.ves_pago = 0
-										)AS deuda_servicio_vieja
-						FROM 	pozettos_venta_producto AS vep1, pozettos_producto, pozettos_cliente
-						WHERE vep1.vep_pro_id = pro_id
-						AND vep1.vep_cli_id = cli_id
-						AND SUBSTRING(vep_fecha_venta, 1, 10) = '".$this->_fecha_contabilidad."'
-						ORDER BY vep_color_fila DESC, vep_fecha_venta DESC";
-		$this->_conexionBD->ejecutarSQL($sql);
-		$contador = 0;
 
-		while($info_tupla_historico_producto = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
-		{
-			$vep_color_fila = "";
-			if($info_tupla_historico_producto['vep_color_fila'])
-				$vep_color_fila = "{background: ".$info_tupla_historico_producto['vep_color_fila'].";}";
-			$fondo_default = "";
-			if(!$fondo_default && $contador % 2 == 0)
-				$fondo_default = "fila_historial_par";
-			else if (!$fondo_default)
-				$fondo_default = "fila_historial_impar";
-			
-			$this->_html->tag("tr", array("style"=>$vep_color_fila, "class"=>$fondo_default, "id"=>"vep_fila_".$info_tupla_historico_producto['vep_id'], "name"=>"vep_fila"));
-				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("input", array("type"=>"image", "src"=>"../imagenes/color.jpg", "id"=>"vep_color_".$info_tupla_historico_producto['vep_id'], "class"=>"boton_color"));
-				$this->_html->end("td");
-				
-				$this->_html->tag("td", array("class"=>"alineacion_izquierda celda_producto"));
-					$this->_html->tag("label");
-						$this->_html->printText(utf8_encode($info_tupla_historico_producto['pro_nombre']));
-					$this->_html->end("label");
-				$this->_html->end("td");
-				
-				$this->_html->tag("td", array("class"=>"alineacion_izquierda celda_producto"));
-					$this->_html->tag("label");
-						$this->_html->printText($info_tupla_historico_producto['vep_fecha_venta']);
-					$this->_html->end("label");
-				$this->_html->end("td");
-				
-				$this->_html->tag("td", array("class"=>"alineacion_derecha celda_producto"));
-					$this->_html->tag("label");
-						$this->_html->printText($this->_html->colocarPuntoMiles($info_tupla_historico_producto['vep_total']));
-					$this->_html->end("label");
-				$this->_html->end("td");
-
-				$checked_pago = "";
-				$checked_debe = "";
-				$clase_celda_pago = "";
-				$clase_celda_debe = "";
-				if($info_tupla_historico_producto['vep_pago'])
-				{
-					$checked_pago = "checked";
-					$clase_celda_pago = "celda_pago";
-				}
-				else
-				{
-					$checked_debe = "checked";
-					$clase_celda_debe = "celda_debe";
-				}
-				
-				$this->_html->tag("td", array("id"=>"vep_pago_".$info_tupla_historico_producto['vep_id'], "class"=>"alineacion_centro $clase_celda_pago"));
-					$this->_html->tag("input", array($checked_pago=>$checked_pago, "type"=>"radio", "name"=>"vep_rad_pago_".$info_tupla_historico_producto['vep_id'], "onchange"=>"actualizarEstadoDeuda(".$info_tupla_historico_producto['vep_id'].", 1, 'vep');"));
-				$this->_html->end("td");
-				
-				$this->_html->tag("td", array("id"=>"vep_debe_".$info_tupla_historico_producto['vep_id'], "class"=>"alineacion_centro $clase_celda_debe"));
-					$this->_html->tag("input", array($checked_debe=>$checked_debe, "type"=>"radio", "name"=>"vep_rad_pago_".$info_tupla_historico_producto['vep_id'], "onchange"=>"actualizarEstadoDeuda(".$info_tupla_historico_producto['vep_id'].", 0, 'vep');"));
-				$this->_html->end("td");
-				
-				$this->_html->tag("td", array("class"=>"alineacion_centro celda_producto"));
-					$this->_html->tag("label", array("title"=>utf8_encode($info_tupla_historico_producto['cli_nombre'])));
-						$this->_html->tag("form", array("action"=>"index.php", "method"=>"post"));
-							$this->_html->printText($info_tupla_historico_producto['vep_cli_id']);
-							$total_deuda = $info_tupla_historico_producto['deuda_producto_vieja'] + $info_tupla_historico_producto['deuda_servicio_vieja'];
-							if($total_deuda != "0")
-							{
-								$this->_html->espacios();
-								$this->_html->tag("input", array("type"=>"image", "name"=>"modulo", "value"=>"deuda", "src"=>"../imagenes/deuda.gif", "class"=>"imagen_deuda", "title"=>utf8_encode($info_tupla_historico_producto['cli_nombre']." debe [".$total_deuda."] de otros días")), true);
-								$this->_html->tag("input", array("type"=>"hidden", "name"=>"cli_id", "value"=>$info_tupla_historico_producto['vep_cli_id']));
-							}
-							$this->_html->end("form");
-						$this->_html->end("label");
-				$this->_html->end("td");
-				
-				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("input", array("id"=>"vep_observacion_".$info_tupla_historico_producto['vep_id'], "type"=>"text", "class"=>"input_observacion_producto celda_producto", "value"=>utf8_encode($info_tupla_historico_producto['vep_observacion']), "onkeyup"=>"actualizarObservacion(event.keyCode, ".$info_tupla_historico_producto['vep_id'].", 'vep');", "onchange"=>"actualizarObservacion(13, ".$info_tupla_historico_producto['vep_id'].", 'vep');"), true);
-				$this->_html->end("td");
-				
-				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("button", array("class"=>"boton_delete", "onclick"=>"eliminarFila(".$info_tupla_historico_producto['vep_id'].",'vep')"));
-						$this->_html->tag("img", array("src"=>"../imagenes/delete.png", "class"=>"imagen_delete"), true);
-					$this->_html->end("button");
-				$this->_html->end("td");
-			$this->_html->end("tr");
-			$contador++;
-		}
-	}
-*/
 /**********************************
-******* ACCIONES SERVICIOS  *******
+******* ACCIONES HISTORIAL  *******
 ***********************************/
 
-	function agregarFilaServicio($ves_ser_id, $ves_hora, $ves_minuto, $ves_meridiano, $ves_duracion,  $ves_fecha)
+	function agregarFilaHistorial($hiv_ser_id, $hiv_ser_tipo, $hiv_hora, $hiv_minuto, $hiv_meridiano, $hiv_dus_minutos, $hiv_total,  $hiv_fecha)
 	{
-		$valor_ves_fecha = $ves_fecha;
-
-		$sql = "INSERT INTO pozettos_venta_servicio
-						(	ves_cli_id, ves_ser_id, ves_hora, 
-							ves_meridiano, ves_duracion, ves_total,
-							ves_fecha)
+		$valor_hiv_dus_minutos = "'00:00:00'";
+		if($hiv_dus_minutos)
+			$valor_hiv_dus_minutos = "'$hiv_dus_minutos'";
+		$valor_hiv_total = "0";
+		if($hiv_total)
+			$valor_hiv_total = "'$hiv_total'";
+		
+		$sql = "INSERT INTO pozettos_historico_venta
+						(	hiv_cli_id, hiv_ser_id, hiv_fecha, hiv_hora, hiv_ser_tipo,
+							hiv_meridiano, hiv_total, hiv_dus_minutos
+							)
 						VALUES
-						(	'1', '$ves_ser_id', '$ves_hora:$ves_minuto:00', 
-							'$ves_meridiano', '$ves_duracion', '0',
-							'$valor_ves_fecha')";
+						(	'1', '$hiv_ser_id','$hiv_fecha','$hiv_hora:$hiv_minuto:00', '$hiv_ser_tipo',
+							'$hiv_meridiano', $valor_hiv_total, $valor_hiv_dus_minutos
+							)";
 		$this->_conexionBD->ejecutarSQL($sql);
-		//echo $sql;
+		echo $sql;
 		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
 			return true;
 		else
@@ -308,51 +251,50 @@ class Contabilidad
 
 	function actualizarHistorialVentas()
 	{
-		$sql = "SELECT	ves1.ves_id,
-										ves1.ves_cli_id,
-										ves1.ves_color_fila,
-										ves1.ves_pago,
-										CONCAT(time_format(ves1.ves_hora, '%l:%i'), ves_meridiano) as ves_hora,
-										dus_texto,
-										time_format(ADDTIME(ves1.ves_hora, ves1.ves_duracion),'%l:%i') as ves_hora_termina,
-										ves1.ves_total, 
-										ves1.ves_observacion, 
+	/*
+	,
+										(	SELECT SUM(hiv2.hiv_total)
+											FROM pozettos_historico_venta AS hiv2
+											WHERE hiv2.hiv_fecha != '".$this->_fecha_contabilidad."'
+											AND hiv2.hiv_cli_id = hiv1.hiv_cli_id
+											AND hiv2.hiv_pago = 0
+										) AS deuda_vieja
+	*/
+		$sql = "SELECT	hiv_id,
+										hiv_cli_id,
+										hiv_color_fila,
+										hiv_pago,
+										hiv_es_tiempo_gratis,
+										IF(hiv_ser_tipo = 'servicio', CONCAT(time_format(hiv_hora, '%l:%i'), hiv_meridiano), null) as hiv_hora,
+										IF(hiv_ser_tipo = 'servicio', dus_texto, null) as dus_texto,
+										IF(hiv_ser_tipo = 'servicio', time_format(ADDTIME(hiv_hora, hiv_dus_minutos),'%l:%i'), null) as hiv_hora_termina,
+										hiv_total, 
+										hiv_observacion, 
 										ser_nombre,
-										(	SELECT SUM(ves2.ves_total)
-											FROM pozettos_venta_servicio AS ves2
-											WHERE ves2.ves_fecha != '".$this->_fecha_contabilidad."'
-											AND ves2.ves_cli_id = ves1.ves_cli_id
-											AND ves2.ves_pago = 0
-										)AS deuda_servicio_vieja,
-										(	SELECT SUM(vep3.vep_total)
-											FROM pozettos_venta_producto AS vep3
-											WHERE SUBSTRING( vep3.vep_fecha_venta, 1, 10 ) != '".$this->_fecha_contabilidad."'
-											AND vep3.vep_cli_id = ves1.ves_cli_id
-											AND vep3.vep_pago = 0
-										)AS deuda_producto_vieja
-						FROM 	pozettos_venta_servicio AS ves1, pozettos_servicio, pozettos_cliente, pozettos_duracion_servicio
-						WHERE ves1.ves_ser_id = ser_id
-						AND ves1.ves_cli_id = cli_id
-						AND ves1.ves_duracion = dus_minutos
-						AND ves_fecha = '".$this->_fecha_contabilidad."'
-						ORDER BY ves_color_fila DESC, ves_id DESC";
+										cli_nombre
+						FROM 	pozettos_historico_venta, pozettos_servicio, pozettos_cliente, pozettos_duracion_servicio
+						WHERE hiv_ser_id = ser_id
+						AND hiv_dus_minutos = dus_minutos
+						AND hiv_cli_id = cli_id
+						AND hiv_fecha = '".$this->_fecha_contabilidad."'
+						ORDER BY hiv_color_fila DESC, hiv_id DESC";
 		$this->_conexionBD->ejecutarSQL($sql);
 		$contador = 0;
-//echo $sql;
+
 		while($info_tupla_historico = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
 		{
-			$ves_color_fila = "";
-			if($info_tupla_historico['ves_color_fila'])
-				$ves_color_fila = "{background: ".$info_tupla_historico['ves_color_fila'].";}";
+			$hiv_color_fila = "";
+			if($info_tupla_historico['hiv_color_fila'])
+				$hiv_color_fila = "{background: ".$info_tupla_historico['hiv_color_fila'].";}";
 			$fondo_default = "";
 			if(!$fondo_default && $contador % 2 == 0)
 				$fondo_default = "fila_historial_par";
 			else if (!$fondo_default)
 				$fondo_default = "fila_historial_impar";
 			
-			$this->_html->tag("tr", array("style"=>$ves_color_fila, "class"=>$fondo_default, "id"=>"ves_fila_".$info_tupla_historico['ves_id'], "name"=>"fila_historico"));
+			$this->_html->tag("tr", array("style"=>$hiv_color_fila, "class"=>$fondo_default, "id"=>"hiv_fila_".$info_tupla_historico['hiv_id'], "name"=>"fila_historico"));
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("input", array("type"=>"image", "src"=>"../imagenes/color.jpg", "id"=>"ves_color_".$info_tupla_historico['ves_id'], "class"=>"boton_color"));
+					$this->_html->tag("input", array("type"=>"image", "src"=>"../imagenes/color.jpg", "id"=>"hiv_color_".$info_tupla_historico['hiv_id'], "class"=>"boton_color"));
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_izquierda"));
@@ -363,62 +305,68 @@ class Contabilidad
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
 					$this->_html->tag("label", array("class"=>"verdana letra_9"));
-						$this->_html->printText($info_tupla_historico['ves_hora']);
+						$this->_html->printText($info_tupla_historico['hiv_hora']);
 					$this->_html->end("label");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
 					$this->_html->tag("label", array("class"=>"verdana letra_9"));
 						$this->_html->printText($info_tupla_historico['dus_texto']);
-						//$this->_html->printSelect($this->_conexionBDAux, "dus_minutos", "dus_texto", "pozettos_duracion_servicio", "", $info_tupla_historico['ves_duracion'], array("id"=>"ves_duracion_".$info_tupla_historico['ves_id'], "class"=>"select_duracion verdana letra_9 alineacion_centro", "size"=>"1", "onchange"=>"actualizarDuracionYTotalServicio('".$info_tupla_historico['ves_id']."');"));
+						//$this->_html->printSelect($this->_conexionBDAux, "dus_minutos", "dus_texto", "pozettos_duracion_servicio", "", $info_tupla_historico['hiv_duracion'], array("id"=>"hiv_duracion_".$info_tupla_historico['hiv_id'], "class"=>"select_duracion verdana letra_9 alineacion_centro", "size"=>"1", "onchange"=>"actualizarDuracionYTotalServicio('".$info_tupla_historico['hiv_id']."');"));
 					$this->_html->end("label");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
 					$this->_html->tag("label", array("class"=>"verdana letra_9"));
-						$this->_html->printText($info_tupla_historico['ves_hora_termina']);
+						$this->_html->printText($info_tupla_historico['hiv_hora_termina']);
 					$this->_html->end("label");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_derecha"));
-					$this->_html->tag("label", array("class"=>"verdana letra_9"));
-						$this->_html->printText($this->_html->colocarPuntoMiles($info_tupla_historico['ves_total']));
+					$this->_html->tag("label", array("id"=>"hiv_total_".$info_tupla_historico['hiv_id'], "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableTotal('hiv_total_".$info_tupla_historico['hiv_id']."',true);"));
+						$this->_html->printText($info_tupla_historico['hiv_total']);
 					$this->_html->end("label");
 				$this->_html->end("td");
 
 				$checked_pago = "";
 				$clase_celda_pago = "celda_debe";
-				if($info_tupla_historico['ves_pago'])
+				
+				if($info_tupla_historico['hiv_pago'])
 				{
 					$checked_pago = "checked";
 					$clase_celda_pago = "celda_pago";
 				}
+				else if($info_tupla_historico['hiv_es_tiempo_gratis'])
+					$clase_celda_pago = "";
 				
-				$this->_html->tag("td", array("id"=>"ves_pago_".$info_tupla_historico['ves_id'], "class"=>"alineacion_centro $clase_celda_pago"));
-					$this->_html->tag("input", array($checked_pago=>$checked_pago, "type"=>"checkbox", "name"=>"ves_rad_pago_".$info_tupla_historico['ves_id'], "onchange"=>"actualizarEstadoDeuda(".$info_tupla_historico['ves_id'].", 1, 'ves');"));
+				$this->_html->tag("td", array("id"=>"hiv_pago_".$info_tupla_historico['hiv_id'], "class"=>"alineacion_centro $clase_celda_pago"));
+					$this->_html->tag("input", array($checked_pago=>$checked_pago, "type"=>"checkbox", "id"=>"hiv_chk_pago_".$info_tupla_historico['hiv_id'], "onchange"=>"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'pago');"));
+				$this->_html->end("td");
+				
+				$checked_gratis = "";
+				$clase_celda_gratis = "";
+				if($info_tupla_historico['hiv_es_tiempo_gratis'])
+				{
+					$checked_gratis = "checked";
+					$clase_celda_gratis = "celda_pago";
+				}
+				
+				$this->_html->tag("td", array("id"=>"hiv_pago_".$info_tupla_historico['hiv_id'], "class"=>"alineacion_centro $clase_celda_gratis"));
+					$this->_html->tag("input", array($checked_gratis=>$checked_gratis, "type"=>"checkbox", "id"=>"hiv_chk_gratis_".$info_tupla_historico['hiv_id'], "onchange"=>"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');"));
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("label", array("class"=>"verdana letra_9", "title"=>utf8_encode($info_tupla_historico['cli_nombre'])));
-						$this->_html->tag("form", array("action"=>"index.php", "method"=>"post"));
-							$this->_html->printText($info_tupla_historico['ves_cli_id']);
-							$total_deuda = $info_tupla_historico['deuda_producto_vieja'] + $info_tupla_historico['deuda_servicio_vieja'];
-							if($total_deuda != "0")
-							{
-								$this->_html->espacios();
-								$this->_html->tag("input", array("type"=>"image", "name"=>"modulo", "value"=>"deuda", "src"=>"../imagenes/deuda.gif", "class"=>"imagen_deuda", "title"=>utf8_encode($info_tupla_historico['cli_nombre']." debe [".$total_deuda."] de otros días")), true);
-								$this->_html->tag("input", array("type"=>"hidden", "name"=>"cli_id", "value"=>$info_tupla_historico['ves_cli_id']));
-							}
-						$this->_html->end("form");
+					$this->_html->tag("label", array("id"=>"cli_fila_".$info_tupla_historico['hiv_id'], "ondblclick"=>"editableCliente('cli_fila_".$info_tupla_historico['hiv_id']."',true);", "class"=>"verdana letra_9 cursor_cruz", "title"=>$info_tupla_historico['hiv_cli_id']." -> ".utf8_encode($info_tupla_historico['cli_nombre'])));
+							$this->_html->printText($info_tupla_historico['hiv_cli_id']);
 					$this->_html->end("label");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("input", array("id"=>"ves_observacion_".$info_tupla_historico['ves_id'], "type"=>"text", "class"=>"input_observacion_producto verdana letra_9", "value"=>utf8_encode($info_tupla_historico['ves_observacion']), "onkeyup"=>"actualizarObservacion(event.keyCode, ".$info_tupla_historico['ves_id'].", 'ves');", "onchange"=>"actualizarObservacion(13, ".$info_tupla_historico['ves_id'].", 'ves');"), true);
+					$this->_html->tag("input", array("id"=>"hiv_observacion_".$info_tupla_historico['hiv_id'], "type"=>"text", "class"=>"input_observacion_producto verdana letra_9", "value"=>utf8_encode($info_tupla_historico['hiv_observacion'])/*, "onkeyup"=>"actualizarObservacion(event.keyCode, ".$info_tupla_historico['hiv_id'].", 'hiv');", "onchange"=>"actualizarObservacion(13, ".$info_tupla_historico['hiv_id'].", 'hiv');"*/), true);
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("button", array("class"=>"boton_delete", "onclick"=>"eliminarFila(".$info_tupla_historico['ves_id'].",'ves')"));
+					$this->_html->tag("button", array("class"=>"boton_delete", "title"=>"Eliminar fila", "onclick"=>"eliminarFila(".$info_tupla_historico['hiv_id'].")"));
 						$this->_html->tag("img", array("src"=>"../imagenes/delete.png", "class"=>"imagen_delete"), true);
 					$this->_html->end("button");
 				$this->_html->end("td");

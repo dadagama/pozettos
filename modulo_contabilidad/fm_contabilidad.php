@@ -32,6 +32,9 @@
 	require_once("../herramientas/GeneradorHtml.inc");
 	$html = new GeneradorHtml();
 	
+	require_once("../modulo_contabilidad/Contabilidad.inc");
+	$objetoContabilidad = new Contabilidad($_SESSION['arregloParametros'], $_SESSION['fecha_contabilidad']);
+	
 	$html->cargarHerramientaJS("../herramientas/jquery.vreboton.ColorPicker");
 	$html->cargarModuloJS($_SESSION['modulo']);
 	
@@ -67,133 +70,11 @@
 	$html->tag("table", array("class"=>"tabla_centrada margen_arriba_10"));
 		$html->tag("tr");
 			$html->tag("td");
-				$html->tag("table", array("id"=>"tbl_servicios"));
-					$html->tag("tr");
-						$html->tag("td");
-							$html->printSelect($conexion_bd_bozettos, "dus_minutos", "dus_texto", "pozettos_duracion_servicio", "", "00:00:00", array("id"=>"ves_duracion", "class"=>"ancho_80 verdana letra_9 alineacion_centro letra_roja negrilla", "title"=>"Duración del servicio"));
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('1');", "title"=>"Xbox 1"));
-								$html->tag("img", array("src"=>"../imagenes/x1.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('2');", "title"=>"Xbox 2"));
-								$html->tag("img", array("src"=>"../imagenes/x2.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('3');", "title"=>"Play 1"));
-								$html->tag("img", array("src"=>"../imagenes/p1.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('4');", "title"=>"Play 2"));
-								$html->tag("img", array("src"=>"../imagenes/p2.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('5');", "title"=>"Cabina 1"));
-								$html->tag("img", array("src"=>"../imagenes/pc1.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('6');", "title"=>"Cabina 2"));
-								$html->tag("img", array("src"=>"../imagenes/pc2.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('7');", "title"=>"Cabina 3"));
-								$html->tag("img", array("src"=>"../imagenes/pc3.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('8');", "title"=>"Cabina 4"));
-								$html->tag("img", array("src"=>"../imagenes/pc4.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"agregarFilaServicio('9');", "title"=>"Wii 1"));
-								$html->tag("img", array("src"=>"../imagenes/wii.png"), true);
-							$html->end("button");
-						$html->end("td");
-					$html->end("tr");
-					
-					$html->tag("tr");
-						$html->tag("td", array("rowspan"=>"2"));
-							$html->tag("input", array("class"=>"ancho_80 alto_30 alineacion_centro letra_roja verdana negrilla", "title"=>"Total a pagar", "type"=>"text"), true);
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Recarga FULLCARGA"));
-								$html->tag("img", array("src"=>"../imagenes/fullcarga.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Recarga TIGO"));
-								$html->tag("img", array("src"=>"../imagenes/tigo.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Celular"));
-								$html->tag("img", array("src"=>"../imagenes/celular.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Inalambrico"));
-								$html->tag("img", array("src"=>"../imagenes/inalambrico.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Cabina Internacional"));
-								$html->tag("img", array("src"=>"../imagenes/internacional.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Papeleria"));
-								$html->tag("img", array("src"=>"../imagenes/papeleria.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Mecato"));
-								$html->tag("img", array("src"=>"../imagenes/mecato.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Impresion"));
-								$html->tag("img", array("src"=>"../imagenes/impresora.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Fotocopia"));
-								$html->tag("img", array("src"=>"../imagenes/fotocopiadora.png"), true);
-							$html->end("button");
-						$html->end("td");
-					$html->end("tr");
-					
-					
-					$html->tag("tr");
-						
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Escaneada"));
-								$html->tag("img", array("src"=>"../imagenes/escaner.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Quemada"));
-								$html->tag("img", array("src"=>"../imagenes/cd.png"), true);
-							$html->end("button");
-						$html->end("td");
-						$html->tag("td");
-							$html->tag("button", array("onclick"=>"", "title"=>"Otros"));
-								$html->tag("img", array("src"=>"../imagenes/otro.png"), true);
-							$html->end("button");
-						$html->end("td");
-					$html->end("tr");
-				$html->end("table");
+				$objetoContabilidad->obtenerTablaServicios();
 			$html->end("td");
 			
 			$html->tag("td", array("class"=>"vertical_arriba"));
-				$html->tag("table", array("class"=>"fondo_negro"));
+				$html->tag("table", array("class"=>"fondo_azul"));
 							
 							/* TIMER 0 */
 							$html->tag("tr");
@@ -366,173 +247,6 @@
 				$html->end("tr");
 	$html->end("table");
 	
-	// /*ZONA PRODUCTO*/
-	// $html->tag("table", array("class"=>"zona_productos"));
-		// $html->tag("tr");
-			// $html->tag("td", array("class"=>"tabla_producto alineacion_centro"));
-	
-				// /*  TABLA PRODUCTO */
-				// $html->tag("table");
-					// $html->tag("tr");
-					
-						// /* CELDA PRODUCTO */
-						// $html->tag("td", array("class"=>"celda_interna fondo_azul"));
-							// $html->tag("table",array("class"=>"tabla_interna"));
-							
-								// $html->tag("caption");
-									// $html->tag("label", array("class"=>"label_formulario"));
-										// $html->printText("Producto");
-									// $html->end("label");
-								// $html->end("caption");
-								
-								// $html->tag("tr");
-									// $html->tag("td");
-										// $html->printSelect($conexion_bd_bozettos, "pro_id", "pro_nombre", "pozettos_producto", "", "1", array("id"=>"vep_pro_id", "class"=>"select_producto letra_9 verdana alineacion_izquierda", "size"=>"10"));
-									// $html->end("td");
-								// $html->end("tr");
-							// $html->end("table");
-						// $html->end("td");
-						
-						// /*CELDA SERVICIOS*/
-						// $html->tag("td", array("class"=>"celda_interna fondo_verde"));
-							// $html->tag("table",array("class"=>"tabla_interna"));
-							
-								// $html->tag("caption");
-									// $html->tag("label", array("class"=>"label_formulario"));
-										// $html->printText("Servicio");
-									// $html->end("label");
-								// $html->end("caption");
-								
-								// $html->tag("tr");
-									// $html->tag("td");
-										// $html->printSelect($conexion_bd_bozettos, "ser_id", "ser_nombre", "pozettos_servicio", "", "1", array("id"=>"ves_ser_id", "class"=>"select_servicio verdana letra_9 alineacion_izquierda", "size"=>"9", "onchange"=>"actualizarTotalServicio();"));
-									// $html->end("td");
-								// $html->end("tr");
-							// $html->end("table");
-						// $html->end("td");
-						
-						// /* CELDA TOTAL PRODUCTO */
-						// $html->tag("td", array("class"=>"celda_interna fondo_azul"));
-							// $html->tag("table",array("class"=>"tabla_interna"));
-								
-								// $html->tag("caption");
-									// $html->tag("label", array("class"=>"label_formulario"));
-										// $html->printText("Total a pagar");
-									// $html->end("label");
-								// $html->end("caption");
-									
-								// $html->tag("tr");
-									// $html->tag("td", array("class"=>"alineacion_centro", "colspan"=>"2"));
-										// $html->tag("input", array("id"=>"vep_total", "type"=>"text", "class"=>"input_total alineacion_centro", "maxlength"=>"6", "value"=>"0"));
-									// $html->end("td");
-								// $html->end("tr");
-								
-								// $html->tag("tr");
-									// $html->tag("td", array("class"=>"alineacion_centro", "colspan"=>"2"));
-										// $html->tag("button", array("class"=>"negrilla", "onclick"=>"agregarFilaProducto();"));
-											// $html->printText("OK");
-										// $html->end("button");
-									// $html->end("td");
-								// $html->end("tr");
-								
-								// $html->tag("tr");
-									// $html->tag("td", array("class"=>"alineacion_centro"));
-										// $html->tag("label", array("class"=>"label_formulario"));
-											// $html->printText("Cliente");
-										// $html->end("label");
-									// $html->end("td");
-									
-									// $html->tag("td", array("class"=>"alineacion_centro"));
-										// $html->tag("input", array("id"=>"vep_buscar_cliente", "type"=>"text", "class"=>"input_cliente letra_9", "maxlength"=>"100", "onkeyup"=>"actualizarListaClientes(event.keyCode, 'vep');"));
-									// $html->end("td");
-								// $html->end("tr");
-								
-								// $html->tag("tr");
-									// $html->tag("td", array("class"=>"alineacion_centro", "colspan"=>"2"));
-										// $html->printSelect($conexion_bd_bozettos, "cli_id", "concat(cli_id, \" - \", cli_nombre, \" \", cli_apellido)", "pozettos_cliente", "", "1", array("id"=>"vep_cli_id", "class"=>"select_cliente letra_9 verdana alineacion_izquierda", "size"=>"3"));
-									// $html->end("td");
-								// $html->end("tr");
-								
-							// $html->end("table");
-						// $html->end("td");
-							
-					// $html->end("tr");
-				// $html->end("table");
-			// $html->end("td");
-			
-			// $html->tag("td");
-			
-				// $html->tag("table",array("class"=>"tabla_historial_producto ancho_100p"));
-					// /* ENCABEZADOS HISTORIAL */		
-					// $html->tag("thead");
-						// $html->tag("tr");
-							// $html->tag("th");
-							// $html->end("th");
-						
-							// $html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-								// $html->tag("label", array("class"=>"label_formulario"));
-									// $html->printText("Producto");
-								// $html->end("label");
-							// $html->end("th");
-							
-							// $html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-								// $html->tag("label", array("class"=>"label_formulario"));
-									// $html->printText("Hora");
-								// $html->end("label");
-							// $html->end("th");
-
-							// $html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-								// $html->tag("label", array("class"=>"label_formulario"));
-									// $html->printText("Total");
-								// $html->end("label");
-							// $html->end("th");
-							
-							// $html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-								// $html->tag("label", array("class"=>"label_formulario"));
-									// $html->printText("Pagó");
-								// $html->end("label");
-							// $html->end("th");
-							
-							// $html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-								// $html->tag("label", array("class"=>"label_formulario"));
-									// $html->printText("Debe");
-								// $html->end("label");
-							// $html->end("th");
-							
-							// $html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-								// $html->tag("label", array("class"=>"label_formulario"));
-									// $html->printText("Cliente");
-								// $html->end("label");
-							// $html->end("th");
-							
-							// $html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-								// $html->tag("label", array("class"=>"label_formulario"));
-									// $html->printText("Observación");
-								// $html->end("label");
-							// $html->end("th");
-						
-							// $html->tag("th");
-							// $html->end("th");
-							
-							// $html->tag("th", array("class"=>"ancho_scroll"));
-							// $html->end("th");
-						// $html->end("tr");
-					// $html->end("thead");
-					
-					
-					// $html->tag("tbody", array("id"=>"vep_historial", "class"=>"cuerpo_historial_producto"));
-						
-						// /*  HISTORICO PRODUCTOS */
-						
-					// $html->end("tbody");
-				// $html->end("table");
-			
-			// $html->end("td");
-			
-		// $html->end("tr");
-	// $html->end("table");
-	
-	
 	/* ZONA HISTORIAL */
 	// $html->tag("table", array("class"=>"zona_historial"));
 		// $html->tag("tr");
@@ -611,50 +325,6 @@
 							// $html->end("table");
 						// $html->end("td");
 						
-						// /* CELDA TOTAL */
-						// $html->tag("td", array("class"=>"celda_interna fondo_verde"));
-							// $html->tag("table",array("class"=>"tabla_interna"));
-								
-								// $html->tag("caption");
-									// $html->tag("label", array("class"=>"label_formulario"));
-										// $html->printText("Total a pagar");
-									// $html->end("label");
-								// $html->end("caption");
-									
-								// $html->tag("tr");
-									// $html->tag("td", array("class"=>"alineacion_centro", "colspan"=>"2"));
-										// $html->tag("input", array("id"=>"ves_total", "type"=>"text", "class"=>"input_total alineacion_centro", "maxlength"=>"6", "value"=>"0"));
-									// $html->end("td");
-								// $html->end("tr");
-								
-								// $html->tag("tr");
-									// $html->tag("td", array("class"=>"alineacion_centro", "colspan"=>"2"));
-										// $html->tag("button", array("class"=>"negrilla", "onclick"=>"agregarFilaServicio();"));
-											// $html->printText("OK");
-										// $html->end("button");
-									// $html->end("td");
-								// $html->end("tr");
-								
-								// $html->tag("tr");
-									// $html->tag("td", array("class"=>"alineacion_centro"));
-										// $html->tag("label", array("class"=>"label_formulario"));
-											// $html->printText("Cliente");
-										// $html->end("label");
-									// $html->end("td");
-									
-									// $html->tag("td", array("class"=>"alineacion_centro"));
-										// $html->tag("input", array("id"=>"ves_buscar_cliente", "type"=>"text", "class"=>"input_cliente verdana letra_9", "maxlength"=>"100", "onkeyup"=>"actualizarListaClientes(event.keyCode, 'ves');"));
-									// $html->end("td");
-								// $html->end("tr");
-								
-								// $html->tag("tr");
-									// $html->tag("td", array("class"=>"alineacion_centro", "colspan"=>"2"));
-										// $html->printSelect($conexion_bd_bozettos, "cli_id", "concat(cli_id, \" - \", cli_nombre, \" \", cli_apellido)", "pozettos_cliente", "", "1", array("id"=>"ves_cli_id", "class"=>"select_cliente verdana letra_9 alineacion_izquierda", "size"=>"3"));
-									// $html->end("td");
-								// $html->end("tr");
-								
-							// $html->end("table");
-						// $html->end("td");
 					// $html->end("tr");
 				// $html->end("table");
 			// $html->end("td");
@@ -698,7 +368,7 @@
 								$html->end("label");
 							$html->end("th");
 							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Total");
 								$html->end("label");
@@ -711,6 +381,12 @@
 							$html->end("th");
 							
 							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+								$html->tag("label", array("class"=>"label_formulario"));
+									$html->printText("Gratis");
+								$html->end("label");
+							$html->end("th");
+							
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_55"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Cliente");
 								$html->end("label");
@@ -725,8 +401,8 @@
 							$html->tag("th");
 							$html->end("th");
 							
-							$html->tag("th", array("class"=>"ancho_scroll"));
-							$html->end("th");
+							// $html->tag("th", array("class"=>"ancho_scroll"));
+							// $html->end("th");
 						$html->end("tr");
 					$html->end("thead");
 					
@@ -734,9 +410,6 @@
 						
 					$html->end("tbody");
 				$html->end("table");
-			// $html->end("td");
-		// $html->end("tr");
-	// $html->end("table");
 ?>
 	</body>
 </html>

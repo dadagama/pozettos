@@ -22,13 +22,15 @@
 
 $(document).ready(inicializar);
 
+var options_clientes;
+
 function inicializar()
 {
 	url_controlador_modulo = "../modulo_contabilidad/contabilidad.php";
 	actualizarHistorialVentas();
+	options_clientes = "";
+	obtenerOptionsClientes();
 	/*actualizarHoraInicio();
-	actualizarHistoricoProductos();
-	actualizarHistoricoServicios();
 	obtenerInfoTimers();*/
 }
 
@@ -37,17 +39,108 @@ function mostrarPanel()
 	ajax('accion=mostrarPanel', false, mostrarNuevoModulo_ajax, false);
 }
 
+function obtenerOptionsClientes()
+{
+	ajax('accion=obtenerOptionsClientes', false, obtenerOptionsClientesAjax, false);
+}
+
+function obtenerOptionsClientesAjax(options)
+{
+	options_clientes = options;
+}
+
+function editableCliente(fila_id,editable)
+{
+	if(editable)
+	{
+		var cli_id = $('#'+fila_id).text();
+		var select_clientes = "<select id='"+fila_id+"' class='verdana letra_9 ancho_50' onchange='if(actualizarValor(\""+fila_id+"\",\"hiv_cli_id\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_cli_id\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
+		select_clientes += options_clientes;
+		select_clientes += "</select>";
+		$('#'+fila_id).replaceWith(select_clientes);
+		$('#'+fila_id).removeAttr('selected', 'selected');
+		$('#'+fila_id+" option[value='"+cli_id+"']").attr('selected', 'selected');
+		$('#'+fila_id).focus();
+	}
+	else
+	{
+		var nombre_cliente = $('#'+fila_id+" option:selected").text();
+		var label_cliente = "<label id='"+fila_id+"' ondblclick='editableCliente(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz' title='"+nombre_cliente+"'>"+$('#'+fila_id).val()+"</label>";
+		$('#'+fila_id).replaceWith(label_cliente);
+	}
+}
+
+function editableTotal(fila_id,editable)
+{
+	if(editable)
+	{
+		var hiv_total = $('#'+fila_id).text();
+		var input_total = "<input id='"+fila_id+"' type='text' maxlength='6' class='ancho_50' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",13)){ editableTotal(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",event.keyCode)){ editableTotal(\""+fila_id+"\",false);}' value='"+hiv_total+"'/>";
+		$('#'+fila_id).replaceWith(input_total);
+		$('#'+fila_id).focus();
+	}
+	else
+	{
+		var hiv_total = parseInt($('#'+fila_id).val());
+		if(hiv_total == "" || isNaN(hiv_total))
+			hiv_total = "0";
+		var label_total = "<label id='"+fila_id+"' ondblclick='editableTotal(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz'>"+hiv_total+"</label>";
+		$('#'+fila_id).replaceWith(label_total);
+	}
+}
+
+/*function editableHoraInicio(fila_id,editable)
+{
+	if(editable)
+	{
+		var cli_id = $('#'+fila_id).text();
+		var select_clientes = "<select id='"+fila_id+"' class='verdana letra_9 ancho_50' onchange='if(actualizarValor(\""+fila_id+"\",\"hiv_cli_id\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_cli_id\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
+		select_clientes += options_clientes;
+		select_clientes += "</select>";
+		$('#'+fila_id).replaceWith(select_clientes);
+		$('#'+fila_id).removeAttr('selected', 'selected');
+		$('#'+fila_id+" option[value='"+cli_id+"']").attr('selected', 'selected');
+		$('#'+fila_id).focus();
+	}
+	else
+	{
+		var nombre_cliente = $('#'+fila_id+" option:selected").text();
+		var label_cliente = "<label id='"+fila_id+"' ondblclick='editableCliente(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz' title='"+nombre_cliente+"'>"+$('#'+fila_id).val()+"</label>";
+		$('#'+fila_id).replaceWith(label_cliente);
+	}
+}*/
+
+function actualizarValor(fila_id,nombre_campo, evento)
+{
+	if(evento == 13)
+	{
+		var hiv_id = fila_id.split("_")[2];
+		var valor_nuevo = $('#'+fila_id).val();
+		ajax('accion=actualizarValor&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo+"&nombre_campo="+nombre_campo, false, actualizarAjax, false);
+		return true;
+	}
+	else
+		return false;
+}
+
+function actualizarAjax(actualizo)
+{
+	if(actualizo)
+		return true;
+	else
+		console.log("no se actualizo ningun valor de la fila");
+}
+
 function asignarListenersColores()
 {
 	var arreglo_filas = document.getElementsByName('fila_historico');
 	for(var x = 0; x < arreglo_filas.length ; x++)
 	{
-		//el ID tiene la forma ==> <prefijo>_fila_<id>
+		//el ID tiene la forma ==> hiv_fila_<#>
 		var arregloIdFila = arreglo_filas[x].id.split("_");
 		var consecutivo = arregloIdFila[2];
-		var prefijo = arregloIdFila[0];
-		$("#"+prefijo+"_color_"+consecutivo).attachColorPicker();
-			$("#"+prefijo+"_color_"+consecutivo).change(
+		$("#hiv_color_"+consecutivo).attachColorPicker();
+			$("#hiv_color_"+consecutivo).change(
 				function() {cambiarColorFila(this);}
 			);
 	}
@@ -55,17 +148,16 @@ function asignarListenersColores()
 
 function cambiarColorFila(elemento)
 {
-	//el ID tiene la forma ==> <prefijo>_color_<#>
+	//el ID tiene la forma ==> hiv_fila_<#>
 	var arregloIdFila = elemento.id.split("_");
 	var consecutivo = arregloIdFila[2];
-	var prefijo = arregloIdFila[0];
 	var color = $("#"+elemento.id).getValue();
-	actualizarCampoColor(consecutivo, color, prefijo);
+	actualizarCampoColor(consecutivo, color);
 }
 
-function actualizarCampoColor(id, color_fila, prefijo)
+function actualizarCampoColor(id, color_fila)
 {
-	ajax("accion=actualizarCampoColor&prefijo="+prefijo+"&"+prefijo+"_id="+id+"&"+prefijo+"_color_fila="+color_fila, null, actualizarCampoColorAjax, null);
+	ajax("accion=actualizarCampoColor&hiv_id="+id+"&hiv_color_fila="+color_fila, null, actualizarCampoColorAjax, null);
 }
 
 function actualizarCampoColorAjax(actualizo)
@@ -73,45 +165,27 @@ function actualizarCampoColorAjax(actualizo)
 	if(actualizo)
 		actualizarHistorialVentas();
 	else
-		alert("Error actualizando color");
+		console.log("No se acualizo ningun color");
 }
 
-/*
-function actualizarListaClientes(key_code, prefijo)
+function actualizarEstadoPago(id_fila, ultimo_clic)
 {
-	if(key_code == 13)
-	{
-		var info_cliente = $("#"+prefijo+"_buscar_cliente").val();
-		var funcion_ajax = "";
-		if(prefijo == "vep")
-			funcion_ajax = actualizarListaClientesProductoAjax;
-		else if(prefijo == "ves")
-			funcion_ajax = actualizarListaClientesServicioAjax;
-		else
-		alert('Error inesperado al actualizar lista de clientes');
-		ajax("accion=actualizarListaClientes&info_cliente="+info_cliente, null, funcion_ajax, null);
-	}
+	var hiv_pago = $('#hiv_chk_pago_'+id_fila).attr('checked');
+	var hiv_es_tiempo_gratis = $('#hiv_chk_gratis_'+id_fila).attr('checked');
+	ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
 }
 
-
-function actualizarEstadoDeuda(id_fila, estado, prefijo)
+function actualizarEstadoPagoAjax(actualizo)
 {
-	ajax("accion=actualizarEstadoDeuda&prefijo="+prefijo+"&id_fila="+id_fila+"&estado="+estado, null, actualizarEstadoDeudaAjax, null);
-}
-
-function actualizarEstadoDeudaAjax(prefijo)
-{
-	if(prefijo == "vep")
-		actualizarHistoricoProductos();
-	else if(prefijo == "ves")
-		actualizarHistoricoServicios();
+	if(actualizo)
+		actualizarHistorialVentas();
 	else
-		alert('Error inesperado actualizando estado de la deuda');
+		console.log('Error actualizando estado del pago');
 }
 
-function eliminarFila(id, prefijo)
+function eliminarFila(id)
 {
-	ajax("accion=eliminarFila&id="+id+"&prefijo="+prefijo, mensajeConfirmar, eliminarFilaAjax, null);
+	ajax("accion=eliminarFila&id="+id, mensajeConfirmar, eliminarFilaAjax, null);
 }
 
 function eliminarFilaAjax(id_eliminado)
@@ -120,95 +194,12 @@ function eliminarFilaAjax(id_eliminado)
 		$("#"+id_eliminado).remove();
 }
 
-function actualizarObservacion(key_code, id_fila, prefijo)
-{
-	if(key_code == 13)
-	{
-		var observacion = $("#"+prefijo+"_observacion_"+id_fila).val();
-		ajax("accion=actualizarObservacion&prefijo="+prefijo+"&id_fila="+id_fila+"&observacion="+observacion, null, null, null);
-	}
-}
-*/
 /**********************************
-******* ACCIONES PRODUCTOS  *******
+******* ACCIONES HISTORIAL  *******
 ***********************************/
-/*
-function actualizarListaClientesProductoAjax(opciones_clientes)
-{
-	$("#vep_cli_id").children().remove();
-	$("#vep_cli_id").html(opciones_clientes);
-}
-
-function agregarFilaProducto()
-{
-	var vep_cli_id = $("#vep_cli_id").val();
-	var vep_pro_id = $("#vep_pro_id").val();
-	var vep_total = $("#vep_total").val();
-	//se guarda la fecha del producto vendido deacuerdo a
-	//la fecha de la contabilidad abierta actualmente
-	var vep_fecha_venta = "";
-	var fecha_actual = new Date();
-	var anno_actual = fecha_actual.getFullYear();
-	var mes_actual = fecha_actual.getMonth() + 1;
-	if(mes_actual < 10)
-		mes_actual = "0"+mes_actual;
-	var dia_actual = fecha_actual.getDate();
-	var hora_actual = fecha_actual.getHours();
-	var minuto_actual = fecha_actual.getMinutes();
-	var segundo_actual = fecha_actual.getSeconds();
-	if($("#fecha_contabilidad").val() != anno_actual+"-"+mes_actual+"-"+dia_actual)
-		vep_fecha_venta = $("#fecha_contabilidad").val()+" "+hora_actual+":"+minuto_actual+":"+segundo_actual;
-
-	ajax("accion=agregarFilaProducto&vep_cli_id="+vep_cli_id+
-				"&vep_pro_id="+vep_pro_id+
-				"&vep_total="+vep_total+
-				"&vep_fecha_venta="+vep_fecha_venta, null, agregarFilaProductoAjax, null);
-}
-
-function agregarFilaProductoAjax(fila)
-{
-	if(fila)
-	{
-		actualizarHistoricoProductos();
-		reiniciarFormularioProducto();
-	}
-	else
-		alert('Error inesperado al agregar una fila de producto');
-}
-
-function actualizarHistoricoProductos()
-{
-	ajax("accion=actualizarHistoricoProductos", null, actualizarHistoricoProductosAjax, null);
-}
-
-function actualizarHistoricoProductosAjax(info_productos)
-{
-	$("#vep_historial").children().remove();
-	$("#vep_historial").html(info_productos);
-	asignarListenersColores('vep');
-}
-
-function reiniciarFormularioProducto()
-{
-	$("#vep_cli_id").val(1);
-	$("#vep_pro_id").val(1);
-	$("#vep_total").val(0);
-	$("#vep_buscar_cliente").val("");
-	actualizarListaClientes(13, "vep");
-}*/
-
-/**********************************
-******* ACCIONES SERVICIOS  *******
-***********************************/
-/*
-function actualizarListaClientesServicioAjax(opciones_clientes)
-{
-	$("#ves_cli_id").children().remove();
-	$("#ves_cli_id").html(opciones_clientes);
-}*/
 
 //v2
-function agregarFilaServicio(ves_ser_id)
+function agregarFilaHistorial(hiv_ser_id,ser_tipo)
 {
 	var fecha_actual = new Date();
 	var anno_actual = fecha_actual.getFullYear();
@@ -218,33 +209,35 @@ function agregarFilaServicio(ves_ser_id)
 	var dia_actual = fecha_actual.getDate();
 	
 	var arregloHoraInicio = obtenerArregloHoraInicio();
-	var ves_duracion = $("#ves_duracion").val();
-	
+	var hiv_dus_minutos = "";
+	var hiv_total = "";
+	if(ser_tipo == "servicio")
+		hiv_dus_minutos = $("#hiv_dus_minutos").val();
+	if(ser_tipo == "producto")
+		hiv_total = $("#hiv_total").val();
+		
 	//se guarda la fecha del producto vendido deacuerdo a
 	//la fecha de la contabilidad abierta actualmente
-	var ves_fecha = anno_actual+"-"+mes_actual+"-"+dia_actual;
-	if($("#fecha_contabilidad").val() != ves_fecha)
-		ves_fecha = $("#fecha_contabilidad").val();
+	var hiv_fecha = anno_actual+"-"+mes_actual+"-"+dia_actual;
+	if($("#fecha_contabilidad").val() != hiv_fecha)
+		hiv_fecha = $("#fecha_contabilidad").val();
 		
-	ajax("accion=agregarFilaServicio&ves_ser_id="+ves_ser_id+
-				"&ves_hora="+arregloHoraInicio[0]+
-				"&ves_minuto="+arregloHoraInicio[1]+
-				"&ves_meridiano="+arregloHoraInicio[2]+
-				"&ves_duracion="+ves_duracion+
-				"&ves_fecha="+ves_fecha, null, agregarFilaServicioAjax, null);
+	ajax("accion=agregarFilaHistorial&hiv_ser_id="+hiv_ser_id+
+				"&hiv_ser_tipo="+ser_tipo+
+				"&hiv_hora="+arregloHoraInicio[0]+
+				"&hiv_minuto="+arregloHoraInicio[1]+
+				"&hiv_meridiano="+arregloHoraInicio[2]+
+				"&hiv_dus_minutos="+hiv_dus_minutos+
+				"&hiv_total="+hiv_total+
+				"&hiv_fecha="+hiv_fecha, null, agregarFilaHistorialAjax, null);
 }
 
-function agregarFilaServicioAjax(fila)
+function agregarFilaHistorialAjax(fila)
 {
-	//alert(fila);
 	if(fila)
-	{
 		actualizarHistorialVentas();
-		//reiniciarFormularioServicio();
-		//alert('yes');
-	}
 	else
-		alert('Error al registrar el servicio');
+		console.log('Error al registrar el servicio');
 }
 
 function obtenerArregloHoraInicio()
@@ -309,28 +302,6 @@ function actualizarHistorialVentasAjax(info_servicios)
 	asignarListenersColores();
 }
 /*
-function reiniciarFormularioServicio()
-{
-	$("#ves_ser_id").val(1);
-	$("#ves_duracion").val('00:00:00');
-	$("#ves_total").val(0);
-	$("#ves_cli_id").val(1);
-	$("#ves_buscar_cliente").val("");
-	actualizarListaClientes(13, "ves");
-}
-
-function actualizarTotalServicio()
-{
-	var servicio = $("#ves_ser_id").val();
-	var duracion = $("#ves_duracion").val();
-	ajax("accion=actualizarTotalServicio&servicio="+servicio+"&duracion="+duracion, null, actualizarTotalServicioAjax, null);
-}
-
-function actualizarTotalServicioAjax(total)
-{
-	$("#ves_total").val(total);
-}
-
 function actualizarHoraInicio()
 {
 	var arregloHoraInicio = obtenerArregloHoraInicio();

@@ -31,56 +31,50 @@ switch($_REQUEST['accion'])
 	case "mostrarPanel":
 		require_once("../modulo_panel/fm_panel.php");
 		break;
+		
+	case "obtenerOptionsClientes":
+		$objetoContabilidad->obtenerOptionsClientes();
+		break;
+
+	case "actualizarValor":
+		echo $objetoContabilidad->actualizarValor($_REQUEST['hiv_id'],$_REQUEST['valor_nuevo'],$_REQUEST['nombre_campo']);
+		break;
 /*	
 	case "actualizarListaClientes":
 		echo $objetoContabilidad->actualizarListaClientes(trim($_REQUEST['info_cliente']));
 		break;
-*/		
+*/
 	case "actualizarCampoColor":
-		$prefijo = $_REQUEST['prefijo'];
-		echo $objetoContabilidad->actualizarCampoColor($_REQUEST[$prefijo.'_id'],$_REQUEST[$prefijo.'_color_fila'], $prefijo);
+		echo $objetoContabilidad->actualizarCampoColor($_REQUEST['hiv_id'],$_REQUEST['hiv_color_fila']);
 		break;
-/*		
-	case "actualizarEstadoDeuda":
-		// se retorna el prefijo de la zona de actualizacion
-		echo $objetoContabilidad->actualizarEstadoDeuda($_REQUEST['prefijo'], $_REQUEST['id_fila'], $_REQUEST['estado']);
-		break;
-	
-	case "eliminarFila":
-		// se retorna el id de la fila eliminada
-		echo $objetoContabilidad->eliminarFila($_REQUEST['id'], $_REQUEST['prefijo']);
+
+	case "actualizarEstadoPago":
+		echo $objetoContabilidad->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']);
 		break;
 		
+	case "eliminarFila":
+		// se retorna el id de la fila eliminada
+		echo $objetoContabilidad->eliminarFila($_REQUEST['id']);
+		break;
+/*			
 	case "actualizarObservacion":
 		$objetoContabilidad->actualizarObservacion($_REQUEST['prefijo'], $_REQUEST['id_fila'], $_REQUEST['observacion']);
 		break;
 	*/	
+
 /**********************************
-******* ACCIONES PRODUCTOS  *******
-***********************************/
-/*
-	case "agregarFilaProducto":
-		echo $objetoContabilidad->agregarFilaProducto($_REQUEST['vep_cli_id'], 
-																									$_REQUEST['vep_pro_id'],
-																									$_REQUEST['vep_total'],
-																									$_REQUEST['vep_fecha_venta']);
-		break;
-	
-	case "actualizarHistoricoProductos":
-		$objetoContabilidad->actualizarHistoricoProductos();
-		break;
-		*/
-/**********************************
-******* ACCIONES SERVICIOS  *******
+******* ACCIONES HISTORIAL  *******
 ***********************************/
 
-	case "agregarFilaServicio":
-		echo $objetoContabilidad->agregarFilaServicio($_REQUEST['ves_ser_id'],
-																										$_REQUEST['ves_hora'],
-																										$_REQUEST['ves_minuto'],
-																										$_REQUEST['ves_meridiano'],
-																										$_REQUEST['ves_duracion'],
-																										$_REQUEST['ves_fecha']);
+	case "agregarFilaHistorial":
+		echo $objetoContabilidad->agregarFilaHistorial($_REQUEST['hiv_ser_id'],
+																										$_REQUEST['hiv_ser_tipo'],
+																										$_REQUEST['hiv_hora'],
+																										$_REQUEST['hiv_minuto'],
+																										$_REQUEST['hiv_meridiano'],
+																										$_REQUEST['hiv_dus_minutos'],
+																										$_REQUEST['hiv_total'],
+																										$_REQUEST['hiv_fecha']);
 		break;
 	
 	case "actualizarHistorialVentas":

@@ -19,12 +19,14 @@ DROP TABLE IF EXISTS pozettos_promocion_horas_gratis;
 DROP TABLE IF EXISTS pozettos_permiso_usuario_modulo;
 DROP TABLE IF EXISTS pozettos_usuario;
 DROP TABLE IF EXISTS pozettos_modulo;
-DROP TABLE IF EXISTS pozettos_venta_producto;
-DROP TABLE IF EXISTS pozettos_producto;
-DROP TABLE IF EXISTS pozettos_venta_servicio;
+/*DROP TABLE IF EXISTS pozettos_venta_producto;*/
+/*DROP TABLE IF EXISTS pozettos_producto;*/
+DROP TABLE IF EXISTS pozettos_historico_venta;
 DROP TABLE IF EXISTS pozettos_tarifas_servicio;
+DROP TABLE IF EXISTS pozettos_categoria_servicios;
 DROP TABLE IF EXISTS pozettos_servicio;
-DROP TABLE IF EXISTS pozettos_jugador;
+DROP TABLE IF EXISTS pozettos_categoria;
+/*DROP TABLE IF EXISTS pozettos_jugador;*/
 DROP TABLE IF EXISTS pozettos_cliente;
 DROP TABLE IF EXISTS pozettos_timer;
 
@@ -95,9 +97,8 @@ INSERT INTO pozettos_duracion_servicio VALUES('08:00:00','08:00');
 CREATE TABLE pozettos_usuario
 (
 	usu_login VARCHAR( 50 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'login del usuario',
-	usu_password VARCHAR( 40 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'contraseña del usuario',
-	PRIMARY KEY (usu_login)
-) ENGINE = InnoDB COMMENT = 'Almacena los usuarios que tienen acceso a la aplicación';
+	usu_password VARCHAR( 40 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'contraseña del usuario'
+) ENGINE = MyISAM COMMENT = 'Almacena los usuarios que tienen acceso a la aplicación';
 
 INSERT INTO pozettos_usuario VALUES('admin','d033e22ae348aeb5660fc2140aec35850c4da997');
 
@@ -125,7 +126,7 @@ INSERT INTO pozettos_cliente VALUES(6,'','Luz Elena','Maya','c_6.png','cristian@
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
-
+/*
 CREATE TABLE pozettos_jugador
 (
 	jug_cli_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'referencia al identificador/código del cliente',
@@ -137,50 +138,98 @@ CREATE TABLE pozettos_jugador
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de los jugadores';
 
 INSERT INTO pozettos_jugador VALUES(2,5,1,'DaDaGaMa','j_1.png');
-
-/*     ******************************************************************     */
-/*     ******************************************************************     */
-
-CREATE TABLE pozettos_producto
-(
-	pro_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código del producto',
-	pro_nombre VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre del producto',
-	PRIMARY KEY (pro_id)
-) ENGINE = MyISAM COMMENT = 'Almacena la información de los productos ofrecidos en el negocio';
-
-INSERT INTO pozettos_producto VALUES(1,'Recarga');
-INSERT INTO pozettos_producto VALUES(2,'Recarga Tigo');
-INSERT INTO pozettos_producto VALUES(3,'Minutos Cel');
-INSERT INTO pozettos_producto VALUES(4,'Minuto VoIP');
-INSERT INTO pozettos_producto VALUES(5,'Internacional');
-INSERT INTO pozettos_producto VALUES(6,'Fotocopia');
-INSERT INTO pozettos_producto VALUES(7,'Impresion');
-INSERT INTO pozettos_producto VALUES(8,'Papeleria');
-INSERT INTO pozettos_producto VALUES(9,'Mecato');
-INSERT INTO pozettos_producto VALUES(10,'Otro');
-
-
+*/
 /*     ******************************************************************     */
 /*     ******************************************************************     */
 
 CREATE TABLE pozettos_servicio
 (
-	ser_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código del servicio',
-	ser_nombre VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre del servicio',
-	ser_nombre_clase VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre de la clase de servicio',
-	ser_super_nombre_clase VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre de la super clase de servicio',
-	PRIMARY KEY (ser_id)
+	ser_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código del producto',
+	ser_nombre VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre del producto',
+	ser_url_foto VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'url de la foto del producto',
+	ser_onclick VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'url de la foto del producto',
+	ser_tipo VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'cadena con el tipo de servicio'
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de los servicios ofrecidos en el negocio';
 
-INSERT INTO pozettos_servicio VALUES(1,'Xbox 1','Xbox','Juego');
-INSERT INTO pozettos_servicio VALUES(2,'Xbox 2','Xbox','Juego');
-INSERT INTO pozettos_servicio VALUES(3,'Play 1','Play','Juego');
-INSERT INTO pozettos_servicio VALUES(4,'Play 2','Play','Juego');
-INSERT INTO pozettos_servicio VALUES(5,'Cabina 1','Cabina','Internet');
-INSERT INTO pozettos_servicio VALUES(6,'Cabina 2','Cabina','Internet');
-INSERT INTO pozettos_servicio VALUES(7,'Cabina 3','Cabina','Internet');
-INSERT INTO pozettos_servicio VALUES(8,'Cabina 4','Cabina','Internet');
-INSERT INTO pozettos_servicio VALUES(9,'Wii 1','Wii','Juego');
+INSERT INTO pozettos_servicio VALUES(1,'Recarga FULLCARGA', '../imagenes/fullcarga.png','agregarFilaHistorial(1,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(2,'Recarga TIGO', '../imagenes/tigo.png','agregarFilaHistorial(2,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(3,'Minutos Celular', '../imagenes/celular.png','agregarFilaHistorial(3,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(4,'Minuto Inalambrico', '../imagenes/inalambrico.png','agregarFilaHistorial(4,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(5,'Cabina Internacional', '../imagenes/internacional.png','agregarFilaHistorial(5,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(6,'Fotocopia', '../imagenes/fotocopiadora.png','agregarFilaHistorial(6,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(7,'Impresion', '../imagenes/impresora.png','agregarFilaHistorial(7,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(8,'Escaneada', '../imagenes/escaner.png','agregarFilaHistorial(8,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(9,'Papeleria', '../imagenes/papeleria.png','agregarFilaHistorial(9,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(10,'Quemada', '../imagenes/cd.png','agregarFilaHistorial(10,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(11,'Mecato', '../imagenes/mecato.png','agregarFilaHistorial(11,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(12,'Otro', '../imagenes/otro.png','agregarFilaHistorial(12,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(13,'Xbox 1', '../imagenes/x1.png','agregarFilaHistorial(13,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(14,'Xbox 2', '../imagenes/x2.png','agregarFilaHistorial(14,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(15,'Play 1', '../imagenes/p1.png','agregarFilaHistorial(15,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(16,'Play 2', '../imagenes/p2.png','agregarFilaHistorial(16,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(17,'Cabina 1', '../imagenes/pc1.png','agregarFilaHistorial(17,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(18,'Cabina 2', '../imagenes/pc2.png','agregarFilaHistorial(18,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(19,'Cabina 3', '../imagenes/pc3.png','agregarFilaHistorial(19,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(20,'Cabina 4', '../imagenes/pc4.png','agregarFilaHistorial(20,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(21,'Wii 1', '../imagenes/wii.png','agregarFilaHistorial(21,\'servicio\');','servicio');
+
+/*     ******************************************************************     */
+/*     ******************************************************************     */
+
+CREATE TABLE pozettos_categoria
+(
+	cat_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/codigo de la categoria',
+	cat_nombre VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre de la categoria del servicio'
+) ENGINE = MyISAM COMMENT = 'Almacena la información de las categorias a las que pueden pertenecer los servicios';
+
+INSERT INTO pozettos_categoria VALUES(1,'Todo');
+INSERT INTO pozettos_categoria VALUES(2,'Recargas');
+INSERT INTO pozettos_categoria VALUES(3,'Llamadas');
+INSERT INTO pozettos_categoria VALUES(4,'Juegos');
+INSERT INTO pozettos_categoria VALUES(5,'Cabinas');
+
+/*     ******************************************************************     */
+/*     ******************************************************************     */
+
+CREATE TABLE pozettos_categoria_servicios
+(
+	cas_ser_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código del servicio',
+	cas_cat_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código de la categoria'
+) ENGINE = MyISAM COMMENT = 'Almacena la información de los servicios ofrecidos en el negocio';
+
+INSERT INTO pozettos_categoria_servicios VALUES(1,1);
+INSERT INTO pozettos_categoria_servicios VALUES(2,1);
+INSERT INTO pozettos_categoria_servicios VALUES(3,1);
+INSERT INTO pozettos_categoria_servicios VALUES(4,1);
+INSERT INTO pozettos_categoria_servicios VALUES(5,1);
+INSERT INTO pozettos_categoria_servicios VALUES(6,1);
+INSERT INTO pozettos_categoria_servicios VALUES(7,1);
+INSERT INTO pozettos_categoria_servicios VALUES(8,1);
+INSERT INTO pozettos_categoria_servicios VALUES(9,1);
+INSERT INTO pozettos_categoria_servicios VALUES(10,1);
+INSERT INTO pozettos_categoria_servicios VALUES(11,1);
+INSERT INTO pozettos_categoria_servicios VALUES(12,1);
+INSERT INTO pozettos_categoria_servicios VALUES(13,1);
+INSERT INTO pozettos_categoria_servicios VALUES(14,1);
+INSERT INTO pozettos_categoria_servicios VALUES(15,1);
+INSERT INTO pozettos_categoria_servicios VALUES(16,1);
+INSERT INTO pozettos_categoria_servicios VALUES(17,1);
+INSERT INTO pozettos_categoria_servicios VALUES(18,1);
+INSERT INTO pozettos_categoria_servicios VALUES(19,1);
+INSERT INTO pozettos_categoria_servicios VALUES(1,2);
+INSERT INTO pozettos_categoria_servicios VALUES(2,2);
+INSERT INTO pozettos_categoria_servicios VALUES(3,3);
+INSERT INTO pozettos_categoria_servicios VALUES(4,3);
+INSERT INTO pozettos_categoria_servicios VALUES(5,3);
+INSERT INTO pozettos_categoria_servicios VALUES(11,4);
+INSERT INTO pozettos_categoria_servicios VALUES(12,4);
+INSERT INTO pozettos_categoria_servicios VALUES(13,4);
+INSERT INTO pozettos_categoria_servicios VALUES(14,4);
+INSERT INTO pozettos_categoria_servicios VALUES(15,5);
+INSERT INTO pozettos_categoria_servicios VALUES(16,5);
+INSERT INTO pozettos_categoria_servicios VALUES(17,5);
+INSERT INTO pozettos_categoria_servicios VALUES(18,5);
+INSERT INTO pozettos_categoria_servicios VALUES(19,4);
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
@@ -188,9 +237,8 @@ INSERT INTO pozettos_servicio VALUES(9,'Wii 1','Wii','Juego');
 CREATE TABLE pozettos_tarifas_servicio
 (
 	tas_ser_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'referencia a identificador/código del servicio',
-	tas_duracion TIME COLLATE utf8_unicode_ci NOT NULL COMMENT 'duracion por uso del servicio',
-	tas_precio INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'tarifa a cobrar por uso del servicio',
-	FOREIGN KEY (tas_ser_id) REFERENCES pozettos_servicio (ser_id) ON DELETE CASCADE ON UPDATE CASCADE
+	tas_dus_minutos TIME COLLATE utf8_unicode_ci NOT NULL COMMENT 'duracion por uso del servicio',
+	tas_precio INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'tarifa a cobrar por uso del servicio'
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de las tarifas de cada servicio por minutos de uso';
 
 /*XBOX 1*/
@@ -480,9 +528,11 @@ CREATE TABLE pozettos_modulo
 	mod_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código del módulo',
 	mod_nombre VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre del módulo',
 	mod_url_foto VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'url donde se encuentra alojada la foto del módulo',
-	mod_descripcion VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'descripción del módulo',
-	PRIMARY KEY (mod_id)
-) ENGINE = InnoDB COMMENT = 'Almacena la información de los módulos disponibles en la aplicación';
+	mod_onclick VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'accion javascript al dar click en el módulo'
+) ENGINE = MyISAM COMMENT = 'Almacena la información de los módulos disponibles en la aplicación';
+
+INSERT INTO pozettos_modulo VALUES(1,'Contabilidad diaria','../imagenes/modulo_contabilidad.png','mostrarContabilidad();');
+INSERT INTO pozettos_modulo VALUES(2,'Consultar clientes que deben','../imagenes/modulo_deuda.png','mostrarDeudores();');
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
@@ -490,55 +540,35 @@ CREATE TABLE pozettos_modulo
 CREATE TABLE pozettos_permiso_usuario_modulo
 (
 	pum_usu_login VARCHAR( 50 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'referencia a login del usuario',
-	pum_mod_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'referencia a identificador/código del módulo',
-	FOREIGN KEY (pum_usu_login) REFERENCES pozettos_usuario (usu_login) ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (pum_mod_id) REFERENCES pozettos_modulo (mod_id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB COMMENT = 'Almacena la información de los módulos disponibles en la aplicación';
+	pum_mod_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'referencia a identificador/código del módulo'
+) ENGINE = MyISAM COMMENT = 'Almacena la información de los módulos disponibles en la aplicación';
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
-
+/*
 CREATE TABLE pozettos_promocion_horas_gratis
 (
 	phg_cli_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'referencia al identificador/código del cliente',
 	phg_tiempo_acumulado_servicio INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'duracion en minutos que el cliente ha usado los servicios',
-	phg_tiempo_acumulado_gratis_cobrado INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'duracion en minutos que el cliente ha cobrado en tiempo gratis',
-	FOREIGN KEY (phg_cli_id) REFERENCES pozettos_cliente (cli_id) ON DELETE CASCADE ON UPDATE CASCADE
+	phg_tiempo_acumulado_gratis_cobrado INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'duracion en minutos que el cliente ha cobrado en tiempo gratis'
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de la promoción (horas gratis) por cada cliente';
-
+*/
 /*     ******************************************************************     */
 /*     ******************************************************************     */
 
-CREATE TABLE pozettos_venta_producto
+CREATE TABLE pozettos_historico_venta
 (
-	vep_id SERIAL NOT NULL AUTO_INCREMENT COMMENT 'consecutivo de la venta',
-	vep_cli_id INTEGER COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT 'referencia al identificador/código del cliente',
-	vep_pro_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'producto vendido',
-	vep_color_fila VARCHAR( 7 ) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'color que tiene la fila en notacion #FFFFFF',
-	vep_pago TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '0' COMMENT 'Bandera que indica si se pago el producto',
-	vep_fecha_venta TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp de cuando se anoto el producto vendido',
-	vep_total INTEGER COLLATE utf8_unicode_ci NOT NULL DEFAULT '0' COMMENT 'valor total del producto vendido',
-	vep_observacion VARCHAR( 200 ) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'descripción de la venta',
-	FOREIGN KEY (vep_cli_id) REFERENCES pozettos_cliente (cli_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (vep_pro_id) REFERENCES pozettos_producto (pro_id) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = MyISAM COMMENT = 'Almacena el histórico de ventas de productos';
-
-/*     ******************************************************************     */
-/*     ******************************************************************     */
-
-CREATE TABLE pozettos_venta_servicio
-(
-	ves_id SERIAL NOT NULL AUTO_INCREMENT COMMENT 'consecutivo de la venta',
-	ves_cli_id INTEGER COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT 'referencia al identificador/código del cliente',
-	ves_ser_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'servicio prestado',
-	ves_color_fila VARCHAR( 7 ) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'color que tiene la fila en notacion #FFFFFF',
-	ves_pago TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '0' COMMENT 'Bandera que indica si se pago el servicio',
-	ves_fecha DATE NOT NULL COMMENT 'Fecha de cuando se anoto el servicio prestado',
-	ves_hora TIME NOT NULL DEFAULT '00:00:00' COMMENT 'La hora cuando se presto el servicio',
-	ves_meridiano CHAR(2) NOT NULL DEFAULT 'NN' COMMENT 'El momento que se presto el servicio (AM/PM)',
-	ves_duracion TIME NOT NULL DEFAULT '00:00:00' COMMENT 'La duracion del servicio prestado',
-	ves_total INTEGER COLLATE utf8_unicode_ci NOT NULL DEFAULT '0' COMMENT 'valor total del servicio vendido',
-	ves_observacion VARCHAR( 200 ) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'descripción de la venta',
-	FOREIGN KEY (ves_cli_id) REFERENCES pozettos_cliente (cli_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (ves_ser_id) REFERENCES pozettos_servicio (ser_id) ON DELETE CASCADE ON UPDATE CASCADE
+	hiv_id SERIAL NOT NULL AUTO_INCREMENT COMMENT 'consecutivo de la venta',
+	hiv_cli_id INTEGER COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT 'referencia al identificador/código del cliente',
+	hiv_ser_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'servicio prestado',
+	hiv_ser_tipo VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'cadena con el tipo de servicio',
+	hiv_color_fila VARCHAR( 7 ) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'color que tiene la fila en notacion #FFFFFF',
+	hiv_pago TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT 0 COMMENT 'Bandera que indica si se pago el servicio',
+	hiv_es_tiempo_gratis TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT 0 COMMENT 'Bandera que indica si el servicio se cuenta como tiempo gratis cobrado',
+	hiv_fecha DATE NOT NULL COMMENT 'Fecha de cuando se anoto el servicio prestado',
+	hiv_hora TIME NOT NULL DEFAULT '00:00:00' COMMENT 'La hora cuando se presto el servicio',
+	hiv_meridiano CHAR(2) NOT NULL DEFAULT 'NN' COMMENT 'El meridiano en que se presto el servicio (AM/PM)',
+	hiv_dus_minutos TIME NOT NULL DEFAULT '00:00:00' COMMENT 'La duracion del servicio prestado',
+	hiv_total INTEGER NOT NULL DEFAULT 0 COLLATE utf8_unicode_ci NOT NULL DEFAULT 0 COMMENT 'valor total del servicio vendido',
+	hiv_observacion VARCHAR( 200 ) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'descripción de la venta'
 ) ENGINE = MyISAM COMMENT = 'Almacena el histórico de ventas de productos';

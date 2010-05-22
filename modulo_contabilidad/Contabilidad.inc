@@ -109,19 +109,36 @@ class Contabilidad
 		$this->_html->end("table");
 	}
 	
-	function obtenerOptionsClientes()
+	function obtenerOptions()
 	{
+		$arreglo_options = array();
+		/*  CLIENTES  */
 		$sql = "SELECT cli_id,cli_nombre,cli_apellido
 						FROM pozettos_cliente
 						ORDER BY cli_id DESC";
 		$this->_conexionBD->ejecutarSQL($sql);
-
+		$options_clientes = "";
 		while($info_option = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
 		{
-			$this->_html->tag("option", array("value"=>$info_option['cli_id']));
-				$this->_html->printText($info_option['cli_id']."&nbsp;->&nbsp;".utf8_encode($info_option['cli_nombre'])." ".utf8_encode($info_option['cli_apellido']));
-			$this->_html->end("option");
+			$options_clientes .= $this->_html->tag("option", array("value"=>$info_option['cli_id']),false,true);
+			$options_clientes .= $this->_html->getText($info_option['cli_id']."&nbsp;->&nbsp;".utf8_encode($info_option['cli_nombre'])." ".utf8_encode($info_option['cli_apellido']));
+			$options_clientes .= $this->_html->end("option",true);
 		}
+		$arreglo_options['options_clientes'] = $options_clientes;
+		/*  DURACION  */
+		$sql = "SELECT dus_minutos,dus_texto
+						FROM pozettos_duracion_servicio
+						ORDER BY dus_minutos ASC";
+		$this->_conexionBD->ejecutarSQL($sql);
+		$options_duracion = "";
+		while($info_option = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
+		{
+			$options_duracion .= $this->_html->tag("option", array("value"=>$info_option['dus_minutos']),false,true);
+			$options_duracion .= $this->_html->getText($info_option['dus_texto']);
+			$options_duracion .= $this->_html->end("option",true);
+		}
+		$arreglo_options['options_duracion'] = $options_duracion;
+		return json_encode($arreglo_options);
 	}
 
 	function actualizarValor($hiv_id,$valor_nuevo,$nombre_campo)
@@ -137,6 +154,18 @@ class Contabilidad
 			return true;
 		else
 			return false;
+	}
+	
+	function actualizarDeudaCliente($cli_id)
+	{
+		$sql = "SELECT SUM(hiv_total)
+						FROM pozettos_historico_venta
+						WHERE hiv_fecha != '".$this->_fecha_contabilidad."'
+						AND hiv_cli_id = '$cli_id'
+						AND hiv_pago = 0
+						AND hiv_es_tiempo_gratis = 0";
+		$this->_conexionBD->ejecutarSQL($sql);
+		return $this->_conexionBD->obtenerFilaComoCadena();
 	}
 	
 	function actualizarCampoColor($id, $color_fila)
@@ -251,33 +280,31 @@ class Contabilidad
 
 	function actualizarHistorialVentas()
 	{
-	/*
-	,
+		$sql = "SELECT	hiv1.hiv_id,
+										hiv1.hiv_cli_id,
+										hiv1.hiv_color_fila,
+										hiv1.hiv_pago,
+										hiv1.hiv_es_tiempo_gratis,
+										IF(hiv1.hiv_ser_tipo = 'servicio', CONCAT(time_format(hiv1.hiv_hora, '%l:%i'), hiv1.hiv_meridiano), null) as hiv_hora,
+										IF(hiv1.hiv_ser_tipo = 'servicio', dus_texto, null) as dus_texto,
+										IF(hiv1.hiv_ser_tipo = 'servicio', time_format(ADDTIME(hiv1.hiv_hora, hiv1.hiv_dus_minutos),'%l:%i'), null) as hiv_hora_termina,
+										hiv1.hiv_total, 
+										hiv1.hiv_observacion, 
+										ser_nombre,
+										cli_nombre,
 										(	SELECT SUM(hiv2.hiv_total)
 											FROM pozettos_historico_venta AS hiv2
 											WHERE hiv2.hiv_fecha != '".$this->_fecha_contabilidad."'
 											AND hiv2.hiv_cli_id = hiv1.hiv_cli_id
 											AND hiv2.hiv_pago = 0
+											AND hiv2.hiv_es_tiempo_gratis = 0
 										) AS deuda_vieja
-	*/
-		$sql = "SELECT	hiv_id,
-										hiv_cli_id,
-										hiv_color_fila,
-										hiv_pago,
-										hiv_es_tiempo_gratis,
-										IF(hiv_ser_tipo = 'servicio', CONCAT(time_format(hiv_hora, '%l:%i'), hiv_meridiano), null) as hiv_hora,
-										IF(hiv_ser_tipo = 'servicio', dus_texto, null) as dus_texto,
-										IF(hiv_ser_tipo = 'servicio', time_format(ADDTIME(hiv_hora, hiv_dus_minutos),'%l:%i'), null) as hiv_hora_termina,
-										hiv_total, 
-										hiv_observacion, 
-										ser_nombre,
-										cli_nombre
-						FROM 	pozettos_historico_venta, pozettos_servicio, pozettos_cliente, pozettos_duracion_servicio
-						WHERE hiv_ser_id = ser_id
-						AND hiv_dus_minutos = dus_minutos
-						AND hiv_cli_id = cli_id
-						AND hiv_fecha = '".$this->_fecha_contabilidad."'
-						ORDER BY hiv_color_fila DESC, hiv_id DESC";
+						FROM 	pozettos_historico_venta as hiv1, pozettos_servicio, pozettos_cliente, pozettos_duracion_servicio
+						WHERE hiv1.hiv_ser_id = ser_id
+						AND hiv1.hiv_dus_minutos = dus_minutos
+						AND hiv1.hiv_cli_id = cli_id
+						AND hiv1.hiv_fecha = '".$this->_fecha_contabilidad."'
+						ORDER BY hiv1.hiv_color_fila DESC, hiv1.hiv_id DESC";
 		$this->_conexionBD->ejecutarSQL($sql);
 		$contador = 0;
 
@@ -304,7 +331,7 @@ class Contabilidad
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("label", array("class"=>"verdana letra_9"));
+					$this->_html->tag("label", array("id"=>"hiv_hora_".$info_tupla_historico['hiv_id'], "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableHoraInicio('hiv_hora_".$info_tupla_historico['hiv_id']."',true);"));
 						$this->_html->printText($info_tupla_historico['hiv_hora']);
 					$this->_html->end("label");
 				$this->_html->end("td");
@@ -359,6 +386,10 @@ class Contabilidad
 					$this->_html->tag("label", array("id"=>"cli_fila_".$info_tupla_historico['hiv_id'], "ondblclick"=>"editableCliente('cli_fila_".$info_tupla_historico['hiv_id']."',true);", "class"=>"verdana letra_9 cursor_cruz", "title"=>$info_tupla_historico['hiv_cli_id']." -> ".utf8_encode($info_tupla_historico['cli_nombre'])));
 							$this->_html->printText($info_tupla_historico['hiv_cli_id']);
 					$this->_html->end("label");
+					$this->_html->tag("span", array("id"=>"cli_span_debe_".$info_tupla_historico['hiv_id']));
+					if($info_tupla_historico['deuda_vieja'])
+						$this->_html->tag("img", array("id"=>"cli_img_debe_".$info_tupla_historico['hiv_id'], "class"=>"imagen_deuda", "src"=>"../imagenes/deuda.gif", "title"=>"Debe ".$info_tupla_historico['deuda_vieja']." de otros dias"));
+					$this->_html->end("span");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));

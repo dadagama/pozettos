@@ -32,10 +32,17 @@ switch($_REQUEST['accion'])
 		require_once("../modulo_panel/fm_panel.php");
 		break;
 		
-	case "obtenerOptionsClientes":
-		$objetoContabilidad->obtenerOptionsClientes();
+	case "obtenerOptions":
+		echo $objetoContabilidad->obtenerOptions();
 		break;
 
+	case "actualizarDeudaCliente":
+			$objetoContabilidad->actualizarValor($_REQUEST['hiv_id'],$_REQUEST['valor_nuevo'],$_REQUEST['nombre_campo']);
+			//$valor_nuevo tiene el id del nuevo cliente y puedo consultar la deuda
+			//de este cliente para actualizar la imagen de deuda
+			echo "{hiv_id:'".$_REQUEST['hiv_id']."', valor_deuda:'".$objetoContabilidad->actualizarDeudaCliente($_REQUEST['valor_nuevo'])."'}";
+		break;
+		
 	case "actualizarValor":
 		echo $objetoContabilidad->actualizarValor($_REQUEST['hiv_id'],$_REQUEST['valor_nuevo'],$_REQUEST['nombre_campo']);
 		break;

@@ -73,178 +73,178 @@
 				$objetoContabilidad->obtenerTablaServicios();
 			$html->end("td");
 			
-			$html->tag("td", array("class"=>"vertical_arriba"));
-				$html->tag("table", array("class"=>"fondo_azul"));
+			// $html->tag("td", array("class"=>"vertical_arriba"));
+				// $html->tag("table", array("class"=>"fondo_azul"));
 							
-							/* TIMER 0 */
-							$html->tag("tr");
+							// /* TIMER 0 */
+							// $html->tag("tr");
 								
-								$html->tag("td");
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText("Xbox 1");
-									$html->end("label");
-								$html->end("td");
-								$html->tag("td");
-									$html->tag("input", array("id"=>"tim_duracion_horas_0", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_minutos_0", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_segundos_0", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-								$html->end("td");
-								$html->tag("td");
-									$html->tag("button", array("id"=>"btn_play_pause_0", "class"=>"boton_timer", "onclick"=>"IniciarCrono(0);"));
-										$html->tag("img", array("id"=>"img_play_pause_0", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText("Xbox 1");
+									// $html->end("label");
+								// $html->end("td");
+								// $html->tag("td");
+									// $html->tag("input", array("id"=>"tim_duracion_horas_0", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_minutos_0", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_segundos_0", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+								// $html->end("td");
+								// $html->tag("td");
+									// $html->tag("button", array("id"=>"btn_play_pause_0", "class"=>"boton_timer", "onclick"=>"IniciarCrono(0);"));
+										// $html->tag("img", array("id"=>"img_play_pause_0", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(0);"));
-										$html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
-							$html->end("tr");
+								// $html->tag("td");
+									// $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(0);"));
+										// $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
+							// $html->end("tr");
 							
-							/* TIMER 1 */
-							$html->tag("tr");
+							// /* TIMER 1 */
+							// $html->tag("tr");
 								
-								$html->tag("td");
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText("Xbox 2");
-									$html->end("label");
-								$html->end("td");
-								$html->tag("td");
-									$html->tag("input", array("id"=>"tim_duracion_horas_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_minutos_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_segundos_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText("Xbox 2");
+									// $html->end("label");
+								// $html->end("td");
+								// $html->tag("td");
+									// $html->tag("input", array("id"=>"tim_duracion_horas_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_minutos_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_segundos_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("id"=>"btn_play_pause_1", "class"=>"boton_timer", "onclick"=>"IniciarCrono(1);"));
-										$html->tag("img", array("id"=>"img_play_pause_1", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("button", array("id"=>"btn_play_pause_1", "class"=>"boton_timer", "onclick"=>"IniciarCrono(1);"));
+										// $html->tag("img", array("id"=>"img_play_pause_1", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(1);"));
-										$html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
-							$html->end("tr");
+								// $html->tag("td");
+									// $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(1);"));
+										// $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
+							// $html->end("tr");
 						
-							/* TIMER 2 */
-							$html->tag("tr");
+							// /* TIMER 2 */
+							// $html->tag("tr");
 								
-								$html->tag("td");
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText("Play 1");
-									$html->end("label");
-								$html->end("td");
-								$html->tag("td");
-									$html->tag("input", array("id"=>"tim_duracion_horas_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_minutos_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_segundos_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText("Play 1");
+									// $html->end("label");
+								// $html->end("td");
+								// $html->tag("td");
+									// $html->tag("input", array("id"=>"tim_duracion_horas_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_minutos_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_segundos_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("id"=>"btn_play_pause_2", "class"=>"boton_timer", "onclick"=>"IniciarCrono(2);"));
-										$html->tag("img", array("id"=>"img_play_pause_2", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("button", array("id"=>"btn_play_pause_2", "class"=>"boton_timer", "onclick"=>"IniciarCrono(2);"));
+										// $html->tag("img", array("id"=>"img_play_pause_2", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(2);"));
-										$html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
-							$html->end("tr");
+								// $html->tag("td");
+									// $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(2);"));
+										// $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
+							// $html->end("tr");
 							
-							/* TIMER 3 */
-							$html->tag("tr");
+							// /* TIMER 3 */
+							// $html->tag("tr");
 								
-								$html->tag("td");
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText("Play 2");
-									$html->end("label");
-								$html->end("td");
-								$html->tag("td");
-									$html->tag("input", array("id"=>"tim_duracion_horas_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_minutos_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_segundos_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText("Play 2");
+									// $html->end("label");
+								// $html->end("td");
+								// $html->tag("td");
+									// $html->tag("input", array("id"=>"tim_duracion_horas_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_minutos_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_segundos_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("id"=>"btn_play_pause_3", "class"=>"boton_timer", "onclick"=>"IniciarCrono(3);"));
-										$html->tag("img", array("id"=>"img_play_pause_3", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("button", array("id"=>"btn_play_pause_3", "class"=>"boton_timer", "onclick"=>"IniciarCrono(3);"));
+										// $html->tag("img", array("id"=>"img_play_pause_3", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(3);"));
-										$html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
-							$html->end("tr");
+								// $html->tag("td");
+									// $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(3);"));
+										// $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
+							// $html->end("tr");
 							
-							/* TIMER 4 */
-							$html->tag("tr");
+							// /* TIMER 4 */
+							// $html->tag("tr");
 					
-								$html->tag("td");
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText("Otro");
-									$html->end("label");
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText("Otro");
+									// $html->end("label");
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("input", array("id"=>"tim_duracion_horas_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_minutos_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-									$html->tag("label", array("class"=>"label_formulario"));
-										$html->printText(":");
-									$html->end("label");
-									$html->tag("input", array("id"=>"tim_duracion_minutos_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("input", array("id"=>"tim_duracion_horas_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_minutos_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+									// $html->tag("label", array("class"=>"label_formulario"));
+										// $html->printText(":");
+									// $html->end("label");
+									// $html->tag("input", array("id"=>"tim_duracion_minutos_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("id"=>"btn_play_pause_4", "class"=>"boton_timer", "onclick"=>"IniciarCrono(4);"));
-										$html->tag("img", array("id"=>"img_play_pause_4", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
+								// $html->tag("td");
+									// $html->tag("button", array("id"=>"btn_play_pause_4", "class"=>"boton_timer", "onclick"=>"IniciarCrono(4);"));
+										// $html->tag("img", array("id"=>"img_play_pause_4", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
 								
-								$html->tag("td");
-									$html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(4);"));
-										$html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-									$html->end("button");
-								$html->end("td");
-							$html->end("tr");
+								// $html->tag("td");
+									// $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(4);"));
+										// $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
+									// $html->end("button");
+								// $html->end("td");
+							// $html->end("tr");
 
-						$html->end("table");
-					$html->end("td");
+						// $html->end("table");
+					// $html->end("td");
 					
-				$html->end("tr");
+				// $html->end("tr");
 	$html->end("table");
 	
 	/* ZONA HISTORIAL */

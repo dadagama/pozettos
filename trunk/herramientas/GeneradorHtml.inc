@@ -49,7 +49,7 @@ class GeneradorHtml
 	 * @return	string	Dato sintético generado. Su valor es uno de los 
 	 * 					registros contenidos en la tabla.
 	 */
-	function tag($tag, $arrayAtributosAsociativos = "", $tag_una_linea = false)
+	function tag($tag, $arrayAtributosAsociativos="", $tag_una_linea=false, $retornar=false)
 	{
 		$atributosAsociativos = "";
 		$atributos = "";
@@ -59,7 +59,10 @@ class GeneradorHtml
 				$atributosAsociativos .= "$tipo=\"$valor\"";
 		if($tag_una_linea)
 			$fin_tag = "/";
-		echo "<".stripslashes($tag)." ".stripslashes($atributosAsociativos)." $fin_tag>";
+		if($retornar)
+			return "<".stripslashes($tag)." ".stripslashes($atributosAsociativos)." $fin_tag>";
+		else 
+			echo "<".stripslashes($tag)." ".stripslashes($atributosAsociativos)." $fin_tag>";
 	}
 
 	/**
@@ -88,9 +91,12 @@ class GeneradorHtml
 	 * Cumple con el estandar xhtml.
 	 * @param	$tipo	cadena con el tipo de etiqueta a cerrar.
 	 */	
-	function end($tipo)
+	function end($tipo, $retornar=false) 
 	{
-		echo "</$tipo>";
+		if($retornar)
+			return "</$tipo>";
+		else 
+			echo "</$tipo>";
 	}
 	
 	/**

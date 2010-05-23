@@ -24,16 +24,19 @@ $(document).ready(inicializar);
 
 var options_clientes;
 var options_duracion;
+var options_hora;
+var options_minutos;
 
 function inicializar()
 {
 	url_controlador_modulo = "../modulo_contabilidad/contabilidad.php";
-	actualizarHistorialVentas();
 	options_clientes = "";
 	options_duracion = "";
+	options_hora = "";
+	options_minutos = "";
 	obtenerOptions();
-	/*actualizarHoraInicio();
-	obtenerInfoTimers();*/
+	actualizarHistorialVentas();
+	/*obtenerInfoTimers();*/
 }
 
 function mostrarPanel()
@@ -52,6 +55,8 @@ function obtenerOptionsAjax(jsonOptions)
 	var obj_options = eval("("+jsonOptions+")");
 	options_clientes = obj_options.options_clientes;
 	options_duracion = obj_options.options_duracion;
+	options_hora = obj_options.options_hora;
+	options_minutos = obj_options.options_minutos;
 }
 
 function editableCliente(fila_id,editable)
@@ -59,7 +64,7 @@ function editableCliente(fila_id,editable)
 	if(editable)
 	{
 		var cli_id = $('#'+fila_id).text();
-		var select_clientes = "<select id='"+fila_id+"' class='verdana letra_9 ancho_50' onchange='if(actualizarDeudaCliente(\""+fila_id+"\",\"hiv_cli_id\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarDeudaCliente(\""+fila_id+"\",\"hiv_cli_id\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
+		var select_clientes = "<select id='"+fila_id+"' class='verdana letra_9 ancho_45' onchange='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
 		select_clientes += options_clientes;
 		select_clientes += "</select>";
 		$('#'+fila_id).replaceWith(select_clientes);
@@ -75,13 +80,13 @@ function editableCliente(fila_id,editable)
 	}
 }
 
-function actualizarDeudaCliente(fila_id,nombre_campo, evento)
+function actualizarDeudaCliente(fila_id, evento)
 {
 	if(evento == 13)
 	{
 		var hiv_id = fila_id.split("_")[2];
 		var valor_nuevo = $('#'+fila_id).val();
-		ajax('accion=actualizarDeudaCliente&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo+"&nombre_campo="+nombre_campo, false, actualizarDeudaClienteAjax, false);
+		ajax('accion=actualizarDeudaCliente&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo, false, actualizarDeudaClienteAjax, false);
 		return true;
 	}
 	else
@@ -125,28 +130,88 @@ function editableHoraInicio(fila_id,editable)
 {
 	if(editable)
 	{
-		// var hiv_hora = $('#'+fila_id).text();
-		// var selects_hora_inicio = "<select id='"+fila_id+"' class='verdana letra_9 ancho_50'>";
-		// selects_hora_inicio += options_duracion;
-		// selects_hora_inicio += "</select>";
-		// $('#'+fila_id).replaceWith(selects_hora_inicio);
-		// $('#'+fila_id).removeAttr('selected', 'selected');
-		// $('#'+fila_id+" option[value='"+hiv_hora+"']").attr('selected', 'selected');
-		// $('#'+fila_id).focus();
+		var hiv_hora = $('#'+fila_id).text();
+		var selects_hora_inicio = "<input id='"+fila_id+"' type='text' maxlength='5' class='verdana letra_9 ancho_70' onBlur='if(actualizarInicio(\""+fila_id+"\",13)){ editableHoraInicio(\""+fila_id+"\",false);}' onKeypress='if(actualizarInicio(\""+fila_id+"\",event.keyCode)){ editableHoraInicio(\""+fila_id+"\",false);}' value='"+hiv_hora+"'/>";
+		$('#'+fila_id).replaceWith(selects_hora_inicio);
+		$('#'+fila_id).select();
 	}
 	else
 	{
-		// var nombre_cliente = $('#'+fila_id+" option:selected").text();
-		// var label_cliente = "<label id='"+fila_id+"' ondblclick='editableCliente(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz' title='"+nombre_cliente+"'>"+$('#'+fila_id).val()+"</label>";
-		// $('#'+fila_id).replaceWith(label_cliente);
+		var label_hora = "<label id='"+fila_id+"' ondblclick='editableHoraInicio(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz' title='Hora en que se empieza a prestar el servicio'>"+$('#'+fila_id).val()+"</label>";
+		$('#'+fila_id).replaceWith(label_hora);
 	}
+}
+
+function actualizarInicio(fila_id, evento)
+{
+	if(evento == 13)
+	{
+		var arreglo_id = fila_id.split("_");
+		var hiv_id = arreglo_id[(arreglo_id.length - 1)];
+		var valor_nuevo = $('#'+fila_id).val();
+		ajax('accion=actualizarInicio&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo, false, actualizarTiemposYTotalAjax, false);
+		return true;
+	}
+	else
+		return false;
+}
+
+function editableDuracion(fila_id,editable)
+{
+	if(editable)
+	{
+		var hiv_dus_minutos = $('#hidden_'+fila_id).val();
+		var selects_duracion = "<select id='"+fila_id+"' class='verdana letra_9 ancho_70' onchange='if(actualizarDuracion(\""+fila_id+"\",13)){ editableDuracion(\""+fila_id+"\",false);}' onBlur='if(actualizarDuracion(\""+fila_id+"\",13)){ editableDuracion(\""+fila_id+"\",false);}'>";
+		selects_duracion += options_duracion;
+		selects_duracion += "</select>";
+		$('#'+fila_id).replaceWith(selects_duracion);
+		$('#'+fila_id).removeAttr('selected', 'selected');
+		$('#'+fila_id+" option[value='"+hiv_dus_minutos+"']").attr('selected', 'selected');
+		$('#'+fila_id).focus();
+	}
+	else
+	{
+		var duracion = $('#'+fila_id+" option:selected").text();
+		var label_duracion = "<label id='"+fila_id+"' ondblclick='editableDuracion(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz' title='Doble clic para editar'>"+duracion+"</label>";
+		$('#hidden_'+fila_id).val($('#'+fila_id).val());
+		$('#'+fila_id).replaceWith(label_duracion);
+	}
+}
+
+function actualizarDuracion(fila_id, evento)
+{
+	if(evento == 13)
+	{
+		var arreglo_id = fila_id.split("_");
+		var hiv_id = arreglo_id[(arreglo_id.length - 1)];
+		var valor_nuevo = $('#'+fila_id).val();
+		ajax('accion=actualizarDuracion&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo, false, actualizarTiemposYTotalAjax, false);
+		return true;
+	}
+	else
+		return false;
+}
+
+function actualizarTiemposYTotalAjax(json_horas)
+{
+	//alert(json_horas);
+	var obj_horas = eval("("+json_horas+")");
+	//se utilizan los LABELS porque el llamado ajax es asincrono y cuando llega
+	//la respuesta, ya los inputs se han transformado en labels
+	//se espera que siempre sea asi
+	$("#hiv_hora_"+obj_horas.hiv_id).text(obj_horas.hiv_hora);
+	$("#hiv_dus_minutos_"+obj_horas.hiv_id).text(obj_horas.dus_texto);
+	$("#hiv_hora_termina_"+obj_horas.hiv_id).text(obj_horas.hiv_hora_termina);
+	$("#hiv_total_"+obj_horas.hiv_id).text(obj_horas.hiv_total);
+	return true;
 }
 
 function actualizarValor(fila_id,nombre_campo, evento)
 {
 	if(evento == 13)
 	{
-		var hiv_id = fila_id.split("_")[2];
+		var arreglo_id = fila_id.split("_");
+		var hiv_id = arreglo_id[(arreglo_id.length - 1)];
 		var valor_nuevo = $('#'+fila_id).val();
 		ajax('accion=actualizarValor&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo+"&nombre_campo="+nombre_campo, false, actualizarAjax, false);
 		return true;
@@ -158,7 +223,7 @@ function actualizarValor(fila_id,nombre_campo, evento)
 function actualizarAjax(actualizo)
 {
 	if(actualizo)
-		return true;
+		console.log("actualizado!");
 	else
 		console.log("no se actualizo ningun valor de la fila");
 }
@@ -195,7 +260,8 @@ function actualizarCampoColor(id, color_fila)
 function actualizarCampoColorAjax(actualizo)
 {
 	if(actualizo)
-		actualizarHistorialVentas();
+		//actualizarHistorialVentas();
+		actualizarHistorialVentasAjax(actualizo);
 	else
 		console.log("No se acualizo ningun color");
 }
@@ -210,7 +276,8 @@ function actualizarEstadoPago(id_fila, ultimo_clic)
 function actualizarEstadoPagoAjax(actualizo)
 {
 	if(actualizo)
-		actualizarHistorialVentas();
+		//actualizarHistorialVentas();
+		actualizarHistorialVentasAjax(actualizo);
 	else
 		console.log('Error actualizando estado del pago');
 }
@@ -267,7 +334,8 @@ function agregarFilaHistorial(hiv_ser_id,ser_tipo)
 function agregarFilaHistorialAjax(fila)
 {
 	if(fila)
-		actualizarHistorialVentas();
+		actualizarHistorialVentasAjax(fila);
+		//actualizarHistorialVentas();
 	else
 		console.log('Error al registrar el servicio');
 }
@@ -333,29 +401,7 @@ function actualizarHistorialVentasAjax(info_servicios)
 	$("#historial_ventas").html(info_servicios);
 	asignarListenersColores();
 }
-/*
-function actualizarHoraInicio()
-{
-	var arregloHoraInicio = obtenerArregloHoraInicio();
-	$("#ves_hora").val(""+arregloHoraInicio[0]);
-	$("#ves_minuto").val(""+arregloHoraInicio[1]);
-	$("#ves_meridiano").val(arregloHoraInicio[2]);
-}
 
-function actualizarDuracionYTotalServicio(id)
-{
-	var duracion = $("#ves_duracion_"+id).val();
-	ajax("accion=actualizarDuracionYTotalServicio&id="+id+"&duracion="+duracion, null, actualizarDuracionYTotalServicioAjax, null);
-}
-
-function actualizarDuracionYTotalServicioAjax(actualizo)
-{
-	if(actualizo)
-		actualizarHistoricoServicios();
-	else
-		alert('Error inesperado actualizando Duracion y total de servicio');
-}
-*/
 /**********************************
 ******* ACCIONES TIMERS     *******
 ***********************************/

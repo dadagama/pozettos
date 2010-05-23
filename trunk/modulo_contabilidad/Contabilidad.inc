@@ -60,13 +60,13 @@ class Contabilidad
 				$contador = 1;
 				while($info_servicio = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
 				{
-					if($contador % 10 == 0)
-					{
-						$this->_html->end("tr");
-						$this->_html->tag("tr");
-							$this->_html->tag("td");
-							$this->_html->end("td");
-					}
+					// if($contador % 10 == 0)
+					// {
+						// $this->_html->end("tr");
+						// $this->_html->tag("tr");
+							// $this->_html->tag("td");
+							// $this->_html->end("td");
+					// }
 					$this->_html->tag("td");
 						$this->_html->tag("button", array("onclick"=>$info_servicio['ser_onclick'], "title"=>$info_servicio['ser_nombre']));
 							$this->_html->tag("img", array("src"=>$info_servicio['ser_url_foto']), true);
@@ -91,13 +91,13 @@ class Contabilidad
 				$contador = 1;
 				while($info_servicio = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
 				{
-					if($contador % 10 == 0)
-					{
-						$this->_html->end("tr");
-						$this->_html->tag("tr");
-							$this->_html->tag("td");
-							$this->_html->end("td");
-					}
+					// if($contador % 10 == 0)
+					// {
+						// $this->_html->end("tr");
+						// $this->_html->tag("tr");
+							// $this->_html->tag("td");
+							// $this->_html->end("td");
+					// }
 					$this->_html->tag("td");
 						$this->_html->tag("button", array("onclick"=>$info_servicio['ser_onclick'], "title"=>$info_servicio['ser_nombre']));
 							$this->_html->tag("img", array("src"=>$info_servicio['ser_url_foto']), true);
@@ -125,6 +125,7 @@ class Contabilidad
 			$options_clientes .= $this->_html->end("option",true);
 		}
 		$arreglo_options['options_clientes'] = $options_clientes;
+		
 		/*  DURACION  */
 		$sql = "SELECT dus_minutos,dus_texto
 						FROM pozettos_duracion_servicio
@@ -138,6 +139,17 @@ class Contabilidad
 			$options_duracion .= $this->_html->end("option",true);
 		}
 		$arreglo_options['options_duracion'] = $options_duracion;
+		
+		/*  HORA  */
+		$options_hora = "";
+		while($info_option = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
+		{
+			$options_duracion .= $this->_html->tag("option", array("value"=>$info_option['dus_minutos']),false,true);
+			$options_duracion .= $this->_html->getText($info_option['dus_texto']);
+			$options_duracion .= $this->_html->end("option",true);
+		}
+		$arreglo_options['options_duracion'] = $options_duracion;
+		
 		return json_encode($arreglo_options);
 	}
 
@@ -166,6 +178,39 @@ class Contabilidad
 						AND hiv_es_tiempo_gratis = 0";
 		$this->_conexionBD->ejecutarSQL($sql);
 		return $this->_conexionBD->obtenerFilaComoCadena();
+	}
+	
+	function actualizarTotal($hiv_id)
+	{
+		$sql = "UPDATE pozettos_historico_venta as hiv
+						SET hiv.hiv_total = (	SELECT tas_precio
+																	FROM pozettos_tarifas_servicio
+																	WHERE tas_ser_id = hiv.hiv_ser_id
+																	AND tas_dus_minutos = hiv.hiv_dus_minutos
+																	LIMIT 1)
+						WHERE hiv.hiv_id = '$hiv_id'";
+								
+		$this->_conexionBD->ejecutarSQL($sql);
+		//echo $sql;
+		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
+			return true;
+		else
+			return false;
+	}
+	
+	function obtenerJsonHoras($hiv_id)
+	{
+		$sql = "SELECT 	time_format(hiv_hora, '%l:%i') as hiv_hora,
+										time_format(ADDTIME(hiv_hora, hiv_dus_minutos),'%l:%i') as hiv_hora_termina,
+										dus_texto,
+										hiv_total
+						FROM pozettos_historico_venta, pozettos_duracion_servicio
+						WHERE hiv_dus_minutos = dus_minutos
+						AND hiv_id = '".$hiv_id."'";
+		$this->_conexionBD->ejecutarSQL($sql);
+		$arreglo_horas = $this->_conexionBD->obtenerFilaComoArregloAsociativo();
+		$arreglo_horas['hiv_id'] = $hiv_id;
+		return json_encode($arreglo_horas);
 	}
 	
 	function actualizarCampoColor($id, $color_fila)
@@ -214,7 +259,7 @@ class Contabilidad
 						hiv_es_tiempo_gratis = '$hiv_es_tiempo_gratis'
 						$reiniciar_color
 						WHERE hiv_id = '$id_fila'";
-		echo $sql;
+		//echo $sql;
 		$this->_conexionBD->ejecutarSQL($sql);
 		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
 			return true;
@@ -259,8 +304,14 @@ class Contabilidad
 		if($hiv_dus_minutos)
 			$valor_hiv_dus_minutos = "'$hiv_dus_minutos'";
 		$valor_hiv_total = "0";
-		if($hiv_total)
+		if($hiv_total && $hiv_ser_tipo == "producto")
 			$valor_hiv_total = "'$hiv_total'";
+		else if($hiv_ser_tipo == "servicio")
+			$valor_hiv_total = " (SELECT tas_precio
+														FROM pozettos_tarifas_servicio
+														WHERE tas_ser_id = '$hiv_ser_id'
+														AND tas_dus_minutos = $valor_hiv_dus_minutos
+														LIMIT 1) ";
 		
 		$sql = "INSERT INTO pozettos_historico_venta
 						(	hiv_cli_id, hiv_ser_id, hiv_fecha, hiv_hora, hiv_ser_tipo,
@@ -271,7 +322,7 @@ class Contabilidad
 							'$hiv_meridiano', $valor_hiv_total, $valor_hiv_dus_minutos
 							)";
 		$this->_conexionBD->ejecutarSQL($sql);
-		echo $sql;
+		//echo $sql;
 		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
 			return true;
 		else
@@ -285,8 +336,9 @@ class Contabilidad
 										hiv1.hiv_color_fila,
 										hiv1.hiv_pago,
 										hiv1.hiv_es_tiempo_gratis,
-										IF(hiv1.hiv_ser_tipo = 'servicio', CONCAT(time_format(hiv1.hiv_hora, '%l:%i'), hiv1.hiv_meridiano), null) as hiv_hora,
+										IF(hiv1.hiv_ser_tipo = 'servicio', time_format(hiv1.hiv_hora, '%l:%i'), null) as hiv_hora,
 										IF(hiv1.hiv_ser_tipo = 'servicio', dus_texto, null) as dus_texto,
+										IF(hiv1.hiv_ser_tipo = 'servicio', dus_minutos, null) as dus_minutos,
 										IF(hiv1.hiv_ser_tipo = 'servicio', time_format(ADDTIME(hiv1.hiv_hora, hiv1.hiv_dus_minutos),'%l:%i'), null) as hiv_hora_termina,
 										hiv1.hiv_total, 
 										hiv1.hiv_observacion, 
@@ -321,36 +373,36 @@ class Contabilidad
 			
 			$this->_html->tag("tr", array("style"=>$hiv_color_fila, "class"=>$fondo_default, "id"=>"hiv_fila_".$info_tupla_historico['hiv_id'], "name"=>"fila_historico"));
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("input", array("type"=>"image", "src"=>"../imagenes/color.jpg", "id"=>"hiv_color_".$info_tupla_historico['hiv_id'], "class"=>"boton_color"));
+					$this->_html->tag("input", array("title"=>"Colocar un color a la fila", "type"=>"image", "src"=>"../imagenes/color.jpg", "id"=>"hiv_color_".$info_tupla_historico['hiv_id'], "class"=>"boton_color"));
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_izquierda"));
-					$this->_html->tag("label", array("class"=>"verdana letra_9"));
+					$this->_html->tag("label", array("class"=>"verdana letra_9", "title"=>"Servicio prestado"));
 						$this->_html->printText(utf8_encode($info_tupla_historico['ser_nombre']));
 					$this->_html->end("label");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("label", array("id"=>"hiv_hora_".$info_tupla_historico['hiv_id'], "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableHoraInicio('hiv_hora_".$info_tupla_historico['hiv_id']."',true);"));
+					$this->_html->tag("label", array("title"=>"Hora en que se empieza a prestar el servicio", "id"=>"hiv_hora_".$info_tupla_historico['hiv_id'], "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableHoraInicio('hiv_hora_".$info_tupla_historico['hiv_id']."',true);"));
 						$this->_html->printText($info_tupla_historico['hiv_hora']);
 					$this->_html->end("label");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("label", array("class"=>"verdana letra_9"));
+					$this->_html->tag("input", array("type"=>"hidden", "value"=>$info_tupla_historico['dus_minutos'], "id"=>"hidden_hiv_dus_minutos_".$info_tupla_historico['hiv_id']));
+					$this->_html->tag("label", array("title"=>"Duracion del servicio prestado", "id"=>"hiv_dus_minutos_".$info_tupla_historico['hiv_id'], "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableDuracion('hiv_dus_minutos_".$info_tupla_historico['hiv_id']."',true);"));
 						$this->_html->printText($info_tupla_historico['dus_texto']);
-						//$this->_html->printSelect($this->_conexionBDAux, "dus_minutos", "dus_texto", "pozettos_duracion_servicio", "", $info_tupla_historico['hiv_duracion'], array("id"=>"hiv_duracion_".$info_tupla_historico['hiv_id'], "class"=>"select_duracion verdana letra_9 alineacion_centro", "size"=>"1", "onchange"=>"actualizarDuracionYTotalServicio('".$info_tupla_historico['hiv_id']."');"));
 					$this->_html->end("label");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("label", array("class"=>"verdana letra_9"));
+					$this->_html->tag("label", array("title"=>"Hora en que se termina de prestar el servicio", "id"=>"hiv_hora_termina_".$info_tupla_historico['hiv_id'], "class"=>"verdana letra_9"));
 						$this->_html->printText($info_tupla_historico['hiv_hora_termina']);
 					$this->_html->end("label");
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_derecha"));
-					$this->_html->tag("label", array("id"=>"hiv_total_".$info_tupla_historico['hiv_id'], "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableTotal('hiv_total_".$info_tupla_historico['hiv_id']."',true);"));
+					$this->_html->tag("label", array("title"=>"Total a pagar por el servicio", "id"=>"hiv_total_".$info_tupla_historico['hiv_id'], "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableTotal('hiv_total_".$info_tupla_historico['hiv_id']."',true);"));
 						$this->_html->printText($info_tupla_historico['hiv_total']);
 					$this->_html->end("label");
 				$this->_html->end("td");
@@ -367,7 +419,7 @@ class Contabilidad
 					$clase_celda_pago = "";
 				
 				$this->_html->tag("td", array("id"=>"hiv_pago_".$info_tupla_historico['hiv_id'], "class"=>"alineacion_centro $clase_celda_pago"));
-					$this->_html->tag("input", array($checked_pago=>$checked_pago, "type"=>"checkbox", "id"=>"hiv_chk_pago_".$info_tupla_historico['hiv_id'], "onchange"=>"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'pago');"));
+					$this->_html->tag("input", array("title"=>"Ya pago el total del servicio", $checked_pago=>$checked_pago, "type"=>"checkbox", "id"=>"hiv_chk_pago_".$info_tupla_historico['hiv_id'], "onchange"=>"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'pago');"));
 				$this->_html->end("td");
 				
 				$checked_gratis = "";
@@ -379,7 +431,7 @@ class Contabilidad
 				}
 				
 				$this->_html->tag("td", array("id"=>"hiv_pago_".$info_tupla_historico['hiv_id'], "class"=>"alineacion_centro $clase_celda_gratis"));
-					$this->_html->tag("input", array($checked_gratis=>$checked_gratis, "type"=>"checkbox", "id"=>"hiv_chk_gratis_".$info_tupla_historico['hiv_id'], "onchange"=>"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');"));
+					$this->_html->tag("input", array("title"=>"No se cobra porque es gratis", $checked_gratis=>$checked_gratis, "type"=>"checkbox", "id"=>"hiv_chk_gratis_".$info_tupla_historico['hiv_id'], "onchange"=>"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');"));
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
@@ -393,7 +445,7 @@ class Contabilidad
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
-					$this->_html->tag("input", array("id"=>"hiv_observacion_".$info_tupla_historico['hiv_id'], "type"=>"text", "class"=>"input_observacion_producto verdana letra_9", "value"=>utf8_encode($info_tupla_historico['hiv_observacion'])/*, "onkeyup"=>"actualizarObservacion(event.keyCode, ".$info_tupla_historico['hiv_id'].", 'hiv');", "onchange"=>"actualizarObservacion(13, ".$info_tupla_historico['hiv_id'].", 'hiv');"*/), true);
+					$this->_html->tag("input", array("title"=>"Nota adicional si se necesita", "id"=>"hiv_observacion_".$info_tupla_historico['hiv_id'], "type"=>"text", "class"=>"ancho_90p verdana letra_9", "value"=>utf8_encode($info_tupla_historico['hiv_observacion']), "onchange"=>"actualizarValor('hiv_observacion_".$info_tupla_historico['hiv_id']."','hiv_observacion', 13);", "onkeypress"=>"actualizarValor('hiv_observacion_".$info_tupla_historico['hiv_id']."','hiv_observacion', event.keyCode);"), true);
 				$this->_html->end("td");
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
@@ -420,26 +472,9 @@ class Contabilidad
 		else
 			return "0";
 	}
-	
-	function actualizarDuracionYTotalServicio($id, $duracion)
-	{
-		$sql = "UPDATE pozettos_venta_servicio as ves1
-						SET ves_duracion = '$duracion',
-								ves_total = (	SELECT tas_precio
-															FROM pozettos_tarifas_servicio
-															WHERE tas_ser_id = ves1.ves_ser_id
-															AND tas_duracion = '$duracion'
-															LIMIT 1)
-						WHERE ves_id = '$id'";
-								
-		$this->_conexionBD->ejecutarSQL($sql);
-//echo $sql;
-		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
-			return true;
-		else
-			return false;
-	}
 	*/
+
+	
 /**********************************
 ******* ACCIONES TIMERS     *******
 ***********************************/

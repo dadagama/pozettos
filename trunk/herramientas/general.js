@@ -17,7 +17,10 @@
 */
 var url_controlador_modulo = "";
 
-function nada(){};
+function nada(){}
+function before(){alert('before');}
+function success(){alert('success');}
+function error(){alert('error');}
 
 function ajax(data_string, before_send_func, success_func, error_func)
 {

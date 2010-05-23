@@ -344,25 +344,25 @@
 							$html->tag("th");
 							$html->end("th");
 						
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_140"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Servicio");
 								$html->end("label");
 							$html->end("th");
 							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Inicio");
 								$html->end("label");
 							$html->end("th");
 							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Duración");
 								$html->end("label");
 							$html->end("th");
 							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Termina");
 								$html->end("label");
@@ -374,19 +374,19 @@
 								$html->end("label");
 							$html->end("th");
 							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Pagó");
 								$html->end("label");
 							$html->end("th");
 							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Gratis");
 								$html->end("label");
 							$html->end("th");
 							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_55"));
+							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
 								$html->tag("label", array("class"=>"label_formulario"));
 									$html->printText("Cliente");
 								$html->end("label");

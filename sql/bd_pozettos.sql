@@ -151,27 +151,30 @@ CREATE TABLE pozettos_servicio
 	ser_tipo VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'cadena con el tipo de servicio'
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de los servicios ofrecidos en el negocio';
 
-INSERT INTO pozettos_servicio VALUES(1,'Recarga FULLCARGA', '../imagenes/fullcarga.png','agregarFilaHistorial(1,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(2,'Recarga TIGO', '../imagenes/tigo.png','agregarFilaHistorial(2,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(3,'Minutos Celular', '../imagenes/celular.png','agregarFilaHistorial(3,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(4,'Minuto Inalambrico', '../imagenes/inalambrico.png','agregarFilaHistorial(4,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(5,'Cabina Internacional', '../imagenes/internacional.png','agregarFilaHistorial(5,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(6,'Fotocopia', '../imagenes/fotocopiadora.png','agregarFilaHistorial(6,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(7,'Impresion', '../imagenes/impresora.png','agregarFilaHistorial(7,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(8,'Escaneada', '../imagenes/escaner.png','agregarFilaHistorial(8,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(9,'Papeleria', '../imagenes/papeleria.png','agregarFilaHistorial(9,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(10,'Quemada', '../imagenes/cd.png','agregarFilaHistorial(10,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(11,'Mecato', '../imagenes/mecato.png','agregarFilaHistorial(11,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(12,'Otro', '../imagenes/otro.png','agregarFilaHistorial(12,\'producto\');','producto');
-INSERT INTO pozettos_servicio VALUES(13,'Xbox 1', '../imagenes/x1.png','agregarFilaHistorial(13,\'servicio\');','servicio');
-INSERT INTO pozettos_servicio VALUES(14,'Xbox 2', '../imagenes/x2.png','agregarFilaHistorial(14,\'servicio\');','servicio');
-INSERT INTO pozettos_servicio VALUES(15,'Play 1', '../imagenes/p1.png','agregarFilaHistorial(15,\'servicio\');','servicio');
-INSERT INTO pozettos_servicio VALUES(16,'Play 2', '../imagenes/p2.png','agregarFilaHistorial(16,\'servicio\');','servicio');
-INSERT INTO pozettos_servicio VALUES(17,'Cabina 1', '../imagenes/pc1.png','agregarFilaHistorial(17,\'servicio\');','servicio');
-INSERT INTO pozettos_servicio VALUES(18,'Cabina 2', '../imagenes/pc2.png','agregarFilaHistorial(18,\'servicio\');','servicio');
-INSERT INTO pozettos_servicio VALUES(19,'Cabina 3', '../imagenes/pc3.png','agregarFilaHistorial(19,\'servicio\');','servicio');
-INSERT INTO pozettos_servicio VALUES(20,'Cabina 4', '../imagenes/pc4.png','agregarFilaHistorial(20,\'servicio\');','servicio');
-INSERT INTO pozettos_servicio VALUES(21,'Wii 1', '../imagenes/wii.png','agregarFilaHistorial(21,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(1,'Xbox 1', '../imagenes/x1.png','agregarFilaHistorial(1,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(2,'Xbox 2', '../imagenes/x2.png','agregarFilaHistorial(2,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(3,'Play 1', '../imagenes/p1.png','agregarFilaHistorial(3,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(4,'Play 2', '../imagenes/p2.png','agregarFilaHistorial(4,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(5,'Cabina 1', '../imagenes/pc1.png','agregarFilaHistorial(5,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(6,'Cabina 2', '../imagenes/pc2.png','agregarFilaHistorial(6,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(7,'Cabina 3', '../imagenes/pc3.png','agregarFilaHistorial(7,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(8,'Cabina 4', '../imagenes/pc4.png','agregarFilaHistorial(8,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(9,'Wii 1', '../imagenes/wii.png','agregarFilaHistorial(9,\'servicio\');','servicio');
+INSERT INTO pozettos_servicio VALUES(10,'Recarga FULLCARGA', '../imagenes/fullcarga.png','agregarFilaHistorial(10,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(11,'Recarga TIGO', '../imagenes/tigo.png','agregarFilaHistorial(11,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(12,'Minutos Celular', '../imagenes/celular.png','agregarFilaHistorial(12,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(13,'Minuto Inalambrico', '../imagenes/inalambrico.png','agregarFilaHistorial(13,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(14,'Minuto Fijo Local', '../imagenes/fijo.png','agregarFilaHistorial(14,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(15,'Cabina Internacional', '../imagenes/internacional.png','agregarFilaHistorial(15,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(16,'Fotocopia', '../imagenes/fotocopiadora.png','agregarFilaHistorial(16,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(17,'Impresion', '../imagenes/impresora.png','agregarFilaHistorial(17,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(18,'Escaneada', '../imagenes/escaner.png','agregarFilaHistorial(18,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(19,'Papeleria', '../imagenes/papeleria.png','agregarFilaHistorial(19,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(20,'Quemada', '../imagenes/cd.png','agregarFilaHistorial(20,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(21,'Mecato', '../imagenes/mecato.png','agregarFilaHistorial(21,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(22,'Tarjeta YA!', '../imagenes/tarjetaYa.png','agregarFilaHistorial(22,\'producto\');','producto');
+INSERT INTO pozettos_servicio VALUES(50,'Otro', '../imagenes/otro.png','agregarFilaHistorial(50,\'producto\');','producto');
+
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
@@ -216,20 +219,21 @@ INSERT INTO pozettos_categoria_servicios VALUES(16,1);
 INSERT INTO pozettos_categoria_servicios VALUES(17,1);
 INSERT INTO pozettos_categoria_servicios VALUES(18,1);
 INSERT INTO pozettos_categoria_servicios VALUES(19,1);
-INSERT INTO pozettos_categoria_servicios VALUES(1,2);
-INSERT INTO pozettos_categoria_servicios VALUES(2,2);
-INSERT INTO pozettos_categoria_servicios VALUES(3,3);
-INSERT INTO pozettos_categoria_servicios VALUES(4,3);
-INSERT INTO pozettos_categoria_servicios VALUES(5,3);
-INSERT INTO pozettos_categoria_servicios VALUES(11,4);
-INSERT INTO pozettos_categoria_servicios VALUES(12,4);
-INSERT INTO pozettos_categoria_servicios VALUES(13,4);
-INSERT INTO pozettos_categoria_servicios VALUES(14,4);
-INSERT INTO pozettos_categoria_servicios VALUES(15,5);
-INSERT INTO pozettos_categoria_servicios VALUES(16,5);
-INSERT INTO pozettos_categoria_servicios VALUES(17,5);
-INSERT INTO pozettos_categoria_servicios VALUES(18,5);
-INSERT INTO pozettos_categoria_servicios VALUES(19,4);
+INSERT INTO pozettos_categoria_servicios VALUES(10,2);
+INSERT INTO pozettos_categoria_servicios VALUES(11,2);
+INSERT INTO pozettos_categoria_servicios VALUES(12,3);
+INSERT INTO pozettos_categoria_servicios VALUES(13,3);
+INSERT INTO pozettos_categoria_servicios VALUES(14,3);
+INSERT INTO pozettos_categoria_servicios VALUES(15,3);
+INSERT INTO pozettos_categoria_servicios VALUES(1,4);
+INSERT INTO pozettos_categoria_servicios VALUES(2,4);
+INSERT INTO pozettos_categoria_servicios VALUES(3,4);
+INSERT INTO pozettos_categoria_servicios VALUES(4,4);
+INSERT INTO pozettos_categoria_servicios VALUES(9,4);
+INSERT INTO pozettos_categoria_servicios VALUES(5,5);
+INSERT INTO pozettos_categoria_servicios VALUES(6,5);
+INSERT INTO pozettos_categoria_servicios VALUES(7,5);
+INSERT INTO pozettos_categoria_servicios VALUES(8,5);
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
@@ -242,6 +246,7 @@ CREATE TABLE pozettos_tarifas_servicio
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de las tarifas de cada servicio por minutos de uso';
 
 /*XBOX 1*/
+INSERT INTO pozettos_tarifas_servicio VALUES(1,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(1,'00:15:00',500);
 INSERT INTO pozettos_tarifas_servicio VALUES(1,'00:30:00',1000);
 INSERT INTO pozettos_tarifas_servicio VALUES(1,'00:45:00',1400);
@@ -275,6 +280,7 @@ INSERT INTO pozettos_tarifas_servicio VALUES(1,'07:30:00',11400);
 INSERT INTO pozettos_tarifas_servicio VALUES(1,'07:45:00',11700);
 INSERT INTO pozettos_tarifas_servicio VALUES(1,'08:00:00',12000);
 /*XBOX 2*/
+INSERT INTO pozettos_tarifas_servicio VALUES(2,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(2,'00:15:00',500);
 INSERT INTO pozettos_tarifas_servicio VALUES(2,'00:30:00',1000);
 INSERT INTO pozettos_tarifas_servicio VALUES(2,'00:45:00',1400);
@@ -308,6 +314,7 @@ INSERT INTO pozettos_tarifas_servicio VALUES(2,'07:30:00',11400);
 INSERT INTO pozettos_tarifas_servicio VALUES(2,'07:45:00',11700);
 INSERT INTO pozettos_tarifas_servicio VALUES(2,'08:00:00',12000);
 /*PLAY 1*/
+INSERT INTO pozettos_tarifas_servicio VALUES(3,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(3,'00:15:00',400);
 INSERT INTO pozettos_tarifas_servicio VALUES(3,'00:30:00',700);
 INSERT INTO pozettos_tarifas_servicio VALUES(3,'00:45:00',1000);
@@ -341,6 +348,7 @@ INSERT INTO pozettos_tarifas_servicio VALUES(3,'07:30:00',8000);
 INSERT INTO pozettos_tarifas_servicio VALUES(3,'07:45:00',8300);
 INSERT INTO pozettos_tarifas_servicio VALUES(3,'08:00:00',8500);
 /*PLAY 2*/
+INSERT INTO pozettos_tarifas_servicio VALUES(4,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(4,'00:15:00',400);
 INSERT INTO pozettos_tarifas_servicio VALUES(4,'00:30:00',700);
 INSERT INTO pozettos_tarifas_servicio VALUES(4,'00:45:00',1000);
@@ -374,6 +382,7 @@ INSERT INTO pozettos_tarifas_servicio VALUES(4,'07:30:00',8000);
 INSERT INTO pozettos_tarifas_servicio VALUES(4,'07:45:00',8300);
 INSERT INTO pozettos_tarifas_servicio VALUES(4,'08:00:00',8500);
 /*CABINA 1*/
+INSERT INTO pozettos_tarifas_servicio VALUES(5,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(5,'00:15:00',500);
 INSERT INTO pozettos_tarifas_servicio VALUES(5,'00:30:00',700);
 INSERT INTO pozettos_tarifas_servicio VALUES(5,'00:45:00',1000);
@@ -407,6 +416,7 @@ INSERT INTO pozettos_tarifas_servicio VALUES(5,'07:30:00',8400);
 INSERT INTO pozettos_tarifas_servicio VALUES(5,'07:45:00',8700);
 INSERT INTO pozettos_tarifas_servicio VALUES(5,'08:00:00',8900);
 /*CABINA 2*/
+INSERT INTO pozettos_tarifas_servicio VALUES(6,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(6,'00:15:00',500);
 INSERT INTO pozettos_tarifas_servicio VALUES(6,'00:30:00',700);
 INSERT INTO pozettos_tarifas_servicio VALUES(6,'00:45:00',1000);
@@ -440,6 +450,7 @@ INSERT INTO pozettos_tarifas_servicio VALUES(6,'07:30:00',8400);
 INSERT INTO pozettos_tarifas_servicio VALUES(6,'07:45:00',8700);
 INSERT INTO pozettos_tarifas_servicio VALUES(6,'08:00:00',8900);
 /*CABINA 3*/
+INSERT INTO pozettos_tarifas_servicio VALUES(7,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(7,'00:15:00',500);
 INSERT INTO pozettos_tarifas_servicio VALUES(7,'00:30:00',700);
 INSERT INTO pozettos_tarifas_servicio VALUES(7,'00:45:00',1000);
@@ -473,6 +484,7 @@ INSERT INTO pozettos_tarifas_servicio VALUES(7,'07:30:00',8400);
 INSERT INTO pozettos_tarifas_servicio VALUES(7,'07:45:00',8700);
 INSERT INTO pozettos_tarifas_servicio VALUES(7,'08:00:00',8900);
 /*CABINA 4*/
+INSERT INTO pozettos_tarifas_servicio VALUES(8,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(8,'00:15:00',500);
 INSERT INTO pozettos_tarifas_servicio VALUES(8,'00:30:00',700);
 INSERT INTO pozettos_tarifas_servicio VALUES(8,'00:45:00',1000);
@@ -506,6 +518,7 @@ INSERT INTO pozettos_tarifas_servicio VALUES(8,'07:30:00',8400);
 INSERT INTO pozettos_tarifas_servicio VALUES(8,'07:45:00',8700);
 INSERT INTO pozettos_tarifas_servicio VALUES(8,'08:00:00',8900);
 /*WII 1*/
+INSERT INTO pozettos_tarifas_servicio VALUES(9,'00:00:00',0);
 INSERT INTO pozettos_tarifas_servicio VALUES(9,'00:15:00',800);
 INSERT INTO pozettos_tarifas_servicio VALUES(9,'00:30:00',1500);
 INSERT INTO pozettos_tarifas_servicio VALUES(9,'00:45:00',2000);

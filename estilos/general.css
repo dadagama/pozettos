@@ -80,6 +80,10 @@ form
 	padding: 0px;
 	border: none;
 }
+.ancho_25
+{
+	width: 25px;
+}
 .ancho_40
 {
 	width: 40px;
@@ -96,9 +100,21 @@ form
 {
 	width: 55px;
 }
+.ancho_70
+{
+	width: 70px;
+}
 .ancho_80
 {
 	width: 80px;
+}
+.ancho_140
+{
+	width: 140px;
+}
+.ancho_90p
+{
+	width: 90%;
 }
 .ancho_100p
 {

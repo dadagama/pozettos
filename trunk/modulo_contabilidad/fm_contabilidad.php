@@ -63,6 +63,10 @@
 			$html->tag("td", array("class"=>"ancho_40"));
 				$html->tag("input", array("title"=>"Ir a consultar deudas", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
 			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/modulo_estadistica.png", "onclick"=>"mostrarModulo('estadistica');"), true);
+			$html->end("td");
 		$html->end("tr");
 	$html->end("table");
 	

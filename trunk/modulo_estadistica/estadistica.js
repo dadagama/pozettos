@@ -15,12 +15,16 @@
     along with Pozettos.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-
 $(document).ready(inicializar);
 
 function inicializar()
 {
 	url_controlador_modulo = "../modulo_estadistica/estadistica.php";
+}
+
+function mostrarModulo(nombre_modulo)
+{
+	ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
 }
 
 function actualizarEstadisticas()

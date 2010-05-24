@@ -23,6 +23,11 @@ function inicializar()
 	url_controlador_modulo = "panel.php";
 }
 
+function mostrarModulo(nombre_modulo)
+{
+	ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
+}
+
 function validarFechaContabilidad()
 {
 	return validarCampoFecha($("#con_fecha"),'Fecha de contabilidad', false);

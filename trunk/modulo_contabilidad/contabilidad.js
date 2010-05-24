@@ -36,6 +36,7 @@ function inicializar()
 	options_minutos = "";
 	obtenerOptions();
 	actualizarHistorialVentas();
+	//cargarSaldoInicialTitan();
 	/*obtenerInfoTimers();*/
 }
 
@@ -51,13 +52,49 @@ function obtenerOptions()
 
 function obtenerOptionsAjax(jsonOptions)
 {
-	//alert(jsonOptions);
 	var obj_options = eval("("+jsonOptions+")");
 	options_clientes = obj_options.options_clientes;
 	options_duracion = obj_options.options_duracion;
 	options_hora = obj_options.options_hora;
 	options_minutos = obj_options.options_minutos;
+	//evitar un llamado adicional de ajax
+	$("#sit_saldo").text(obj_options.sit_saldo);
 }
+
+function editableSaldoTitan(editable)
+{
+	if(editable)
+	{
+		var sit_saldo = $('#sit_saldo').text();
+		var input_saldo = "<input id='sit_saldo' type='text' maxlength='7' class='ancho_55' onBlur='if(actualizarSaldoTitan(13)){ editableSaldoTitan(false);}' onKeypress='if(actualizarSaldoTitan(event.keyCode)){ editableSaldoTitan(false);}' value='"+sit_saldo+"'/>";
+		$('#sit_saldo').replaceWith(input_saldo);
+		$('#sit_saldo').select();
+	}
+	else
+	{
+		var valor_saldo = $('#sit_saldo').val();
+		var sit_saldo = parseInt(valor_saldo.replace(".", ""));
+		if(sit_saldo == "" || isNaN(sit_saldo))
+			sit_saldo = "0";
+		var label_saldo = "<label id='sit_saldo' ondblclick='editableSaldoTitan(true);' class='verdana letra_9 cursor_cruz'>"+sit_saldo+"</label>";
+		$('#sit_saldo').replaceWith(label_saldo);
+	}
+}
+
+function actualizarSaldoTitan(evento)
+{
+	if(evento == 13)
+	{
+		var valor_saldo = $('#sit_saldo').val();
+		var sit_saldo = parseInt(valor_saldo.replace(".", ""));
+		var sit_fecha = $("#fecha_contabilidad").val();
+		ajax('accion=actualizarSaldoTitan&sit_saldo='+sit_saldo+"&sit_fecha="+sit_fecha, false, actualizarAjax, false);
+		return true;
+	}
+	else
+		return false;
+}
+
 
 function editableCliente(fila_id,editable)
 {

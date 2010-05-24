@@ -28,6 +28,10 @@ switch($_REQUEST['accion'])
 		require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
 		break;
 	
+	case "cargarCategorias":
+		$objetoEstadistica->cargarCategorias();
+		break;
+	
 	case "actualizarEstadisticas":
 		echo $objetoEstadistica->actualizarEstadisticas($_REQUEST['hiv_id']);
 		break;

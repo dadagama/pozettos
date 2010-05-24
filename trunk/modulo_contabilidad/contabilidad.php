@@ -35,6 +35,14 @@ switch($_REQUEST['accion'])
 		echo $objetoContabilidad->obtenerOptions();
 		break;
 
+	case "cargarSaldoInicialTitan":
+		echo $objetoContabilidad->cargarSaldoInicialTitan($_REQUEST['sit_fecha']);
+		break;
+	
+	case "actualizarSaldoTitan":
+		echo $objetoContabilidad->actualizarSaldoTitan($_REQUEST['sit_saldo'], $_REQUEST['sit_fecha']);
+		break;
+	
 	case "actualizarDeudaCliente":
 			$objetoContabilidad->actualizarValor($_REQUEST['hiv_id'],$_REQUEST['valor_nuevo'],"hiv_cli_id");
 			//$valor_nuevo tiene el id del nuevo cliente y puedo consultar la deuda

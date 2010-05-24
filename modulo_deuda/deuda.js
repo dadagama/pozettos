@@ -24,9 +24,9 @@ function inicializar()
 	actualizarHistorialDeudas();
 }
 
-function mostrarPanel()
+function mostrarModulo(nombre_modulo)
 {
-	ajax('accion=mostrarPanel', false, mostrarNuevoModulo_ajax, false);
+	ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
 }
 
 function actualizarValor(fila_id,nombre_campo, evento)

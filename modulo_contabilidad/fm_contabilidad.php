@@ -57,11 +57,11 @@
 			$html->end("td");
 			
 			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Volver al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarPanel();"), true);
+				$html->tag("input", array("title"=>"Volver al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarModulo('panel');"), true);
 			$html->end("td");
 			
 			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Ir a consultar deudas", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg"), true);
+				$html->tag("input", array("title"=>"Ir a consultar deudas", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
 			$html->end("td");
 		$html->end("tr");
 	$html->end("table");

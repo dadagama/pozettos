@@ -124,7 +124,7 @@ class Deuda
 				
 				$this->_html->tag("td", array("class"=>"alineacion_centro"));
 					$this->_html->tag("label", array("class"=>"verdana letra_9", "title"=>"Fecha de la deuda"));
-						$this->_html->printText(utf8_encode($info_tupla_historico['hiv_fecha']));
+						$this->_html->printText($this->_html->obtenerFechaTextual($info_tupla_historico['hiv_fecha'],false,true,false,true));
 					$this->_html->end("label");
 				$this->_html->end("td");
 				

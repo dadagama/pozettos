@@ -2,6 +2,10 @@ form
 {
 	margin: 0px;
 }
+.oculto
+{
+	display:none;
+}
 .cursor_cruz
 {
 	cursor: crosshair;
@@ -75,6 +79,10 @@ form
 	padding:5px 0 0;
 	vertical-align: top;
 }
+.borde_azul
+{
+	border: 1px solid #4F8FFF;
+}
 .boton
 {
 	padding: 0px;
@@ -107,6 +115,10 @@ form
 .ancho_80
 {
 	width: 80px;
+}
+.ancho_100
+{
+	width: 100px;
 }
 .ancho_140
 {
@@ -147,28 +159,24 @@ form
 /*******************************************
 **            TITULO                      **
 ********************************************/
-#tbl_titulo
+.tbl_titulo
 {
-	/*width: 900px;*/
 	height: 50px;
-	margin-left: auto;
-	margin-right: auto;
-	border: 1px solid #4F8FFF;
 }
-#tbl_titulo label
+.tbl_titulo label
 {
 	font-family: Helvetica;
 	font-size: 13pt;
 	font-weight: bold;
 	color: #4F8FFF;
 }
-#tbl_titulo input[type="image"]
+.tbl_titulo input[type="image"]
 {
 	width: 40px;
 	height: 40px;
 	border: 1px solid #fff;
 }
-#tbl_titulo input[type="image"]:hover
+.tbl_titulo input[type="image"]:hover
 {
 	border: 1px solid #ddd;
 }

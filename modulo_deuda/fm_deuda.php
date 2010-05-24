@@ -36,11 +36,11 @@
 	$conexion_bd_bozettos->conectar();
 	
 	/* TITULO CON LA FECHA DEL DIA */
-	$html->tag("table",array("id"=>"tbl_titulo", "class"=>"tabla_centrada"));
+	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada borde_azul"));
 		$html->tag("tr");
 			$html->tag("td", array("class"=>"alineacion_centro"));
 				$html->tag("label");
-					$html->printText("Deudas pendientes de clientes");
+					$html->printText("Pozetto's.Net");
 				$html->end("label");
 			$html->end("td");
 			
@@ -53,12 +53,26 @@
 			$html->end("td");
 			
 			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/modulo_estadistica.png", "onclick"=>"mostrarModulo('estadistica');"), true);
+				$html->tag("input", array("title"=>"Ir a Deudas de clientes", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/estadistica.gif", "onclick"=>"mostrarModulo('estadistica');"), true);
 			$html->end("td");
 		$html->end("tr");
 	$html->end("table");
 
-	$html->tag("table",array("class"=>"zona_historial ancho_100p margen_arriba_10"));
+	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada "));
+		$html->tag("tr");
+			$html->tag("td", array("class"=>"alineacion_centro"));
+				$html->tag("label");
+					$html->printText("Registro de deudas pendientes");
+				$html->end("label");
+			$html->end("td");
+		$html->end("tr");
+	$html->end("table");
+	
+	$html->tag("table",array("class"=>"zona_historial ancho_100p"));
 		//ENCABEZADOS HISTORIAL		
 		$html->tag("thead");
 			$html->tag("tr");

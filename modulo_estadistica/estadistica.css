@@ -17,13 +17,10 @@
 */
 
 /*******************************************
-**            ZONA SERVICIOS              **
+**            ZONA OPCIONES              **
 ********************************************/
-.zona_historial
+.zona_opciones
 {
-	margin-left: auto;
-	margin-right: auto;
-	width: 900px;
 	border: 1px solid #4F8FFF;
 }
 

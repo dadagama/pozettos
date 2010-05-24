@@ -43,35 +43,49 @@
 	$conexion_bd_bozettos->conectar();
 
 	/* TITULO CON LA FECHA DEL DIA */
-	$html->tag("table",array("id"=>"tbl_titulo", "class"=>"tabla_centrada"));
+	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada borde_azul"));
 		$html->tag("tr");
 			$html->tag("td", array("class"=>"alineacion_centro"));
 				$html->tag("label");
-					$html->printText("CONTABILIDAD");
+					$html->printText("Pozetto's.Net");
 				$html->end("label");
-				$html->br();
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarModulo('panel');"), true);
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir a contabilidad de HOY", "type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "onclick"=>"mostrarModulo('contabilidad');"), true);
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir a Deudas de clientes", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/estadistica.gif", "onclick"=>"mostrarModulo('estadistica');"), true);
+			$html->end("td");
+		$html->end("tr");
+	$html->end("table");
+	
+	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada"));
+		$html->tag("tr");
+			$html->tag("td", array("class"=>"alineacion_centro"));
+				$html->tag("label");
+					$html->printText("Contabilidad");
+					$html->espacios(2);
+				$html->end("label");
 				$html->tag("label", array("id"=>"lbl_fecha_contabilidad"));
 					$html->printText($html->obtenerFechaTextual($_SESSION['fecha_contabilidad'], true, true, true, true));
 					$html->tag("input", array("type"=>"hidden", "id"=>"fecha_contabilidad", "value"=>$_SESSION['fecha_contabilidad']));
 				$html->end("label");
 			$html->end("td");
-			
-			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Volver al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarModulo('panel');"), true);
-			$html->end("td");
-			
-			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Ir a consultar deudas", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
-			$html->end("td");
-			
-			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/modulo_estadistica.png", "onclick"=>"mostrarModulo('estadistica');"), true);
-			$html->end("td");
 		$html->end("tr");
 	$html->end("table");
 	
 	/*TABLA PRODUCTOS Y SERVICIOS*/
-	$html->tag("table", array("class"=>"tabla_centrada margen_arriba_10"));
+	$html->tag("table", array("class"=>"tabla_centrada"));
 		$html->tag("tr");
 			$html->tag("td");
 				$objetoContabilidad->obtenerTablaServicios();

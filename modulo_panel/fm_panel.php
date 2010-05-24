@@ -33,20 +33,43 @@
 	
 	$html->cargarModuloJS($_SESSION['modulo']);
 	
-	/* TITULO MODULO*/
-	$html->tag("table",array("id"=>"tbl_titulo"));
+	/* TITULO*/
+	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada borde_azul"));
 		$html->tag("tr");
 			$html->tag("td", array("class"=>"alineacion_centro"));
-				$html->tag("label", array("id"=>"lbl_titulo"));
-					$html->printText("Pozetto's.net");
-					$html->br();
-					$html->printText("Panel de control");
+				$html->tag("label");
+					$html->printText("Pozetto's.Net");
 				$html->end("label");
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarModulo('panel');"), true);
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir a contabilidad de HOY", "type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "onclick"=>"mostrarModulo('contabilidad');"), true);
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir a Deudas de clientes", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
+			$html->end("td");
+			
+			$html->tag("td", array("class"=>"ancho_40"));
+				$html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/estadistica.gif", "onclick"=>"mostrarModulo('estadistica');"), true);
 			$html->end("td");
 		$html->end("tr");
 	$html->end("table");
 	
-	
+	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada "));
+		$html->tag("tr");
+			$html->tag("td", array("class"=>"alineacion_centro"));
+				$html->tag("label");
+					$html->printText("Panel de Control");
+				$html->end("label");
+			$html->end("td");
+		$html->end("tr");
+	$html->end("table");
+		
 	/*ZONA modulos*/
 	$html->tag("table", array("id"=>"tbl_modulos", "class"=>"tabla_centrada"));
 

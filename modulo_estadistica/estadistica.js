@@ -20,11 +20,25 @@ $(document).ready(inicializar);
 function inicializar()
 {
 	url_controlador_modulo = "../modulo_estadistica/estadistica.php";
+	$('#opc_fecha').datepicker({ dateFormat: 'yy-mm-dd' });
+	$('#opc_fecha_inicial').datepicker({ dateFormat: 'yy-mm-dd' });
+	$('#opc_fecha_final').datepicker({ dateFormat: 'yy-mm-dd' });
+	cargarCategorias();
 }
 
 function mostrarModulo(nombre_modulo)
 {
 	ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
+}
+
+function cargarCategorias()
+{
+	ajax('accion=cargarCategorias', false, cargarCategoriasAjax, false);
+}
+
+function cargarCategoriasAjax(categorias)
+{
+	$("#td_categorias").html(categorias);
 }
 
 function actualizarEstadisticas()

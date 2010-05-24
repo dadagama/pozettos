@@ -22,54 +22,10 @@
 .zona_opciones
 {
 	border: 1px solid #4F8FFF;
+	width: 700px;
 }
-
-/*******************************************
-**            HISTORIAL SERVICIOS         **
-********************************************/
-.fila_historial_par
+.fila_boton_generar
 {
 	background: #d0dfff;
 	height: 25px;
-}
-.fila_historial_impar
-{
-	background: #fff;
-	height: 25px;
-}
-.celda_debe
-{
-	background-color: #f00;
-}
-.celda_pago
-{
-	background-color: #0f0;
-}
-.imagen_delete
-{
-	width: 10px;
-	height: 10px;
-	border: none;
-}
-.boton_delete
-{
-	padding: 0px;
-	background: #fff;
-}
-.imagen_color
-{
-	width: 18px;
-	height: 18px;
-	border: none;
-}
-.imagen_deuda
-{
-	width: 15px;
-	height: 15px;
-	border: none;
-}
-.boton_color
-{
-	width: 16px;
-	height: 16px;
 }

@@ -36,6 +36,34 @@ class Estadistica
 		$this->_html = new GeneradorHtml();
 	}
 	
+	function cargarCategorias()
+	{
+		$sql = "SELECT cat_id, cat_nombre 
+						FROM pozettos_categoria
+						WHERE cat_id != 1";
+		$this->_conexionBD->ejecutarSQL($sql);
+		$contador = 0;
+		$this->_html->tag("table");
+			$this->_html->tag("tr");					
+				while($info_categoria = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
+				{
+					if($contador % 3 == 0)
+					{
+						$this->_html->end("tr");
+						$this->_html->tag("tr");	
+					}
+					$this->_html->tag("td");
+						$this->_html->tag("label", array("class"=>"letra_azul verdana letra_9 negrilla"));
+							$this->_html->tag("input", array("type"=>"checkbox", "id"=>"chk_".$info_categoria['cat_id'], "value"=>$info_categoria['cat_id'], "checked"=>"checked"),true);
+							$this->_html->printText(utf8_encode($info_categoria['cat_nombre']));
+						$this->_html->end("label");
+					$this->_html->end("td");
+					$contador++;
+				}
+			$this->_html->end("tr");
+		$this->_html->end("table");
+	}
+	
 	function actualizarEstadisticas()
 	{
 		$sql = "SELECT	hiv_id,

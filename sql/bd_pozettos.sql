@@ -29,6 +29,13 @@ DROP TABLE IF EXISTS pozettos_categoria;
 /*DROP TABLE IF EXISTS pozettos_jugador;*/
 DROP TABLE IF EXISTS pozettos_cliente;
 DROP TABLE IF EXISTS pozettos_timer;
+DROP TABLE IF EXISTS pozettos_saldo_inicial_titan;
+
+CREATE TABLE pozettos_saldo_inicial_titan
+(
+	sit_fecha DATE NOT NULL COMMENT 'Fecha que corresponde al saldo inicial',
+	sit_saldo INTEGER NOT NULL DEFAULT 0 COLLATE utf8_unicode_ci NOT NULL DEFAULT 0 COMMENT 'saldo inicial diario de titan'
+) ENGINE = MyISAM COMMENT = 'Almacena la informacion del saldo inicial de TITAN para cada dia de la contabilidad';
 
 
 CREATE TABLE pozettos_timer

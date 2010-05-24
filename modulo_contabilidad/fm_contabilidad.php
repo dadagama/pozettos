@@ -82,6 +82,16 @@
 				$html->end("label");
 			$html->end("td");
 		$html->end("tr");
+		$html->tag("tr");
+			$html->tag("td", array("class"=>"alineacion_centro"));
+				$html->tag("label");
+					$html->printText("Saldo Inicial TITAN:");
+					$html->espacios(2);
+				$html->end("label");
+				$html->tag("label", array("id"=>"sit_saldo", "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableSaldoTitan(true);"));
+				$html->end("label");
+			$html->end("td");
+		$html->end("tr");
 	$html->end("table");
 	
 	/*TABLA PRODUCTOS Y SERVICIOS*/

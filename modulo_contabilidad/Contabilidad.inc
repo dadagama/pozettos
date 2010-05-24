@@ -109,6 +109,39 @@ class Contabilidad
 		$this->_html->end("table");
 	}
 	
+	function cargarSaldoInicialTitan($sit_fecha)
+	{
+		$sql = "SELECT sit_saldo
+						FROM pozettos_saldo_inicial_titan
+						WHERE sit_fecha='$sit_fecha'
+						LIMIT 1";
+		$this->_conexionBD->ejecutarSQL($sql);
+		if($this->_conexionBD->obtenerNumeroFilas())
+			return $this->_conexionBD->obtenerFilaComoCadena();
+		else
+		{
+			$sql = "INSERT INTO pozettos_saldo_inicial_titan (sit_saldo, sit_fecha)
+							VALUES ('0','$sit_fecha')";
+			$this->_conexionBD->ejecutarSQL($sql);
+			return "0";
+		}
+	}
+	
+	function actualizarSaldoTitan($sit_saldo, $sit_fecha)
+	{
+		if(!$sit_saldo)
+			$sit_saldo = "0";
+		$sql = "UPDATE pozettos_saldo_inicial_titan
+						SET sit_saldo = '$sit_saldo'
+						WHERE sit_fecha = '$sit_fecha'";
+		//echo $sql;
+		$this->_conexionBD->ejecutarSQL($sql);
+		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
+			return true;
+		else
+			return false;
+	}
+	
 	function obtenerOptions()
 	{
 		$arreglo_options = array();
@@ -150,6 +183,21 @@ class Contabilidad
 		}
 		$arreglo_options['options_duracion'] = $options_duracion;
 		
+		/* SALDO TITAN */
+		$sql = "SELECT sit_saldo
+						FROM pozettos_saldo_inicial_titan
+						WHERE sit_fecha='". $this->_fecha_contabilidad ."'
+						LIMIT 1";
+		$this->_conexionBD->ejecutarSQL($sql);
+		if($this->_conexionBD->obtenerNumeroFilas())
+			$arreglo_options['sit_saldo'] = $this->_conexionBD->obtenerFilaComoCadena();
+		else
+		{
+			$sql = "INSERT INTO pozettos_saldo_inicial_titan (sit_saldo, sit_fecha)
+							VALUES ('0','". $this->_fecha_contabilidad ."')";
+			$this->_conexionBD->ejecutarSQL($sql);
+			$arreglo_options['sit_saldo'] = "0";
+		}
 		return json_encode($arreglo_options);
 	}
 

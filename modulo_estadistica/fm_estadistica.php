@@ -1,6 +1,8 @@
 ﻿<html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="../modulo_estadistica/estadistica.css"/>
+		<link rel="stylesheet" type="text/css" href="../estilos/redmond/ui.all.css" />
+		<link rel="stylesheet" type="text/css" href="../estilos/redmond/ui.datepicker.css" />
 	</head>
 	<body>
 <?php
@@ -109,8 +111,8 @@
 					
 				$html->end("td");
 				
-				$html->tag("td");
-					$html->printText("<select id='opc_alcance' class='alineacion_centro'>
+				$html->tag("td", array("class"=>"alineacion_centro"));
+					$html->printText("<select id='opc_alcance' class='alineacion_centro letra_roja verdana letra_9 negrilla'>
 															<option value='diario'>Diario</option>
 															<option value='mensual'>Mensual</option>
 															<option value='rango'>Rango de fechas</option>
@@ -122,13 +124,13 @@
 					$html->tag("table",array("id"=>"tbl_diario", "class"=>"tabla_centrada"));
 						$html->tag("tr");
 							$html->tag("td", array("class"=>"alineacion_derecha"));
-								$html->tag("label");
+								$html->tag("label", array("class"=>"letra_azul verdana letra_9 negrilla"));
 									$html->printText("Fecha");
 								$html->end("label");
 							$html->end("td");
 							
 							$html->tag("td");
-								$html->tag("input", array("type"=>"text", "id"=>"opc_fecha", "class"=>"ancho_100 alineacion_centro", "value"=>$_SESSION['fecha_contabilidad']), true);
+								$html->tag("input", array("type"=>"text", "id"=>"opc_fecha", "class"=>"ancho_100 alineacion_centro letra_roja verdana letra_9 negrilla", "value"=>$_SESSION['fecha_contabilidad']), true);
 							$html->end("td");
 						$html->end("tr");
 					$html->end("table");
@@ -137,13 +139,13 @@
 					$html->tag("table",array("id"=>"tbl_mensual", "class"=>"tabla_centrada oculto"));
 						$html->tag("tr");
 							$html->tag("td", array("class"=>"alineacion_derecha"));
-								$html->tag("label");
+								$html->tag("label", array("class"=>"letra_azul verdana letra_9 negrilla"));
 									$html->printText("Mes");
 								$html->end("label");
 							$html->end("td");
 							
 							$html->tag("td");
-								$html->printText("<select id='opc_mes' class='ancho_100 alineacion_centro'>
+								$html->printText("<select id='opc_mes' class='ancho_100 alineacion_centro letra_roja verdana letra_9 negrilla'>
 																		<option value='01'>Enero</option>
 																		<option value='02'>Febrero</option>
 																		<option value='03'>Marzo</option>
@@ -162,13 +164,13 @@
 						
 						$html->tag("tr");
 							$html->tag("td", array("class"=>"alineacion_derecha"));
-								$html->tag("label");
+								$html->tag("label", array("class"=>"letra_azul verdana letra_9 negrilla"));
 									$html->printText("Año");
 								$html->end("label");
 							$html->end("td");
 							
 							$html->tag("td");
-								$html->printText("<select id='opc_anno' class='ancho_100 alineacion_centro'>
+								$html->printText("<select id='opc_anno' class='ancho_100 alineacion_centro letra_roja verdana letra_9 negrilla'>
 																		<option value='2010'>2010</option>
 																		<option value='2011'>2011</option>
 																		<option value='2012'>2012</option>
@@ -181,25 +183,25 @@
 					$html->tag("table",array("id"=>"tbl_rango", "class"=>"tabla_centrada oculto"));
 						$html->tag("tr");
 							$html->tag("td", array("class"=>"alineacion_derecha"));
-								$html->tag("label");
+								$html->tag("label", array("class"=>"letra_azul verdana letra_9 negrilla"));
 									$html->printText("Fecha Inicial");
 								$html->end("label");
 							$html->end("td");
 							
 							$html->tag("td");
-								$html->tag("input", array("type"=>"text", "id"=>"opc_fecha_inicial", "class"=>"ancho_100 alineacion_centro", "value"=>$_SESSION['fecha_contabilidad']), true);
+								$html->tag("input", array("type"=>"text", "id"=>"opc_fecha_inicial", "class"=>"ancho_100 alineacion_centro letra_roja verdana letra_9 negrilla", "value"=>$_SESSION['fecha_contabilidad']), true);
 							$html->end("td");
 						$html->end("tr");
 						
 						$html->tag("tr");
 							$html->tag("td", array("class"=>"alineacion_derecha"));
-								$html->tag("label");
+								$html->tag("label", array("class"=>"letra_azul verdana letra_9 negrilla"));
 									$html->printText("Fecha Final");
 								$html->end("label");
 							$html->end("td");
 							
 							$html->tag("td");
-								$html->tag("input", array("type"=>"text", "id"=>"opc_fecha_final", "class"=>"ancho_100 alineacion_centro", "value"=>$_SESSION['fecha_contabilidad']), true);
+								$html->tag("input", array("type"=>"text", "id"=>"opc_fecha_final", "class"=>"ancho_100 alineacion_centro letra_roja verdana letra_9 negrilla", "value"=>$_SESSION['fecha_contabilidad']), true);
 							$html->end("td");
 						$html->end("tr");
 					$html->end("table");
@@ -207,8 +209,16 @@
 			$html->end("tr");
 			
 			$html->tag("tr");
+				$html->tag("td", array("colspan"=>"3", "class"=>"alineacion_centro fila_boton_generar"));
+					$html->tag("button", array("onclick"=>"alert('h')", "class"=>"letra_roja verdana letra_9 negrilla"));
+						$html->printText("Generar Estadísticas");
+					$html->end("button");
+				$html->end("td");
 			$html->end("tr");
 		$html->end("tbody");
+	$html->end("table");
+	
+	$html->tag("table",array("id"=>"tbl_estadisticas", "class"=>"tabla_centrada"));
 	$html->end("table");
 ?>
 	</body>

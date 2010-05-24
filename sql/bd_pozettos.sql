@@ -190,6 +190,7 @@ INSERT INTO pozettos_categoria VALUES(2,'Recargas');
 INSERT INTO pozettos_categoria VALUES(3,'Llamadas');
 INSERT INTO pozettos_categoria VALUES(4,'Juegos');
 INSERT INTO pozettos_categoria VALUES(5,'Cabinas');
+INSERT INTO pozettos_categoria VALUES(6,'Otros');
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
@@ -234,6 +235,15 @@ INSERT INTO pozettos_categoria_servicios VALUES(5,5);
 INSERT INTO pozettos_categoria_servicios VALUES(6,5);
 INSERT INTO pozettos_categoria_servicios VALUES(7,5);
 INSERT INTO pozettos_categoria_servicios VALUES(8,5);
+INSERT INTO pozettos_categoria_servicios VALUES(16,6);
+INSERT INTO pozettos_categoria_servicios VALUES(17,6);
+INSERT INTO pozettos_categoria_servicios VALUES(18,6);
+INSERT INTO pozettos_categoria_servicios VALUES(19,6);
+INSERT INTO pozettos_categoria_servicios VALUES(20,6);
+INSERT INTO pozettos_categoria_servicios VALUES(21,6);
+INSERT INTO pozettos_categoria_servicios VALUES(22,6);
+INSERT INTO pozettos_categoria_servicios VALUES(50,6);
+
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */

@@ -39,9 +39,9 @@ function inicializar()
 	/*obtenerInfoTimers();*/
 }
 
-function mostrarPanel()
+function mostrarModulo(nombre_modulo)
 {
-	ajax('accion=mostrarPanel', false, mostrarNuevoModulo_ajax, false);
+	ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
 }
 
 function obtenerOptions()
@@ -146,11 +146,20 @@ function actualizarInicio(fila_id, evento)
 {
 	if(evento == 13)
 	{
-		var arreglo_id = fila_id.split("_");
-		var hiv_id = arreglo_id[(arreglo_id.length - 1)];
-		var valor_nuevo = $('#'+fila_id).val();
-		ajax('accion=actualizarInicio&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo, false, actualizarTiemposYTotalAjax, false);
-		return true;
+		var filtro = filtro = /^\d{1,2}[\.\:]\d{1,2}$/;//cualquier secuencia de numeros y la coma para separar
+		if (filtro.test($('#'+fila_id).val()))
+		{
+			var arreglo_id = fila_id.split("_");
+			var hiv_id = arreglo_id[(arreglo_id.length - 1)];
+			var valor_nuevo = $('#'+fila_id).val().replace(".", ":");
+			ajax('accion=actualizarInicio&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo, false, actualizarTiemposYTotalAjax, false);
+			return true;
+		}
+		else
+		{
+			$('#'+fila_id).addClass('letra_roja');
+			return false;
+		}
 	}
 	else
 		return false;

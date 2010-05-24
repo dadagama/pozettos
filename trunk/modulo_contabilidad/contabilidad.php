@@ -27,8 +27,8 @@ switch($_REQUEST['accion'])
 /**********************************
 ******* ACCIONES GENERICAS  *******
 ***********************************/
-	case "mostrarPanel":
-		require_once("../modulo_panel/fm_panel.php");
+	case "mostrarModulo":
+		require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
 		break;
 		
 	case "obtenerOptions":

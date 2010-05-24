@@ -24,8 +24,8 @@ $objetoDeuda = new Deuda($_SESSION['arregloParametros']);
 
 switch($_REQUEST['accion'])
 {	
-	case "mostrarPanel":
-		require_once("../modulo_panel/fm_panel.php");
+	case "mostrarModulo":
+		require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
 		break;
 	
 	case "actualizarValor":

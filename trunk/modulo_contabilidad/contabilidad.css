@@ -33,25 +33,6 @@
 	padding: 0px;
 	background: #fff;
 }
-
-/************************
-**     hora inicio     **
-*************************/
-.select_hora
-{
-	width: 50px;
-	text-align: center;
-}
-.boton_hora
-{
-	padding: 0px;
-}
-.imagen_hora
-{
-	width: 20px;
-	height: 20px;
-	border: none;
-}
 /*******************************************
 **            TIMERS                      **
 ********************************************/
@@ -81,17 +62,6 @@
 /*******************************************
 **            HISTORIAL SERVICIOS         **
 ********************************************/
-
-.cuerpo_historial
-{
-	/*height: 300px;
-	overflow: auto;*/
-}
-.input_observacion_servicio
-{
-	height: 20px;
-	width: 250px;
-}
 .fila_historial_par
 {
 	background: #d0dfff;

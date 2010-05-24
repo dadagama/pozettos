@@ -27,7 +27,6 @@ switch($_REQUEST['accion'])
 /**********************************
 ******* ACCIONES GENERICAS  *******
 ***********************************/
-
 	case "mostrarPanel":
 		require_once("../modulo_panel/fm_panel.php");
 		break;
@@ -58,11 +57,6 @@ switch($_REQUEST['accion'])
 		echo $objetoContabilidad->obtenerJsonHoras($_REQUEST['hiv_id']);
 		break;
 
-/*	
-	case "actualizarListaClientes":
-		echo $objetoContabilidad->actualizarListaClientes(trim($_REQUEST['info_cliente']));
-		break;
-*/
 	case "actualizarCampoColor":
 		if($objetoContabilidad->actualizarCampoColor($_REQUEST['hiv_id'],$_REQUEST['hiv_color_fila']))
 			$objetoContabilidad->actualizarHistorialVentas();
@@ -81,11 +75,6 @@ switch($_REQUEST['accion'])
 		// se retorna el id de la fila eliminada
 		echo $objetoContabilidad->eliminarFila($_REQUEST['id']);
 		break;
-/*			
-	case "actualizarObservacion":
-		$objetoContabilidad->actualizarObservacion($_REQUEST['prefijo'], $_REQUEST['id_fila'], $_REQUEST['observacion']);
-		break;
-	*/	
 
 /**********************************
 ******* ACCIONES HISTORIAL  *******
@@ -108,15 +97,6 @@ switch($_REQUEST['accion'])
 	case "actualizarHistorialVentas":
 		$objetoContabilidad->actualizarHistorialVentas();
 		break;
-	/*
-	case "actualizarTotalServicio":
-		echo $objetoContabilidad->actualizarTotalServicio($_REQUEST['servicio'],$_REQUEST['duracion']);
-		break;
-		
-	case "actualizarDuracionYTotalServicio":
-		echo $objetoContabilidad->actualizarDuracionYTotalServicio($_REQUEST['id'],$_REQUEST['duracion']);
-		break;
-*/
 /**********************************
 ******* ACCIONES TIMERS     *******
 ***********************************/

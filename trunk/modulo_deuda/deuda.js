@@ -21,81 +21,66 @@ $(document).ready(inicializar);
 function inicializar()
 {
 	url_controlador_modulo = "../modulo_deuda/deuda.php";
-	if($('#vep_cli_id').val())
+	actualizarHistorialDeudas();
+}
+
+function mostrarPanel()
+{
+	ajax('accion=mostrarPanel', false, mostrarNuevoModulo_ajax, false);
+}
+
+function actualizarValor(fila_id,nombre_campo, evento)
+{
+	if(evento == 13)
 	{
-		actualizarHistoricoProductos();
-		actualizarHistoricoServicios();
+		var arreglo_id = fila_id.split("_");
+		var hiv_id = arreglo_id[(arreglo_id.length - 1)];
+		var valor_nuevo = $('#'+fila_id).val();
+		ajax('accion=actualizarValor&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo+"&nombre_campo="+nombre_campo, false, actualizarAjax, false);
+		return true;
 	}
-}
-
-function actualizarEstadoDeuda(id_fila, estado, prefijo)
-{
-	ajax("accion=actualizarEstadoDeuda&prefijo="+prefijo+"&id_fila="+id_fila+"&estado="+estado, null, actualizarEstadoDeudaAjax, null);
-}
-
-function actualizarEstadoDeudaAjax(prefijo)
-{
-	if(prefijo == "vep")
-		actualizarHistoricoProductos();
-	else if(prefijo == "ves")
-		actualizarHistoricoServicios();
 	else
-		alert('Error inesperado actualizando estado de la deuda');
+		return false;
 }
 
-function actualizarObservacion(key_code, id_fila, prefijo)
+function actualizarAjax(actualizo)
 {
-	if(key_code == 13)
+	if(actualizo)
+		console.log("actualizado!");
+	else
+		console.log("no se actualizo ningun valor de la fila");
+}
+
+function actualizarEstadoPago(id_fila, ultimo_clic)
+{
+	if(mensajeConfirmar())
 	{
-		var observacion = $("#"+prefijo+"_observacion_"+id_fila).val();
-		ajax("accion=actualizarObservacion&prefijo="+prefijo+"&id_fila="+id_fila+"&observacion="+observacion, null, null, null);
+		var hiv_pago = $('#hiv_chk_pago_'+id_fila).attr('checked');
+		var hiv_es_tiempo_gratis = $('#hiv_chk_gratis_'+id_fila).attr('checked');
+		ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
+	}
+	else
+	{
+		$('#hiv_chk_pago_'+id_fila).removeAttr('checked');
+		$('#hiv_chk_gratis_'+id_fila).removeAttr('checked');
 	}
 }
 
-function actualizarListaClientes(key_code)
+function actualizarEstadoPagoAjax(actualizo)
 {
-	if(key_code == 13)
-	{
-		var info_cliente = $("#buscar_cliente").val();
-		ajax("accion=actualizarListaClientes&info_cliente="+info_cliente, null, actualizarListaClientesAjax, null);
-	}
+	if(actualizo)
+		actualizarHistorialDeudas(actualizo);
+	else
+		console.log('Error actualizando estado del pago');
 }
 
-function actualizarListaClientesAjax(opciones_clientes)
+function actualizarHistorialDeudas()
 {
-	$("#cli_id").children().remove();
-	$("#cli_id").html(opciones_clientes);
+	ajax("accion=actualizarHistorialDeudas", null, actualizarHistorialDeudasAjax, null);
 }
 
-
-/**********************************
-******* ACCIONES PRODUCTOS  *******
-***********************************/
-
-function actualizarHistoricoProductos()
+function actualizarHistorialDeudasAjax(info_servicios)
 {
-	var cli_id = $("#vep_cli_id").val();
-	ajax("accion=actualizarHistoricoProductos&cli_id="+cli_id, null, actualizarHistoricoProductosAjax, null);
-}
-
-function actualizarHistoricoProductosAjax(info_productos)
-{
-	$("#vep_historial").children().remove();
-	$("#vep_historial").html(info_productos);
-}
-
-/**********************************
-******* ACCIONES SERVICIOS  *******
-***********************************/
-
-function actualizarHistoricoServicios()
-{
-	var cli_id = $("#vep_cli_id").val();
-	ajax("accion=actualizarHistoricoServicios&cli_id="+cli_id, null, actualizarHistoricoServiciosAjax, null);
-}
-
-function actualizarHistoricoServiciosAjax(info_productos)
-{
-	$("#ves_historial").children().remove();
-	$("#ves_historial").html(info_productos);
+	$("#historial_deudas").children().remove();
+	$("#historial_deudas").html(info_servicios);
 }

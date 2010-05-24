@@ -23,26 +23,24 @@ require_once("../modulo_deuda/Deuda.inc");
 $objetoDeuda = new Deuda($_SESSION['arregloParametros']);
 
 switch($_REQUEST['accion'])
-{
-	case "actualizarListaClientes":
-		echo $objetoDeuda->actualizarListaClientes(trim($_REQUEST['info_cliente']));
+{	
+	case "mostrarPanel":
+		require_once("../modulo_panel/fm_panel.php");
 		break;
 	
-	case "actualizarHistoricoProductos":
-		$objetoDeuda->actualizarHistoricoProductos($_REQUEST['cli_id']);
-		break;
-		
-	case "actualizarHistoricoServicios":
-		$objetoDeuda->actualizarHistoricoServicios($_REQUEST['cli_id']);
+	case "actualizarValor":
+		echo $objetoDeuda->actualizarValor($_REQUEST['hiv_id'],$_REQUEST['valor_nuevo'],$_REQUEST['nombre_campo']);
 		break;
 
-	case "actualizarEstadoDeuda":
-		//se retorna el prefijo de la zona de actualizacion
-		echo $objetoDeuda->actualizarEstadoDeuda($_REQUEST['prefijo'], $_REQUEST['id_fila'], $_REQUEST['estado']);
+	case "actualizarEstadoPago":
+		if($objetoDeuda->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']))
+			$objetoDeuda->actualizarHistorialVentas();
+		else
+			echo false;
 		break;
 		
-	case "actualizarObservacion":
-		$objetoDeuda->actualizarObservacion($_REQUEST['prefijo'], $_REQUEST['id_fila'], $_REQUEST['observacion']);
+	case "actualizarHistorialDeudas":
+		$objetoDeuda->actualizarHistorialDeudas();
 		break;
 }
 ?>

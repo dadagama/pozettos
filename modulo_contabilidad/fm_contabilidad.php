@@ -243,173 +243,84 @@
 
 						// $html->end("table");
 					// $html->end("td");
-					
-				// $html->end("tr");
-	$html->end("table");
-	
-	/* ZONA HISTORIAL */
-	// $html->tag("table", array("class"=>"zona_historial"));
-		// $html->tag("tr");
-			// $html->tag("td", array("class"=>"tabla_servicio"));
-	
-	
-				// $html->tag("table",array("class"=>"tabla_servicio alineacion_centro"));
-					// $html->tag("tr");
-					
-						
-						
-						// /* CELDA HORA INICIO */
-						// $html->tag("td", array("class"=>"celda_interna fondo_verde"));
-							// $html->tag("table",array("class"=>"tabla_interna"));
-								
-								// $html->tag("caption");
-									// $html->tag("label", array("class"=>"label_formulario"));
-										// $html->printText("Hora Inicio");
-									// $html->end("label");
-								// $html->end("caption");
-								
-								// $html->tag("tr");
-									// $html->tag("td");
-										// $html->tag("select", array("id"=>"ves_hora", "class"=>"select_hora verdana letra_9", "size"=>"9"));
-											// $arreglo_horas = array("1"=>"01","2"=>"02","3"=>"03","4"=>"04","5"=>"05","6"=>"06","7"=>"07","8"=>"08","9"=>"09","10"=>"10","11"=>"11","12"=>"12");
-											// $html->arregloAOpciones($arreglo_horas);
-										// $html->end("select");
-									// $html->end("td");
-									
-									// $html->tag("td");
-										// $html->tag("label", array("class"=>"label_formulario"));
-										// $html->printText(":");
-									// $html->end("label");
-									// $html->end("td");
-									
-									// $html->tag("td");
-										// $html->tag("select", array("id"=>"ves_minuto", "class"=>"select_hora verdana letra_9", "size"=>"9"));
-											// $arreglo_minutos = array("0"=>"00","5"=>"05","10"=>"10","15"=>"15","20"=>"20","25"=>"25","30"=>"30","35"=>"35","40"=>"40","45"=>"45","50"=>"50","55"=>"55");
-											// $html->arregloAOpciones($arreglo_minutos);
-										// $html->end("select");
-									// $html->end("td");
-									
-									// $html->tag("td", array("class"=>"alineacion_centro"));
-										// $html->tag("select", array("id"=>"ves_meridiano", "class"=>"select_hora verdana letra_9", "size"=>"2"));
-											// $arreglo_meridiano = array("am"=>"AM","pm"=>"PM");
-											// $html->arregloAOpciones($arreglo_meridiano);
-										// $html->end("select");
-										
-										// $html->br(2);
-										
-										// $html->tag("button", array("class"=>"boton_hora", "onclick"=>"actualizarHoraInicio();"));
-											// $html->tag("img", array("src"=>"../imagenes/clock.png", "class"=>"imagen_hora"), true);
-										// $html->end("button");
-									// $html->end("td");
-								// $html->end("tr");
-								
-							// $html->end("table");
-						// $html->end("td");
-						
-						// /* CELDA DURACION */
-						// $html->tag("td", array("class"=>"celda_interna fondo_verde"));
-							// $html->tag("table",array("class"=>"tabla_interna"));
-								
-								// $html->tag("caption");
-									// $html->tag("label", array("class"=>"label_formulario"));
-										// $html->printText("Duración");
-									// $html->end("label");
-								// $html->end("caption");
-						
-								// $html->tag("tr");
-									// $html->tag("td");
-										// $html->printSelect($conexion_bd_bozettos, "dus_minutos", "dus_texto", "pozettos_duracion_servicio", "", "00:00:00", array("id"=>"ves_duracion", "class"=>"select_duracion verdana letra_9 alineacion_centro", "size"=>"9", "onchange"=>"actualizarTotalServicio();"));
-									// $html->end("td");
-								// $html->end("tr");
 
-							// $html->end("table");
-						// $html->end("td");
-						
-					// $html->end("tr");
-				// $html->end("table");
-			// $html->end("td");
+		$html->end("tr");
+	$html->end("table");
+
+	$html->tag("table",array("class"=>"zona_historial ancho_100p"));
+	
+	//ENCABEZADOS HISTORIAL		
+		$html->tag("thead");
+			$html->tag("tr");
+				$html->tag("th");
+				$html->end("th");
 			
-			// $html->tag("td",array("class"=>"alineacion_centro"));
-			// $html->end("td");
-			
-		// $html->end("tr");
-		
-		// $html->tag("tr");
-			// $html->tag("td", array("colspan"=>"2"));
-				$html->tag("table",array("class"=>"zona_historial ancho_100p"));
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_140"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Servicio");
+					$html->end("label");
+				$html->end("th");
 				
-				//ENCABEZADOS HISTORIAL		
-					$html->tag("thead");
-						$html->tag("tr");
-							$html->tag("th");
-							$html->end("th");
-						
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_140"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Servicio");
-								$html->end("label");
-							$html->end("th");
-							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Inicio");
-								$html->end("label");
-							$html->end("th");
-							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Duración");
-								$html->end("label");
-							$html->end("th");
-							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Termina");
-								$html->end("label");
-							$html->end("th");
-							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Total");
-								$html->end("label");
-							$html->end("th");
-							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Pagó");
-								$html->end("label");
-							$html->end("th");
-							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Gratis");
-								$html->end("label");
-							$html->end("th");
-							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Cliente");
-								$html->end("label");
-							$html->end("th");
-							
-							$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-								$html->tag("label", array("class"=>"label_formulario"));
-									$html->printText("Observación");
-								$html->end("label");
-							$html->end("th");
-						
-							$html->tag("th");
-							$html->end("th");
-							
-							// $html->tag("th", array("class"=>"ancho_scroll"));
-							// $html->end("th");
-						$html->end("tr");
-					$html->end("thead");
-					
-					$html->tag("tbody", array("id"=>"historial_ventas", "class"=>"cuerpo_historial"));
-						
-					$html->end("tbody");
-				$html->end("table");
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Inicio");
+					$html->end("label");
+				$html->end("th");
+				
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Duración");
+					$html->end("label");
+				$html->end("th");
+				
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Termina");
+					$html->end("label");
+				$html->end("th");
+				
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Total");
+					$html->end("label");
+				$html->end("th");
+				
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Pagó");
+					$html->end("label");
+				$html->end("th");
+				
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Gratis");
+					$html->end("label");
+				$html->end("th");
+				
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Cliente");
+					$html->end("label");
+				$html->end("th");
+				
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Observación");
+					$html->end("label");
+				$html->end("th");
+			
+				$html->tag("th");
+				$html->end("th");
+				
+				// $html->tag("th", array("class"=>"ancho_scroll"));
+				// $html->end("th");
+			$html->end("tr");
+		$html->end("thead");
+		
+		$html->tag("tbody", array("id"=>"historial_ventas", "class"=>"cuerpo_historial"));
+			
+		$html->end("tbody");
+	$html->end("table");
 ?>
 	</body>
 </html>

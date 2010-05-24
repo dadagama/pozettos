@@ -17,78 +17,19 @@
 */
 
 /*******************************************
-**            ZONA PRODUCTOS              **
+**            ZONA SERVICIOS              **
 ********************************************/
-.zona_productos
+.zona_historial
 {
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 10px;
+	width: 900px;
+	border: 1px solid #4F8FFF;
 }
 
 /*******************************************
-**            CLIENTE                     **
-********************************************/
-.tabla_cliente
-{
-	border: 1px solid #4F8FFF;
-	border-spacing: 4px;
-}
-.select_cliente
-{
-	width: 250px;
-}
-.input_cliente
-{
-	width: 190px;
-}
-/*******************************************
-**            HISTORIAL PRODUCTOS         **
-********************************************/
-.tabla_historial_producto
-{
-	border: 1px solid #4F8FFF;
-	margin-left: 10px;
-	width: 600px;
-}
-.cuerpo_historial_producto
-{
-	height: 164px;
-	overflow: auto;
-}
-.input_observacion_producto
-{
-	height: 20px;
-	width: 140px;
-}
-.celda_producto
-{
-	font-size: 11pt;
-	padding-left: 5px;
-	padding-right: 5px;
-	font-family: times New Roman;
-}
-/*******************************************
 **            HISTORIAL SERVICIOS         **
 ********************************************/
-.tabla_historial_servicio
-{
-	border: 1px solid #4F8FFF;/*6FAF50;*/
-	margin-top: 10px;
-	width: 900px;
-	margin-left: auto;
-	margin-right: auto;
-}
-.cuerpo_historial_servicio
-{
-	height: 150px;
-	overflow: auto;
-}
-.input_observacion_servicio
-{
-	height: 20px;
-	width: 250px;
-}
 .fila_historial_par
 {
 	background: #d0dfff;
@@ -113,12 +54,6 @@
 	height: 10px;
 	border: none;
 }
-.imagen_deuda
-{
-	width: 14px;
-	height: 14px;
-	border: none;
-}
 .boton_delete
 {
 	padding: 0px;
@@ -128,6 +63,12 @@
 {
 	width: 18px;
 	height: 18px;
+	border: none;
+}
+.imagen_deuda
+{
+	width: 15px;
+	height: 15px;
 	border: none;
 }
 .boton_color

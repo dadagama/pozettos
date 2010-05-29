@@ -71,7 +71,7 @@ function obtenerOptionsAjax(jsonOptions)
   options_duracion = obj_options.options_duracion;
   options_hora = obj_options.options_hora;
   options_minutos = obj_options.options_minutos;
-  //evitar un llamado adicional de ajax
+  //evitar un llamado adicional de ajax para obtener saldo inicial titan
   $("#sit_saldo").text(obj_options.sit_saldo);
 }
 

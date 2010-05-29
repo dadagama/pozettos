@@ -1,11 +1,11 @@
-﻿<html>
+<html>
 	<head>
 		<title>Pozetto's.NET</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<link rel="stylesheet" type="text/css" href="../estilos/general.css"/>
-		<!--link rel="stylesheet" type="text/css" href="../estilos/jquery.vreboton.ColorPicker.css"/-->
-		
-		<script src="../herramientas/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="../estilos/redmond/ui.all.css" />
+		<link rel="stylesheet" type="text/css" href="../estilos/redmond/ui.datepicker.css" />
+    <script src="../herramientas/jquery-1.4.2.min.js" type="text/javascript"></script>
 		<script src="../herramientas/general.js" type="text/javascript"></script>
 		<script src="../herramientas/validacion.js" type="text/javascript"></script>
 		<script src="../herramientas/ui.core.js" type="text/javascript"></script>
@@ -54,18 +54,41 @@
 																					"con_password" => "root",
 																					"con_nombre_bd" => "pozettos");
 
-			//DIV CUERPO
-			$html->tag("div", array("id"=>"div_cuerpo"));
-				
-				if(isset($_POST['modulo']))
-				{
-					$_SESSION['modulo'] = $_POST['modulo'];
-				}
-				else if(!isset($_SESSION['modulo']))
-					$_SESSION['modulo'] = "panel";
+  /* TITULO CON LA FECHA DEL DIA */
+  $html->tag("table",array("class"=>"tbl_titulo tabla_centrada borde_azul"));
+    $html->tag("tr");
+      $html->tag("td", array("class"=>"alineacion_centro"));
+        $html->tag("label");
+          $html->printText("Pozetto's.Net");
+        $html->end("label");
+      $html->end("td");
+      
+      $html->tag("td", array("class"=>"ancho_40"));
+        $html->tag("input", array("title"=>"Ir al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarModulo('panel');"), true);
+      $html->end("td");
+      
+      $html->tag("td", array("class"=>"ancho_40"));
+        $html->tag("input", array("title"=>"Ir a contabilidad", "type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "value"=>date("Y-m-d"), "id"=>"con_fecha"), true);
+      $html->end("td");
+      
+      $html->tag("td", array("class"=>"ancho_40"));
+        $html->tag("input", array("title"=>"Ir a Deudas de clientes", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
+      $html->end("td");
+      
+      $html->tag("td", array("class"=>"ancho_40"));
+        $html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/estadistica.gif", "onclick"=>"mostrarModulo('estadistica');"), true);
+      $html->end("td");
+    $html->end("tr");
+  $html->end("table");
 
-				require_once("../modulo_".$_SESSION['modulo']."/fm_".$_SESSION['modulo'].".php");
-			$html->end("div");
-		?>
+  //DIV CUERPO
+  $html->tag("div", array("id"=>"div_cuerpo"));
+    if(isset($_POST['modulo']))
+      $_SESSION['modulo'] = $_POST['modulo'];
+    else if(!isset($_SESSION['modulo']))
+      $_SESSION['modulo'] = "panel";
+    require_once("../modulo_".$_SESSION['modulo']."/fm_".$_SESSION['modulo'].".php");
+  $html->end("div");
+?>
 	</body>
 </html>

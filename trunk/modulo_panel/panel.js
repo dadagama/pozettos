@@ -1,4 +1,4 @@
-﻿/*
+/*
  This file is part of Pozettos.
 
     Pozettos is free software: you can redistribute it and/or modify
@@ -19,26 +19,10 @@ $(document).ready(inicializar);
 
 function inicializar()
 {
-	$('#con_fecha').datepicker({ dateFormat: 'yy-mm-dd' });
 	url_controlador_modulo = "panel.php";
-}
-
-function mostrarModulo(nombre_modulo)
-{
-	ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
-}
-
-function validarFechaContabilidad()
-{
-	return validarCampoFecha($("#con_fecha"),'Fecha de contabilidad', false);
-}
-
-function mostrarContabilidad()
-{
-		ajax('accion=mostrarContabilidad&con_fecha='+$("#con_fecha").val(), validarFechaContabilidad, mostrarNuevoModulo_ajax, false);
-}
-
-function mostrarDeudores()
-{
-		ajax('accion=mostrarDeudores', false, mostrarNuevoModulo_ajax, false);
+	$('#con_fecha').datepicker({  dateFormat: 'yy-mm-dd',
+                                onSelect: function(dateText, inst){ 
+                                  ajax('accion=mostrarModulo&nombre_modulo=contabilidad&con_fecha='+$("#con_fecha").val(), false, mostrarNuevoModulo_ajax, false); 
+                                }
+                              });
 }

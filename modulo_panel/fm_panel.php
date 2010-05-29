@@ -29,8 +29,6 @@
 	require_once("../herramientas/GeneradorHtml.inc");
 	$html = new GeneradorHtml();
 	
-	$html->cargarModuloJS($_SESSION['modulo']);
-	
 	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada "));
 		$html->tag("tr");
 			$html->tag("td", array("class"=>"alineacion_centro"));

@@ -73,10 +73,11 @@ switch($_REQUEST['accion'])
 		break;
 
 	case "actualizarEstadoPago":
-		if($objetoContabilidad->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']))
-			$objetoContabilidad->actualizarHistorialVentas();
-		else
-			echo false;
+		echo $objetoContabilidad->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']);
+		//if($objetoContabilidad->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']))
+			//$objetoContabilidad->actualizarHistorialVentas();
+		//else
+			//echo false;
 		break;
 		
 	case "eliminarFila":
@@ -89,17 +90,14 @@ switch($_REQUEST['accion'])
 ***********************************/
 
 	case "agregarFilaHistorial":
-		if($objetoContabilidad->agregarFilaHistorial($_REQUEST['hiv_ser_id'],
-																									$_REQUEST['hiv_ser_tipo'],
-																									$_REQUEST['hiv_hora'],
-																									$_REQUEST['hiv_minuto'],
-																									$_REQUEST['hiv_meridiano'],
-																									$_REQUEST['hiv_dus_minutos'],
-																									$_REQUEST['hiv_total'],
-																									$_REQUEST['hiv_fecha']))
-			$objetoContabilidad->actualizarHistorialVentas();
-		else
-			echo false;
+		$objetoContabilidad->agregarFilaHistorial($_REQUEST['hiv_ser_id'],
+																							$_REQUEST['hiv_ser_tipo'],
+																							$_REQUEST['hiv_hora'],
+																							$_REQUEST['hiv_minuto'],
+																							$_REQUEST['hiv_meridiano'],
+																							$_REQUEST['hiv_dus_minutos'],
+																							$_REQUEST['hiv_total'],
+																							$_REQUEST['hiv_fecha']);
 		break;
 	
 	case "actualizarHistorialVentas":

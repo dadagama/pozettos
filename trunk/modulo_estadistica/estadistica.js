@@ -26,11 +26,6 @@ function inicializar()
 	cargarCategorias();
 }
 
-function mostrarModulo(nombre_modulo)
-{
-	ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
-}
-
 function cargarCategorias()
 {
 	ajax('accion=cargarCategorias', false, cargarCategoriasAjax, false);

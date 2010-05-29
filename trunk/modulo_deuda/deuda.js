@@ -22,33 +22,60 @@ function inicializar()
 {
 	url_controlador_modulo = "../modulo_deuda/deuda.php";
 	actualizarHistorialDeudas();
+	$("#tbl_historial").tablesorter({widgets: ['zebra']});
 }
 
-function mostrarModulo(nombre_modulo)
+function actualizarOrdenamiento()
 {
-	ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
+  $("#tbl_historial").trigger("update");
+  var sorting = [[0,0],[7,0],[1,0]];
+  $("#tbl_historial").trigger("sorton",[sorting]); 
+}
+
+function editableObservacion(fila_id,editable)
+{
+  if(editable)
+  {
+    var hiv_observacion = $('#'+fila_id).children().text();
+    var input_total = "<input type='text' class='ancho_90p verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_observacion\",13)){ editableObservacion(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_observacion\",event.keyCode)){ editableObservacion(\""+fila_id+"\",false);}' value='"+hiv_observacion+"'/>";
+    $('#'+fila_id).children().replaceWith(input_total);
+    $('#'+fila_id).children().focus();
+  }
+  else
+  {
+    var hiv_observacion = $('#'+fila_id).children().val();
+    if(hiv_observacion == undefined)
+      hiv_observacion = "";
+    var label_total = "<label class='cursor_cruz'>"+hiv_observacion+"</label>";
+    $('#'+fila_id).children().replaceWith(label_total);
+  }
 }
 
 function actualizarValor(fila_id,nombre_campo, evento)
 {
-	if(evento == 13)
-	{
-		var arreglo_id = fila_id.split("_");
-		var hiv_id = arreglo_id[(arreglo_id.length - 1)];
-		var valor_nuevo = $('#'+fila_id).val();
-		ajax('accion=actualizarValor&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo+"&nombre_campo="+nombre_campo, false, actualizarAjax, false);
-		return true;
-	}
-	else
-		return false;
+  if(evento == 13)
+  {
+    var arreglo_id = fila_id.split("_");
+    var hiv_id = arreglo_id[(arreglo_id.length - 1)];
+    var valor_nuevo = $('#'+fila_id).children().val();
+    if(valor_nuevo == undefined)
+      valor_nuevo = "";
+    ajax('accion=actualizarValor&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo+"&nombre_campo="+nombre_campo, false, actualizarAjax, false);
+    return true;
+  }
+  else
+    return false;
 }
 
 function actualizarAjax(actualizo)
 {
-	if(actualizo)
-		console.log("actualizado!");
-	else
-		console.log("no se actualizo ningun valor de la fila");
+  if(actualizo)
+  {
+    console.log("actualizado!");
+    actualizarOrdenamiento();
+  }
+  else
+    console.log("no se actualizo ningun valor de la fila");
 }
 
 function actualizarEstadoPago(id_fila, ultimo_clic)
@@ -66,10 +93,13 @@ function actualizarEstadoPago(id_fila, ultimo_clic)
 	}
 }
 
-function actualizarEstadoPagoAjax(actualizo)
+function actualizarEstadoPagoAjax(id_actualizado)
 {
-	if(actualizo)
-		actualizarHistorialDeudas(actualizo);
+	if(id_actualizado)
+	{
+	  $("#hiv_fila_"+id_actualizado).remove();
+    actualizarOrdenamiento();
+  }  
 	else
 		console.log('Error actualizando estado del pago');
 }
@@ -83,4 +113,5 @@ function actualizarHistorialDeudasAjax(info_servicios)
 {
 	$("#historial_deudas").children().remove();
 	$("#historial_deudas").html(info_servicios);
+	actualizarOrdenamiento();
 }

@@ -45,18 +45,18 @@
 		$html->end("tr");
 	$html->end("table");
 	
-	$html->tag("table",array("class"=>"zona_historial ancho_100p"));
+	$html->tag("table",array("id"=>"tbl_historial", "class"=>"zona_historial ancho_100p"));
 		//ENCABEZADOS HISTORIAL		
 		$html->tag("thead");
 			$html->tag("tr");
 				
-				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_200"));
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
 					$html->tag("label", array("class"=>"label_formulario"));
 						$html->printText("Cliente");
 					$html->end("label");
 				$html->end("th");
 			
-				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_80"));
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
 					$html->tag("label", array("class"=>"label_formulario"));
 						$html->printText("Fecha");
 					$html->end("label");
@@ -92,7 +92,7 @@
 					$html->end("label");
 				$html->end("th");
 				
-				$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_200"));
 					$html->tag("label", array("class"=>"label_formulario"));
 						$html->printText("Observación");
 					$html->end("label");

@@ -75,3 +75,8 @@ function inicializar()
                                 }
                               });
 }
+
+function mostrarModulo(nombre_modulo)
+{
+  ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
+}

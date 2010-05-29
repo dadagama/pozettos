@@ -63,3 +63,15 @@ function mensajeError()
 {
 	alert("Hubo un error");
 }
+
+$(document).ready(inicializar);
+
+function inicializar()
+{
+	url_controlador_modulo = "panel.php";
+	$('#con_fecha').datepicker({  dateFormat: 'yy-mm-dd',
+                                onSelect: function(dateText, inst){ 
+                                  ajax('accion=mostrarModulo&nombre_modulo=contabilidad&con_fecha='+$("#con_fecha").val(), false, mostrarNuevoModulo_ajax, false); 
+                                }
+                              });
+}

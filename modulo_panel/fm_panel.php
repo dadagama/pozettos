@@ -1,8 +1,6 @@
-﻿<html>
+<html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="../modulo_panel/panel.css"/>
-		<link rel="stylesheet" type="text/css" href="../estilos/redmond/ui.all.css" />
-		<link rel="stylesheet" type="text/css" href="../estilos/redmond/ui.datepicker.css" />
 	</head>
 	<body>
 <?php
@@ -33,72 +31,14 @@
 	
 	$html->cargarModuloJS($_SESSION['modulo']);
 	
-	/* TITULO*/
-	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada borde_azul"));
-		$html->tag("tr");
-			$html->tag("td", array("class"=>"alineacion_centro"));
-				$html->tag("label");
-					$html->printText("Pozetto's.Net");
-				$html->end("label");
-			$html->end("td");
-			
-			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Ir al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarModulo('panel');"), true);
-			$html->end("td");
-			
-			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Ir a contabilidad de HOY", "type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "onclick"=>"mostrarModulo('contabilidad');"), true);
-			$html->end("td");
-			
-			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Ir a Deudas de clientes", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
-			$html->end("td");
-			
-			$html->tag("td", array("class"=>"ancho_40"));
-				$html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/estadistica.gif", "onclick"=>"mostrarModulo('estadistica');"), true);
-			$html->end("td");
-		$html->end("tr");
-	$html->end("table");
-	
 	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada "));
 		$html->tag("tr");
 			$html->tag("td", array("class"=>"alineacion_centro"));
 				$html->tag("label");
-					$html->printText("Panel de Control");
+					$html->printText("Bienvenido, seleccione una de las opciones");
 				$html->end("label");
 			$html->end("td");
 		$html->end("tr");
-	$html->end("table");
-		
-	/*ZONA modulos*/
-	$html->tag("table", array("id"=>"tbl_modulos", "class"=>"tabla_centrada"));
-
-		$html->tag("tr");
-				$html->tag("td", array("class"=>"alineacion_centro"));
-					$html->tag("input", array("class"=>"ancho_80 alineacion_centro letra_9 verdana letra_azul", "maxlength "=>"10","name"=>"con_fecha", "id"=>"con_fecha", "type"=>"text", "value"=>date("Y-m-d")), true);
-					$html->br();
-					$html->tag("input", array("type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "onclick"=>"mostrarContabilidad();"), true);
-				$html->end("td");
-				
-				$html->tag("td", array("class"=>"alineacion_centro"));
-					$html->tag("input", array("type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarDeudores();"), true);
-				$html->end("td");
-		$html->end("tr");
-		
-		$html->tag("tr");
-			$html->tag("td", array("class"=>"alineacion_centro"));
-				$html->tag("label", array("class"=>"letra_9 verdana letra_azul negrilla"));
-					$html->printText("Contabilidad diaria");
-				$html->end("label");
-			$html->end("td");
-
-			$html->tag("td", array("class"=>"alineacion_centro"));
-				$html->tag("label", array("class"=>"letra_9 verdana letra_azul negrilla"));
-					$html->printText("Consultar deudas");
-				$html->end("label");
-			$html->end("td");
-		$html->end("tr");
-		
 	$html->end("table");
 	
 ?>

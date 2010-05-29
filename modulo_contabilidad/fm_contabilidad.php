@@ -42,33 +42,6 @@
   require_once("../conexiones/ConexionBDMySQL.inc");
   $conexion_bd_bozettos = new ConexionBDMySQL($_SESSION['arregloParametros']);
   $conexion_bd_bozettos->conectar();
-
-  /* TITULO CON LA FECHA DEL DIA */
-  $html->tag("table",array("class"=>"tbl_titulo tabla_centrada borde_azul"));
-    $html->tag("tr");
-      $html->tag("td", array("class"=>"alineacion_centro"));
-        $html->tag("label");
-          $html->printText("Pozetto's.Net");
-        $html->end("label");
-      $html->end("td");
-      
-      $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Ir al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarModulo('panel');"), true);
-      $html->end("td");
-      
-      $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Ir a contabilidad de HOY", "type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "onclick"=>"mostrarModulo('contabilidad');"), true);
-      $html->end("td");
-      
-      $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Ir a Deudas de clientes", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
-      $html->end("td");
-      
-      $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/estadistica.gif", "onclick"=>"mostrarModulo('estadistica');"), true);
-      $html->end("td");
-    $html->end("tr");
-  $html->end("table");
   
   $html->tag("table",array("class"=>"tbl_titulo tabla_centrada"));
     $html->tag("tr");

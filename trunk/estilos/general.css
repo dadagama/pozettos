@@ -163,6 +163,11 @@ form
 {
 	height: 50px;
 }
+.tbl_titulo .fecha_otro_dia
+{
+  color:#FF0000;
+  text-decoration:blink;
+}
 .tbl_titulo label
 {
 	font-family: Helvetica;

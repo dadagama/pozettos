@@ -50,7 +50,9 @@
           $html->printText("Contabilidad");
           $html->espacios(2);
         $html->end("label");
-        $html->tag("label", array("id"=>"lbl_fecha_contabilidad"));
+        if($_SESSION['fecha_contabilidad'] != date("Y-m-d"))
+          $clase_fecha = "fecha_otro_dia";
+        $html->tag("label", array("id"=>"lbl_fecha_contabilidad", "class"=>$clase_fecha));
           $html->printText($html->obtenerFechaTextual($_SESSION['fecha_contabilidad'], true, true, true, true));
           $html->tag("input", array("type"=>"hidden", "id"=>"fecha_contabilidad", "value"=>$_SESSION['fecha_contabilidad']));
         $html->end("label");

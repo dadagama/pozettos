@@ -1,4 +1,4 @@
-﻿/*
+/*
  This file is part of Pozettos.
 
     Pozettos is free software: you can redistribute it and/or modify
@@ -62,6 +62,9 @@
 /*******************************************
 **            HISTORIAL SERVICIOS         **
 ********************************************/
+tr.odd { background: #e6f2ff;}
+tr.even { background: #fff;}
+
 .fila_historial_par
 {
 	background: #d0dfff;

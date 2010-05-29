@@ -35,8 +35,6 @@
   require_once("../modulo_contabilidad/Contabilidad.inc");
   $objetoContabilidad = new Contabilidad($_SESSION['arregloParametros'], $_SESSION['fecha_contabilidad']);
   
-  $html->cargarHerramientaJS("../herramientas/jquery.vreboton.ColorPicker");
-  $html->cargarHerramientaJS("../herramientas/jquery.tablesorter.min");
   $html->cargarModuloJS($_SESSION['modulo']);
   
   require_once("../conexiones/ConexionBDMySQL.inc");
@@ -264,7 +262,7 @@
         $html->tag("th", array("class"=>"oculto"));
         $html->end("th");
      
-        $html->tag("th", array("class"=>"fondo_azul"));
+        $html->tag("th", array("class"=>"fondo_azul ancho_scroll"));
         $html->end("th");
        
         $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_140"));
@@ -275,7 +273,7 @@
         
         $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
          $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Inicio");
+           $html->printText("Hora");
          $html->end("label");
         $html->end("th");
         

@@ -10,6 +10,8 @@
 		<script src="../herramientas/validacion.js" type="text/javascript"></script>
 		<script src="../herramientas/ui.core.js" type="text/javascript"></script>
 		<script src="../herramientas/ui.datepicker.js" type="text/javascript"></script>
+		<script src="../herramientas/jquery.tablesorter.min.js" type="text/javascript"></script>
+		<script src="../herramientas/jquery.vreboton.ColorPicker.js" type="text/javascript"></script>
 	</head>
 	<body>
 <?php

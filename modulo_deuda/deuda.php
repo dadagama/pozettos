@@ -33,10 +33,7 @@ switch($_REQUEST['accion'])
 		break;
 
 	case "actualizarEstadoPago":
-		if($objetoDeuda->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']))
-			$objetoDeuda->actualizarHistorialVentas();
-		else
-			echo false;
+		echo $objetoDeuda->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']);
 		break;
 		
 	case "actualizarHistorialDeudas":

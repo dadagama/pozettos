@@ -54,11 +54,6 @@ function inicializar()
   /*obtenerInfoTimers();*/
 }
 
-function mostrarModulo(nombre_modulo)
-{
-  ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
-}
-
 function obtenerOptions()
 {
   ajax('accion=obtenerOptions', false, obtenerOptionsAjax, false);
@@ -79,8 +74,7 @@ function actualizarOrdenamiento()
 {
   $("#tbl_historial").trigger("update");
   var sorting = [[1,1],[0,1]]; 
-  // sort on the first column 
-  $("table").trigger("sorton",[sorting]); 
+  $("#tbl_historial").trigger("sorton",[sorting]); 
 }
 
 function editableSaldoTitan(editable)
@@ -88,7 +82,7 @@ function editableSaldoTitan(editable)
   if(editable)
   {
     var sit_saldo = $('#sit_saldo').text();
-    var input_saldo = "<input id='sit_saldo' type='text' maxlength='7' class='ancho_55' onBlur='if(actualizarSaldoTitan(13)){ editableSaldoTitan(false);}' onKeypress='if(actualizarSaldoTitan(event.keyCode)){ editableSaldoTitan(false);}' value='"+sit_saldo+"'/>";
+    var input_saldo = "<input id='sit_saldo' type='text' maxlength='7' class='ancho_55 verdana' onBlur='if(actualizarSaldoTitan(13)){ editableSaldoTitan(false);}' onKeypress='if(actualizarSaldoTitan(event.keyCode)){ editableSaldoTitan(false);}' value='"+sit_saldo+"'/>";
     $('#sit_saldo').replaceWith(input_saldo);
     $('#sit_saldo').select();
   }
@@ -122,20 +116,22 @@ function editableCliente(fila_id,editable)
 {
   if(editable)
   {
-    var cli_id = $('#'+fila_id).text();
-    var select_clientes = "<select id='"+fila_id+"' class='verdana letra_9 ancho_45' onchange='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
+    var cli_id = $('#'+fila_id).children("label").text();
+    var select_clientes = "<select class='ancho_45' onchange='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
     select_clientes += options_clientes;
     select_clientes += "</select>";
-    $('#'+fila_id).replaceWith(select_clientes);
-    $('#'+fila_id).removeAttr('selected', 'selected');
-    $('#'+fila_id+" option[value='"+cli_id+"']").attr('selected', 'selected');
+    $('#'+fila_id+' label').replaceWith(select_clientes);
+    $('#'+fila_id+' select').removeAttr('selected', 'selected');
+    $('#'+fila_id+' select option[value="'+cli_id+'"]').attr('selected', 'selected');
     $('#'+fila_id).focus();
   }
   else
   {
-    var nombre_cliente = $('#'+fila_id+" option:selected").text();
-    var label_cliente = "<label id='"+fila_id+"' ondblclick='editableCliente(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz' title='"+nombre_cliente+"'>"+$('#'+fila_id).val()+"</label>";
-    $('#'+fila_id).replaceWith(label_cliente);
+    var nombre_cliente = $('#'+fila_id+' select option:selected').text();
+    $('#'+fila_id).attr('title',nombre_cliente);
+    var cli_id = $('#'+fila_id+' select option:selected').val();
+    var label_cliente = "<label class='cursor_cruz'>"+cli_id+"</label>";
+    $('#'+fila_id+' select').replaceWith(label_cliente);
   }
 }
 
@@ -144,7 +140,7 @@ function actualizarDeudaCliente(fila_id, evento)
   if(evento == 13)
   {
     var hiv_id = fila_id.split("_")[2];
-    var valor_nuevo = $('#'+fila_id).val();
+    var valor_nuevo = $('#'+fila_id+' select').val();
     ajax('accion=actualizarDeudaCliente&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo, false, actualizarDeudaClienteAjax, false);
     return true;
   }
@@ -168,20 +164,18 @@ function editableTotal(fila_id,editable)
 {
   if(editable)
   {
-    var hiv_total = $('#'+fila_id).text();
-    var input_total = "<input id='"+fila_id+"' type='text' maxlength='6' class='ancho_50' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",13)){ editableTotal(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",event.keyCode)){ editableTotal(\""+fila_id+"\",false);}' value='"+hiv_total+"'/>";
-    $('#'+fila_id).replaceWith(input_total);
-    //$('#'+fila_id).focus();
-    $('#'+fila_id).select();
-
+    var hiv_total = $('#'+fila_id).children().text();
+    var input_total = "<input type='text' maxlength='6' class='ancho_50 verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",13)){ editableTotal(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",event.keyCode)){ editableTotal(\""+fila_id+"\",false);}' value='"+hiv_total+"'/>";
+    $('#'+fila_id).children().replaceWith(input_total);
+    $('#'+fila_id).children().select();
   }
   else
   {
-    var hiv_total = parseInt($('#'+fila_id).val());
+    var hiv_total = parseInt($('#'+fila_id).children().val());
     if(hiv_total == "" || isNaN(hiv_total))
       hiv_total = "0";
-    var label_total = "<label id='"+fila_id+"' ondblclick='editableTotal(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz'>"+hiv_total+"</label>";
-    $('#'+fila_id).replaceWith(label_total);
+    var label_total = "<label class='cursor_cruz'>"+hiv_total+"</label>";
+    $('#'+fila_id).children().replaceWith(label_total);
   }
 }
 
@@ -189,15 +183,15 @@ function editableHoraInicio(fila_id,editable)
 {
   if(editable)
   {
-    var hiv_hora = $('#'+fila_id).text();
-    var selects_hora_inicio = "<input id='"+fila_id+"' type='text' maxlength='5' class='verdana letra_9 ancho_70' onBlur='if(actualizarInicio(\""+fila_id+"\",13)){ editableHoraInicio(\""+fila_id+"\",false);}' onKeypress='if(actualizarInicio(\""+fila_id+"\",event.keyCode)){ editableHoraInicio(\""+fila_id+"\",false);}' value='"+hiv_hora+"'/>";
-    $('#'+fila_id).replaceWith(selects_hora_inicio);
-    $('#'+fila_id).select();
+    var hiv_hora = $('#'+fila_id).children().text();
+    var selects_hora_inicio = "<input type='text' maxlength='5' class='ancho_70 verdana letra_9 ' onBlur='if(actualizarInicio(\""+fila_id+"\",13)){ editableHoraInicio(\""+fila_id+"\",false);}' onKeypress='if(actualizarInicio(\""+fila_id+"\",event.keyCode)){ editableHoraInicio(\""+fila_id+"\",false);}' value='"+hiv_hora+"'/>";
+    $('#'+fila_id).children().replaceWith(selects_hora_inicio);
+    $('#'+fila_id).children().select();
   }
   else
   {
-    var label_hora = "<label id='"+fila_id+"' ondblclick='editableHoraInicio(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz' title='Hora en que se empieza a prestar el servicio'>"+$('#'+fila_id).val()+"</label>";
-    $('#'+fila_id).replaceWith(label_hora);
+    var label_hora = "<label class='cursor_cruz'>"+$('#'+fila_id).children().val()+"</label>";
+    $('#'+fila_id).children().replaceWith(label_hora);
   }
 }
 
@@ -205,18 +199,18 @@ function actualizarInicio(fila_id, evento)
 {
   if(evento == 13)
   {
-    var filtro = filtro = /^\d{1,2}[\.\:]\d{1,2}$/;//cualquier secuencia de numeros y la coma para separar
-    if (filtro.test($('#'+fila_id).val()))
+    var filtro = filtro = /^\d{1,2}[\.\:]\d{1,2}$/;//#.# ó #:#
+    if (filtro.test($('#'+fila_id).children().val()))
     {
       var arreglo_id = fila_id.split("_");
       var hiv_id = arreglo_id[(arreglo_id.length - 1)];
-      var valor_nuevo = $('#'+fila_id).val().replace(".", ":");
+      var valor_nuevo = $('#'+fila_id).children().val().replace(".", ":");
       ajax('accion=actualizarInicio&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo, false, actualizarTiemposYTotalAjax, false);
       return true;
     }
     else
     {
-      $('#'+fila_id).addClass('letra_roja');
+      $('#'+fila_id).children().addClass('letra_roja');
       return false;
     }
   }
@@ -232,17 +226,17 @@ function editableDuracion(fila_id,editable)
     var selects_duracion = "<select id='"+fila_id+"' class='verdana letra_9 ancho_70' onchange='if(actualizarDuracion(\""+fila_id+"\",13)){ editableDuracion(\""+fila_id+"\",false);}' onBlur='if(actualizarDuracion(\""+fila_id+"\",13)){ editableDuracion(\""+fila_id+"\",false);}'>";
     selects_duracion += options_duracion;
     selects_duracion += "</select>";
-    $('#'+fila_id).replaceWith(selects_duracion);
-    $('#'+fila_id).removeAttr('selected', 'selected');
-    $('#'+fila_id+" option[value='"+hiv_dus_minutos+"']").attr('selected', 'selected');
-    $('#'+fila_id).focus();
+    $('#'+fila_id).children("label").replaceWith(selects_duracion);
+    $('#'+fila_id).children("label").removeAttr('selected', 'selected');
+    $('#'+fila_id+" select option[value='"+hiv_dus_minutos+"']").attr('selected', 'selected');
+    $('#'+fila_id).children("select").focus();
   }
   else
   {
-    var duracion = $('#'+fila_id+" option:selected").text();
-    var label_duracion = "<label id='"+fila_id+"' ondblclick='editableDuracion(\""+fila_id+"\",true);' class='verdana letra_9 cursor_cruz' title='Doble clic para editar'>"+duracion+"</label>";
-    $('#hidden_'+fila_id).val($('#'+fila_id).val());
-    $('#'+fila_id).replaceWith(label_duracion);
+    var duracion = $('#'+fila_id+" select option:selected").text();
+    var label_duracion = "<label class='cursor_cruz'>"+duracion+"</label>";
+    $('#hidden_'+fila_id).val($('#'+fila_id).children("select").val());
+    $('#'+fila_id).children("select").replaceWith(label_duracion);
   }
 }
 
@@ -252,7 +246,7 @@ function actualizarDuracion(fila_id, evento)
   {
     var arreglo_id = fila_id.split("_");
     var hiv_id = arreglo_id[(arreglo_id.length - 1)];
-    var valor_nuevo = $('#'+fila_id).val();
+    var valor_nuevo = $('#'+fila_id).children("select").val();
     ajax('accion=actualizarDuracion&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo, false, actualizarTiemposYTotalAjax, false);
     return true;
   }
@@ -267,10 +261,10 @@ function actualizarTiemposYTotalAjax(json_horas)
   //se utilizan los LABELS porque el llamado ajax es asincrono y cuando llega
   //la respuesta, ya los inputs se han transformado en labels
   //se espera que siempre sea asi
-  $("#hiv_hora_"+obj_horas.hiv_id).text(obj_horas.hiv_hora);
-  $("#hiv_dus_minutos_"+obj_horas.hiv_id).text(obj_horas.dus_texto);
-  $("#hiv_hora_termina_"+obj_horas.hiv_id).text(obj_horas.hiv_hora_termina);
-  $("#hiv_total_"+obj_horas.hiv_id).text(obj_horas.hiv_total);
+  $("#hiv_hora_"+obj_horas.hiv_id).children().text(obj_horas.hiv_hora);
+  $("#hiv_dus_minutos_"+obj_horas.hiv_id).children().text(obj_horas.dus_texto);
+  $("#hiv_hora_termina_"+obj_horas.hiv_id).children().text(obj_horas.hiv_hora_termina);
+  $("#hiv_total_"+obj_horas.hiv_id).children().text(obj_horas.hiv_total);
   return true;
 }
 
@@ -280,7 +274,9 @@ function actualizarValor(fila_id,nombre_campo, evento)
   {
     var arreglo_id = fila_id.split("_");
     var hiv_id = arreglo_id[(arreglo_id.length - 1)];
-    var valor_nuevo = $('#'+fila_id).val();
+    var valor_nuevo = $('#'+fila_id).children().val();
+    if(valor_nuevo == undefined)
+      valor_nuevo = "";
     ajax('accion=actualizarValor&hiv_id='+hiv_id+"&valor_nuevo="+valor_nuevo+"&nombre_campo="+nombre_campo, false, actualizarAjax, false);
     return true;
   }

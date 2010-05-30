@@ -36,13 +36,23 @@ function cargarCategoriasAjax(categorias)
 	$("#td_categorias").html(categorias);
 }
 
+function actualizarParametros()
+{
+  var alcance = $("#opc_alcance").val();
+  $("#tbl_diario").addClass("oculto");
+  $("#tbl_mensual").addClass("oculto");
+  $("#tbl_rango").addClass("oculto");
+  $("#tbl_"+alcance).removeClass("oculto");
+}
+
 function actualizarEstadisticas()
 {
-	ajax("accion=actualizarEstadisticas", null, actualizarEstadisticasAjax, null);
+  var params = $("#form_opciones").serialize();
+	ajax("accion=actualizarEstadisticas&"+params, null, actualizarEstadisticasAjax, null);
 }
 
 function actualizarEstadisticasAjax(info_estadisticas)
 {
-	$("#historial_estadisticas").children().remove();
-	$("#historial_estadisticas").html(info_estadisticas);
+	$("#tbl_estadisticas").children().remove();
+	$("#tbl_estadisticas").html(info_estadisticas);
 }

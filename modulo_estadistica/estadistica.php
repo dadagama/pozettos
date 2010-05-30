@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-		You should have received a copy of the GNU General Public License
+    You should have received a copy of the GNU General Public License
     along with Pozettos.  If not, see <http://www.gnu.org/licenses/>.
 
 */
@@ -23,17 +23,18 @@ require_once("../modulo_estadistica/Estadistica.inc");
 $objetoEstadistica = new Estadistica($_SESSION['arregloParametros']);
 
 switch($_REQUEST['accion'])
-{	
-	case "mostrarModulo":
-		require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
-		break;
-	
-	case "cargarCategorias":
-		$objetoEstadistica->cargarCategorias();
-		break;
-	
-	case "actualizarEstadisticas":
-		echo $objetoEstadistica->actualizarEstadisticas($_REQUEST['hiv_id']);
-		break;
+{ 
+  case "mostrarModulo":
+    require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
+    break;
+  
+  case "cargarCategorias":
+    $objetoEstadistica->cargarCategorias();
+    break;
+  
+  case "actualizarEstadisticas":
+    //print_r($_REQUEST);
+    $objetoEstadistica->actualizarEstadisticas($_REQUEST);
+    break;
 }
 ?>

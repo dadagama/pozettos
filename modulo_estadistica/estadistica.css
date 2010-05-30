@@ -1,4 +1,4 @@
-﻿/*
+/*
  This file is part of Pozettos.
 
     Pozettos is free software: you can redistribute it and/or modify
@@ -22,10 +22,68 @@
 .zona_opciones
 {
 	border: 1px solid #4F8FFF;
-	width: 700px;
+	max-width: 700px;
 }
 .fila_boton_generar
 {
 	background: #d0dfff;
-	height: 25px;
+}
+.fila_boton_generar button
+{
+	background: #fff;
+}
+.tbl_resumen
+{
+  margin-top: 15px;
+  width: 400px;
+  border: 1px solid #4F8FFF;
+  font-family:Verdana;
+  color:#4F8FFF;
+  font-size:9pt;
+}
+.tbl_resumen thead
+{
+  background: #4F8FFF;
+  color: #FFF;
+  font-weight:bold;
+}
+.tbl_resumen td
+{
+  height: 20px;
+  border-bottom: #d0dfff solid 1px;
+}
+.tbl_resumen .celda_total
+{
+  color: #F00;
+  background: #d0dfff;
+  font-weight:bold;
+}
+.tbl_resumen .celda_subtotal
+{
+  background: #d0dfff;
+  font-weight:bold;
+}
+.tbl_resumen_2
+{
+  margin-top: 15px;
+  width: 400px;
+  border: 1px solid #999;
+  font-family:Verdana;
+  font-size:9pt;
+  font-weight:bold;
+}
+.tbl_resumen_2 thead
+{
+  background: #999;
+  color: #FFF;
+}
+.tbl_resumen_2 td
+{
+  height: 20px;
+  border-bottom: #999 solid 1px;
+}
+.tbl_resumen_2 .celda_total
+{
+  color: #F00;
+  background: #fff;
 }

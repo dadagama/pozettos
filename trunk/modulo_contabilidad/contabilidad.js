@@ -73,7 +73,7 @@ function obtenerOptionsAjax(jsonOptions)
 function actualizarOrdenamiento()
 {
   $("#tbl_historial").trigger("update");
-  var sorting = [[1,1],[0,1]]; 
+  var sorting = [[1,0],[0,1]]; 
   $("#tbl_historial").trigger("sorton",[sorting]); 
 }
 
@@ -440,7 +440,8 @@ function agregarFilaHistorialAjax(fila)
   if(fila)
   {
     $("#historial_ventas").append(fila);
-    actualizarOrdenamiento(); 
+    asignarListenersColores();
+    actualizarOrdenamiento();
   }
   else
     console.log('Error al registrar el servicio');

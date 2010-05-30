@@ -405,12 +405,15 @@ class Contabilidad
       $this->_html->tag("tr", array("style"=>$hiv_color_fila, /*"class"=>$fondo_default, */"id"=>"hiv_fila_".$info_tupla_historico['hiv_id'], "name"=>"fila_historico"));
          
         $this->_html->tag("td", array("class"=>"oculto"));
-          $this->_html->tag("input", array("type"=>"hidden", "value"=>$info_tupla_historico['hiv_id']));
+          $this->_html->tag("label");
+            $this->_html->printText($info_tupla_historico['hiv_id']);
+          $this->_html->end("label");
         $this->_html->end("td");
         
         $this->_html->tag("td", array("class"=>"oculto"));
-          $this->_html->tag("input", array("type"=>"hidden", "value"=>$info_tupla_historico['hiv_color_fila']));
-        $this->_html->end("td");
+          $this->_html->tag("label");
+            $this->_html->printText($info_tupla_historico['hiv_color_fila']);
+          $this->_html->end("label");
       
         $this->_html->tag("td", array("class"=>"alineacion_centro"));
           $this->_html->tag("input", array("title"=>"Colocar un color a la fila", "type"=>"image", "src"=>"../imagenes/color.jpg", "id"=>"hiv_color_".$info_tupla_historico['hiv_id'], "class"=>"boton_color"));
@@ -559,11 +562,15 @@ class Contabilidad
       $this->_html->tag("tr", array("style"=>$hiv_color_fila, /*"class"=>$fondo_default, */"id"=>"hiv_fila_".$info_tupla_historico['hiv_id'], "name"=>"fila_historico"));
          
         $this->_html->tag("td", array("class"=>"oculto"));
-          $this->_html->tag("input", array("type"=>"hidden", "value"=>$info_tupla_historico['hiv_id']));
+          $this->_html->tag("label");
+            $this->_html->printText($info_tupla_historico['hiv_id']);
+          $this->_html->end("label");
         $this->_html->end("td");
         
         $this->_html->tag("td", array("class"=>"oculto"));
-          $this->_html->tag("input", array("type"=>"hidden", "value"=>$info_tupla_historico['hiv_color_fila']));
+          $this->_html->tag("label");
+            $this->_html->printText($info_tupla_historico['hiv_color_fila']);
+          $this->_html->end("label");
         $this->_html->end("td");
       
         $this->_html->tag("td", array("class"=>"alineacion_centro"));
@@ -652,8 +659,8 @@ class Contabilidad
           
         $this->_html->end("td");
         
-        $this->_html->tag("td", array("class"=>"alineacion_centro verdana letra_9", "title"=>"Nota adicional si se necesita", "id"=>"hiv_observacion_".$info_tupla_historico['hiv_id'], "type"=>"text", "value"=>utf8_encode($info_tupla_historico['hiv_observacion']), "onchange"=>"actualizarValor('hiv_observacion_".$info_tupla_historico['hiv_id']."','hiv_observacion', 13);", "onkeypress"=>"actualizarValor('hiv_observacion_".$info_tupla_historico['hiv_id']."','hiv_observacion', event.keyCode);"));
-          $this->_html->tag("input", array("class"=>"ancho_90p"), true);
+        $this->_html->tag("td", array("class"=>"alineacion_centro verdana letra_9", "title"=>"Nota adicional si se necesita", "id"=>"hiv_observacion_".$info_tupla_historico['hiv_id']));
+          $this->_html->tag("input", array("class"=>"ancho_90p", "type"=>"text", "value"=>utf8_encode($info_tupla_historico['hiv_observacion']), "onchange"=>"actualizarValor('hiv_observacion_".$info_tupla_historico['hiv_id']."','hiv_observacion', 13);", "onkeypress"=>"actualizarValor('hiv_observacion_".$info_tupla_historico['hiv_id']."','hiv_observacion', event.keyCode);"), true);
         $this->_html->end("td");
         
         $this->_html->tag("td", array("class"=>"alineacion_centro"));

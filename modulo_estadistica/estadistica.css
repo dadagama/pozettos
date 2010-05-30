@@ -35,7 +35,7 @@
 .tbl_resumen
 {
   margin-top: 15px;
-  width: 400px;
+  border-spacing:5px;
   border: 1px solid #4F8FFF;
   font-family:Verdana;
   color:#4F8FFF;
@@ -63,27 +63,9 @@
   background: #d0dfff;
   font-weight:bold;
 }
-.tbl_resumen_2
+.tbl_resumen .celda_total_2
 {
-  margin-top: 15px;
-  width: 400px;
-  border: 1px solid #999;
-  font-family:Verdana;
-  font-size:9pt;
+  /*color: #F00;*/
+  background: #ddd;
   font-weight:bold;
-}
-.tbl_resumen_2 thead
-{
-  background: #999;
-  color: #FFF;
-}
-.tbl_resumen_2 td
-{
-  height: 20px;
-  border-bottom: #999 solid 1px;
-}
-.tbl_resumen_2 .celda_total
-{
-  color: #F00;
-  background: #fff;
 }

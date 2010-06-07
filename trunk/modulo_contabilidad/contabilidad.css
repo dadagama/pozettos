@@ -62,8 +62,8 @@
 /*******************************************
 **            HISTORIAL SERVICIOS         **
 ********************************************/
-tr.odd { background: #e6f2ff;}
-tr.even { background: #fff;}
+tr.odd { background: /*#e6f2ff*/#e8e8e8; height: 25px;}
+tr.even { background: #fff; height: 25px;}
 
 .fila_historial_par
 {

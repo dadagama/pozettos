@@ -52,6 +52,12 @@
 				
 				$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
 					$html->tag("label", array("class"=>"label_formulario"));
+						$html->printText("Cod");
+					$html->end("label");
+				$html->end("th");
+				
+				$html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
+					$html->tag("label", array("class"=>"label_formulario"));
 						$html->printText("Cliente");
 					$html->end("label");
 				$html->end("th");

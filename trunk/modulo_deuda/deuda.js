@@ -28,7 +28,7 @@ function inicializar()
 function actualizarOrdenamiento()
 {
   $("#tbl_historial").trigger("update");
-  var sorting = [[0,0],[7,0],[1,0]];
+  var sorting = [[1,0],[8,0],[2,0]];
   $("#tbl_historial").trigger("sorton",[sorting]); 
 }
 
@@ -37,17 +37,19 @@ function editableObservacion(fila_id,editable)
   if(editable)
   {
     var hiv_observacion = $('#'+fila_id).children().text();
-    var input_total = "<input type='text' class='ancho_90p verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_observacion\",13)){ editableObservacion(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_observacion\",event.keyCode)){ editableObservacion(\""+fila_id+"\",false);}' value='"+hiv_observacion+"'/>";
-    $('#'+fila_id).children().replaceWith(input_total);
+    var input_observacion = "<input type='text' class='ancho_90p verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_observacion\",13)){ editableObservacion(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_observacion\",event.keyCode)){ editableObservacion(\""+fila_id+"\",false);}' value='"+hiv_observacion+"'/>";
+    $('#'+fila_id).children().replaceWith(input_observacion);
     $('#'+fila_id).children().focus();
+    $('#'+fila_id).removeAttr("onclick");
   }
   else
   {
+    $('#'+fila_id).attr('onClick','editableObservacion(\"'+fila_id+'\",true);');
     var hiv_observacion = $('#'+fila_id).children().val();
     if(hiv_observacion == undefined)
       hiv_observacion = "";
-    var label_total = "<label class='cursor_cruz'>"+hiv_observacion+"</label>";
-    $('#'+fila_id).children().replaceWith(label_total);
+    var label_observacion = "<label class='cursor_cruz'>"+hiv_observacion+"</label>";
+    $('#'+fila_id).children().replaceWith(label_observacion);
   }
 }
 

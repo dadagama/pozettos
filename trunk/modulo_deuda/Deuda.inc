@@ -39,9 +39,9 @@ class Deuda
 	function actualizarValor($hiv_id,$valor_nuevo,$nombre_campo)
 	{
 		if(!$valor_nuevo)
-			$valor_nuevo = "0";
+			$valor_nuevo = "";
 		$sql = "UPDATE pozettos_historico_venta
-						SET $nombre_campo = '$valor_nuevo'
+						SET $nombre_campo = '".utf8_decode($valor_nuevo)."'
 						WHERE hiv_id = '$hiv_id'";
 		$this->_conexionBD->ejecutarSQL($sql);
 		if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
@@ -111,6 +111,12 @@ class Deuda
 		{
 			$this->_html->tag("tr", array("style"=>$hiv_color_fila, "id"=>"hiv_fila_".$info_tupla_historico['hiv_id'], "name"=>"fila_historico"));
 				
+				$this->_html->tag("td", array("class"=>"alineacion_centro verdana letra_9", "id"=>"cli_id_".$info_tupla_historico['hiv_id'], "title"=>"Código del cliente"));
+					$this->_html->tag("label");
+							$this->_html->printText($info_tupla_historico['hiv_cli_id']);
+					$this->_html->end("label");
+				$this->_html->end("td");
+				
 				$this->_html->tag("td", array("class"=>"alineacion_izquierda verdana letra_9", "id"=>"cli_fila_".$info_tupla_historico['hiv_id'], "title"=>"Cliente que debe"));
 					$this->_html->tag("label");
 							$this->_html->printText(utf8_encode($info_tupla_historico['cli_nombre']." ".$info_tupla_historico['cli_apellido']));
@@ -168,7 +174,7 @@ class Deuda
 					$this->_html->tag("input", array($checked_gratis=>$checked_gratis, "type"=>"checkbox", "id"=>"hiv_chk_gratis_".$info_tupla_historico['hiv_id'], "onchange"=>"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');"));
 				$this->_html->end("td");
 
-        $this->_html->tag("td", array("class"=>"alineacion_izquierda verdana letra_9 cursor_cruz", "title"=>utf8_encode("Información adicional"), "id"=>"hiv_observacion_".$info_tupla_historico['hiv_id'], "ondblclick"=>"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);"));
+        $this->_html->tag("td", array("class"=>"alineacion_izquierda verdana letra_9 cursor_cruz", "title"=>utf8_encode("Información adicional"), "id"=>"hiv_observacion_".$info_tupla_historico['hiv_id'], "onclick"=>"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);"));
           $this->_html->tag("label", array("class"=>"cursor_cruz"));
             $this->_html->printText(utf8_encode($info_tupla_historico['hiv_observacion']));
           $this->_html->end("label");

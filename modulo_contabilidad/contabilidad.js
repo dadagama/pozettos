@@ -92,7 +92,7 @@ function editableSaldoTitan(editable)
     var sit_saldo = parseInt(valor_saldo.replace(".", ""));
     if(sit_saldo == "" || isNaN(sit_saldo))
       sit_saldo = "0";
-    var label_saldo = "<label id='sit_saldo' ondblclick='editableSaldoTitan(true);' class='verdana letra_9 cursor_cruz'>"+sit_saldo+"</label>";
+    var label_saldo = "<label id='sit_saldo' onclick='editableSaldoTitan(true);' class='verdana letra_9 cursor_cruz'>"+sit_saldo+"</label>";
     $('#sit_saldo').replaceWith(label_saldo);
   }
 }
@@ -117,13 +117,13 @@ function editableCliente(fila_id,editable)
   if(editable)
   {
     var cli_id = $('#'+fila_id).children("label").text();
-    var select_clientes = "<select class='ancho_45' onchange='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
+    var select_clientes = "<select class='ancho_100p' onchange='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
     select_clientes += options_clientes;
     select_clientes += "</select>";
     $('#'+fila_id+' label').replaceWith(select_clientes);
     $('#'+fila_id+' select').removeAttr('selected', 'selected');
     $('#'+fila_id+' select option[value="'+cli_id+'"]').attr('selected', 'selected');
-    $('#'+fila_id).focus();
+    $('#'+fila_id+' select').focus();
   }
   else
   {
@@ -165,12 +165,14 @@ function editableTotal(fila_id,editable)
   if(editable)
   {
     var hiv_total = $('#'+fila_id).children().text();
-    var input_total = "<input type='text' maxlength='6' class='ancho_50 verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",13)){ editableTotal(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",event.keyCode)){ editableTotal(\""+fila_id+"\",false);}' value='"+hiv_total+"'/>";
+    var input_total = "<input type='text' maxlength='6' class='ancho_100p verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",13)){ editableTotal(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_total\",event.keyCode)){ editableTotal(\""+fila_id+"\",false);}' value='"+hiv_total+"'/>";
     $('#'+fila_id).children().replaceWith(input_total);
     $('#'+fila_id).children().select();
+    $('#'+fila_id).removeAttr("onclick");
   }
   else
   {
+    $('#'+fila_id).attr('onClick','editableTotal(\"'+fila_id+'\",true);');
     var hiv_total = parseInt($('#'+fila_id).children().val());
     if(hiv_total == "" || isNaN(hiv_total))
       hiv_total = "0";
@@ -184,12 +186,14 @@ function editableHoraInicio(fila_id,editable)
   if(editable)
   {
     var hiv_hora = $('#'+fila_id).children().text();
-    var selects_hora_inicio = "<input type='text' maxlength='5' class='ancho_70 verdana letra_9 ' onBlur='if(actualizarInicio(\""+fila_id+"\",13)){ editableHoraInicio(\""+fila_id+"\",false);}' onKeypress='if(actualizarInicio(\""+fila_id+"\",event.keyCode)){ editableHoraInicio(\""+fila_id+"\",false);}' value='"+hiv_hora+"'/>";
+    var selects_hora_inicio = "<input type='text' maxlength='5' class='ancho_100p verdana letra_9 ' onBlur='if(actualizarInicio(\""+fila_id+"\",13)){ editableHoraInicio(\""+fila_id+"\",false);}' onKeypress='if(actualizarInicio(\""+fila_id+"\",event.keyCode)){ editableHoraInicio(\""+fila_id+"\",false);}' value='"+hiv_hora+"'/>";
     $('#'+fila_id).children().replaceWith(selects_hora_inicio);
     $('#'+fila_id).children().select();
+    $('#'+fila_id).removeAttr("onclick");
   }
   else
   {
+    $('#'+fila_id).attr('onClick','editableHoraInicio(\"'+fila_id+'\",true);');
     var label_hora = "<label class='cursor_cruz'>"+$('#'+fila_id).children().val()+"</label>";
     $('#'+fila_id).children().replaceWith(label_hora);
   }
@@ -223,7 +227,7 @@ function editableDuracion(fila_id,editable)
   if(editable)
   {
     var hiv_dus_minutos = $('#hidden_'+fila_id).val();
-    var selects_duracion = "<select id='"+fila_id+"' class='verdana letra_9 ancho_70' onchange='if(actualizarDuracion(\""+fila_id+"\",13)){ editableDuracion(\""+fila_id+"\",false);}' onBlur='if(actualizarDuracion(\""+fila_id+"\",13)){ editableDuracion(\""+fila_id+"\",false);}'>";
+    var selects_duracion = "<select id='"+fila_id+"' class='verdana letra_9 ancho_100p' onchange='if(actualizarDuracion(\""+fila_id+"\",13)){ editableDuracion(\""+fila_id+"\",false);}' onBlur='if(actualizarDuracion(\""+fila_id+"\",13)){ editableDuracion(\""+fila_id+"\",false);}'>";
     selects_duracion += options_duracion;
     selects_duracion += "</select>";
     $('#'+fila_id).children("label").replaceWith(selects_duracion);
@@ -266,6 +270,25 @@ function actualizarTiemposYTotalAjax(json_horas)
   $("#hiv_hora_termina_"+obj_horas.hiv_id).children().text(obj_horas.hiv_hora_termina);
   $("#hiv_total_"+obj_horas.hiv_id).children().text(obj_horas.hiv_total);
   return true;
+}
+
+function editableObservacion(fila_id,editable)
+{
+  if(editable)
+  {
+    var hiv_observacion = $('#'+fila_id).children().text();
+    var input_observacion = "<input type='text' class='ancho_100p verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_observacion\",13)){ editableObservacion(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_observacion\",event.keyCode)){ editableObservacion(\""+fila_id+"\",false);}' value='"+hiv_observacion+"'/>";
+    $('#'+fila_id).children().replaceWith(input_observacion);
+    $('#'+fila_id).children().focus();
+    $('#'+fila_id).removeAttr("onclick");
+  }
+  else
+  {
+    $('#'+fila_id).attr('onClick','editableObservacion(\"'+fila_id+'\",true);');
+    var hiv_observacion = $('#'+fila_id).children().val();
+    var label_observacion = "<label class='cursor_cruz'>"+hiv_observacion+"</label>";
+    $('#'+fila_id).children().replaceWith(label_observacion);
+  }
 }
 
 function actualizarValor(fila_id,nombre_campo, evento)
@@ -414,10 +437,10 @@ function agregarFilaHistorial(hiv_ser_id,ser_tipo)
   var arregloHoraInicio = obtenerArregloHoraInicio();
   var hiv_dus_minutos = "";
   var hiv_total = "";
-  if(ser_tipo == "servicio")
-    hiv_dus_minutos = $("#hiv_dus_minutos").val();
-  if(ser_tipo == "producto")
-    hiv_total = $("#hiv_total").val();
+//   if(ser_tipo == "servicio")
+//     hiv_dus_minutos = $("#hiv_dus_minutos").val();
+//   if(ser_tipo == "producto")
+//     hiv_total = $("#hiv_total").val();
 
   //se guarda la fecha del producto vendido deacuerdo a
   //la fecha de la contabilidad abierta actualmente

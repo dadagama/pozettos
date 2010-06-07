@@ -1,4 +1,4 @@
-﻿/* jQuery ColorPicker
+/* jQuery ColorPicker
    Written by Virgil Reboton(vreboton@gmail.com)
    
    ColorPicker function structures and attahcment is base on
@@ -275,18 +275,22 @@ $.extend(ColorPickerInstance.prototype, {
 	/* Generate the HTML for the current state of the time picker. */
 	_generateColorPicker: function() {
         // Code to populate color picker window
-        var colors  = new Array("#cc5599","#FFFF00","#009933",
-								"#FF9900","#33CCCC","#dd0000");
+        var colors  = new Array(
+          "#0073ff","#00b050","#87ceeb","#a7a7a7","#adff2f",
+          "#cc5599","#ff0000","#ffa500","#ffb6c1","#ffff00"
+//           "#ffff00","#87ceeb","#ffb6c1","#ffa500","#adff2f",
+//           "#a7a7a7","#0073ff","#cc5599","#ff0000","#00b050"
+        );
 							    
         var total = colors.length;
-        var width = 18;
+        var width = 5;//18
 	    var html = "<table border='1px' cellspacing='0' cellpadding='0'>";
 	    
 	    for (var i=0; i<total; i++)
 	    {
 		    if ((i % width) == 0) { html += "<tr>"; }
 		    
-		    html += '<td class="color" title="' + colors[i] + '" style="background-color:' + colors[i] + '"><label>&nbsp;&nbsp;&nbsp;</label></td>';
+		    html += '<td class="color" title="' + colors[i] + '" style="background-color:' + colors[i] + '"><label>&nbsp;&nbsp;&nbsp;&nbsp;</label></td>';
 		    
 		    if ( ((i+1)>=total) || (((i+1) % width) == 0))
 		    {

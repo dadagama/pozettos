@@ -47,7 +47,7 @@ class Estadistica
       $this->_html->tag("tr");          
         while($info_categoria = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
         {
-          if($contador % 3 == 0)
+          if($contador % 1 == 0)
           {
             $this->_html->end("tr");
             $this->_html->tag("tr");  

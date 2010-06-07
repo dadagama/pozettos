@@ -69,19 +69,13 @@
   						$html->printText("Alcance");
   					$html->end("label");
   				$html->end("th");
-  			
-  				$html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_200"));
-  					$html->tag("label", array("class"=>"label_formulario"));
-  						$html->printText("Parámetros");
-  					$html->end("label");
-  				$html->end("th");
   				
   			$html->end("tr");
   		$html->end("thead");
   		
   		$html->tag("tbody", array("class"=>"cuerpo_opciones"));
   			$html->tag("tr");
-  				$html->tag("td", array("id"=>"td_categorias"));
+  				$html->tag("td", array("id"=>"td_categorias", "rowspan"=>"2"));
   					
   				$html->end("td");
   				
@@ -92,7 +86,9 @@
   															<option value='rango'>Rango de fechas</option>
   														</select>");
   				$html->end("td");
-  				
+        $html->end("tr");
+        
+        $html->tag("tr");
   				$html->tag("td");
   					/* DIARIO */
   					$html->tag("table",array("id"=>"tbl_diario", "class"=>"tabla_centrada"));

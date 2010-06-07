@@ -66,19 +66,19 @@
       $html->end("td");
       
       $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Ir al panel de control", "type"=>"image", "src"=>"../imagenes/home.png", "onclick"=>"mostrarModulo('panel');"), true);
+        $html->tag("input", array("title"=>"Contabilidad", "type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "value"=>date("Y-m-d"), "id"=>"con_fecha"), true);
       $html->end("td");
       
       $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Ir a contabilidad", "type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "value"=>date("Y-m-d"), "id"=>"con_fecha"), true);
+        $html->tag("input", array("title"=>"Deudores morosos", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
       $html->end("td");
       
       $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Ir a Deudas de clientes", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
+        $html->tag("input", array("title"=>"Estadisticas del negocio", "type"=>"image", "src"=>"../imagenes/reporte.jpg", "onclick"=>"mostrarModulo('estadistica');"), true);
       $html->end("td");
       
       $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Ir a Estadisticas", "type"=>"image", "src"=>"../imagenes/estadistica.gif", "onclick"=>"mostrarModulo('estadistica');"), true);
+        $html->tag("input", array("title"=>"Clientes Fieles", "type"=>"image", "src"=>"../imagenes/add_user.png", "onclick"=>"mostrarModulo('cliente');"), true);
       $html->end("td");
     $html->end("tr");
   $html->end("table");

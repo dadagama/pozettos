@@ -51,9 +51,17 @@ form
 {
 	vertical-align: top;
 }
+.vertical_abajo
+{
+	vertical-align: bottom;
+}
 .padding_arriba_10
 {
 	padding-top: 10px;
+}
+.padding_abajo_5
+{
+  padding-bottom:5px;
 }
 .margen_arriba_10
 {

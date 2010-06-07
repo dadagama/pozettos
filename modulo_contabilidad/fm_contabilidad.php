@@ -27,6 +27,7 @@
   $_SESSION['modulo'] = "contabilidad";
   if($_REQUEST['con_fecha'])
     $_SESSION['fecha_contabilidad'] = $_REQUEST['con_fecha'];
+  else if($_SESSION['fecha_contabilidad']){}
   else
     $_SESSION['fecha_contabilidad'] = date("Y-m-d");
   require_once("../herramientas/GeneradorHtml.inc");
@@ -319,7 +320,7 @@
          $html->end("label");
         $html->end("th");
         
-        $html->tag("th", array("class"=>"fondo_azul"));
+        $html->tag("th", array("class"=>"fondo_azul ancho_25"));
         $html->end("th");
        
        // $html->tag("th", array("class"=>"ancho_scroll"));

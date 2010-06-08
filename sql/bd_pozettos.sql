@@ -114,7 +114,7 @@ INSERT INTO pozettos_usuario VALUES('admin','d033e22ae348aeb5660fc2140aec35850c4
 
 CREATE TABLE pozettos_cliente
 (
-	cli_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código del cliente',
+	cli_id INTEGER COLLATE utf8_unicode_ci NOT NULL AUTO_INCREMENT COMMENT 'identificador/código del cliente',
 	cli_password VARCHAR( 40 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'contraseña para acceder al perfil del cliente',
 	cli_nombre VARCHAR( 100 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre(s) del cliente',
 	cli_apellido VARCHAR( 100 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'apellido(s) del cliente',
@@ -124,11 +124,11 @@ CREATE TABLE pozettos_cliente
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de los clientes del negocio';
 
 INSERT INTO pozettos_cliente VALUES(1,'','Nadie','','c_1.png','nadie@gmail.com');
-INSERT INTO pozettos_cliente VALUES(2,'40bd001563085fc35165329ea1ff5c5ecbdbbeef','Darwin David','García Maya','c_2.png','dadagama@gmail.com');
+/*INSERT INTO pozettos_cliente VALUES(2,'40bd001563085fc35165329ea1ff5c5ecbdbbeef','Darwin David','García Maya','c_2.png','dadagama@gmail.com');
 INSERT INTO pozettos_cliente VALUES(3,'','Melissa','García Maya','c_3.png','cristian@gmail.com');
 INSERT INTO pozettos_cliente VALUES(4,'','Cristian','García Maya','c_4.png','cristian@gmail.com');
 INSERT INTO pozettos_cliente VALUES(5,'','Tomas','García','c_5.png','cristian@gmail.com');
-INSERT INTO pozettos_cliente VALUES(6,'','Luz Elena','Maya','c_6.png','cristian@gmail.com');
+INSERT INTO pozettos_cliente VALUES(6,'','Luz Elena','Maya','c_6.png','cristian@gmail.com');*/
 
 
 /*     ******************************************************************     */

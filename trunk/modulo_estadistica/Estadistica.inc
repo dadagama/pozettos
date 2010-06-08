@@ -258,8 +258,13 @@ class Estadistica
                       FROM pozettos_saldo_inicial_titan
                       WHERE sit_fecha = '$fecha' LIMIT 1";
               $this->_conexionBDAux->ejecutarSQL($sql);
-              $total = $this->_conexionBDAux->obtenerFilaComoCadena();
-              $this->_html->printText($this->_html->colocarPuntoMiles($total));
+              if($this->_conexionBDAux->obtenerNumeroFilas() > 0)
+              {
+                $total = $this->_conexionBDAux->obtenerFilaComoCadena();
+                $this->_html->printText($this->_html->colocarPuntoMiles($total));
+              }
+              else
+                $this->_html->printText("0");
             $this->_html->end("label");
           $this->_html->end("td");
         $this->_html->end("tr");

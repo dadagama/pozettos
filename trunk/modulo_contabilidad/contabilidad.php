@@ -90,18 +90,18 @@ switch($_REQUEST['accion'])
 ***********************************/
 
 	case "agregarFilaHistorial":
-		$objetoContabilidad->agregarFilaHistorial($_REQUEST['hiv_ser_id'],
-																							$_REQUEST['hiv_ser_tipo'],
-																							$_REQUEST['hiv_hora'],
-																							$_REQUEST['hiv_minuto'],
-																							$_REQUEST['hiv_meridiano'],
-																							$_REQUEST['hiv_dus_minutos'],
-																							$_REQUEST['hiv_total'],
-																							$_REQUEST['hiv_fecha']);
+		echo $objetoContabilidad->agregarFilaHistorial($_REQUEST['hiv_ser_id'],
+      																							$_REQUEST['hiv_ser_tipo'],
+      																							$_REQUEST['hiv_hora'],
+      																							$_REQUEST['hiv_minuto'],
+      																							$_REQUEST['hiv_meridiano'],
+      																							$_REQUEST['hiv_dus_minutos'],
+      																							$_REQUEST['hiv_total'],
+      																							$_REQUEST['hiv_fecha']);
 		break;
 	
 	case "actualizarHistorialVentas":
-		$objetoContabilidad->actualizarHistorialVentas();
+		echo $objetoContabilidad->actualizarHistorialVentas();
 		break;
 /**********************************
 ******* ACCIONES TIMERS     *******

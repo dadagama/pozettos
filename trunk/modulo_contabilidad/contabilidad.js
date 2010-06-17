@@ -24,16 +24,16 @@ $(document).ready(inicializar);
 
 var options_clientes;
 var options_duracion;
-var options_hora;
-var options_minutos;
+//var options_hora;
+//var options_minutos;
 
 function inicializar()
 {
   url_controlador_modulo = "../modulo_contabilidad/contabilidad.php";
   options_clientes = "";
   options_duracion = "";
-  options_hora = "";
-  options_minutos = "";
+  //options_hora = "";
+  //options_minutos = "";
   obtenerOptions();
   $("#tbl_historial").tablesorter({headers: {
                                               2: {sorter: false },
@@ -64,8 +64,8 @@ function obtenerOptionsAjax(jsonOptions)
   var obj_options = eval("("+jsonOptions+")");
   options_clientes = obj_options.options_clientes;
   options_duracion = obj_options.options_duracion;
-  options_hora = obj_options.options_hora;
-  options_minutos = obj_options.options_minutos;
+  //options_hora = obj_options.options_hora;
+  //options_minutos = obj_options.options_minutos;
   //evitar un llamado adicional de ajax para obtener saldo inicial titan
   $("#sit_saldo").text(obj_options.sit_saldo);
 }

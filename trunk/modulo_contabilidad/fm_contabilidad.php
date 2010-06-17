@@ -30,8 +30,9 @@
   else if($_SESSION['fecha_contabilidad']){}
   else
     $_SESSION['fecha_contabilidad'] = date("Y-m-d");
-  require_once("../herramientas/GeneradorHtml.inc");
-  $html = new GeneradorHtml();
+
+  require_once("../herramientas/GeneradorHtml2.inc");
+  $html = new GeneradorHtml2();
   
   require_once("../modulo_contabilidad/Contabilidad.inc");
   $objetoContabilidad = new Contabilidad($_SESSION['arregloParametros'], $_SESSION['fecha_contabilidad']);
@@ -42,46 +43,33 @@
   $conexion_bd_bozettos = new ConexionBDMySQL($_SESSION['arregloParametros']);
   $conexion_bd_bozettos->conectar();
   
-  $html->tag("table",array("class"=>"tbl_titulo tabla_centrada"));
-    $html->tag("tr");
-      $html->tag("td", array("class"=>"alineacion_centro"));
-        $html->tag("label");
-          $html->printText("Contabilidad");
-          $html->espacios(2);
-        $html->end("label");
-        if($_SESSION['fecha_contabilidad'] != date("Y-m-d"))
-          $clase_fecha = "fecha_otro_dia";
-        $html->tag("label", array("id"=>"lbl_fecha_contabilidad", "class"=>$clase_fecha));
-          $html->printText($html->obtenerFechaTextual($_SESSION['fecha_contabilidad'], true, true, true, true));
-          $html->tag("input", array("type"=>"hidden", "id"=>"fecha_contabilidad", "value"=>$_SESSION['fecha_contabilidad']));
-        $html->end("label");
-      $html->end("td");
-    $html->end("tr");
-    $html->tag("tr");
-      $html->tag("td", array("class"=>"alineacion_centro"));
-        $html->tag("label");
-          $html->printText("Saldo Inicial TITAN:");
-          $html->espacios(2);
-        $html->end("label");
-        $html->tag("label", array("id"=>"sit_saldo", "class"=>"verdana letra_9 cursor_cruz", "ondblclick"=>"editableSaldoTitan(true);"));
-        $html->end("label");
-      $html->end("td");
-    $html->end("tr");
-  $html->end("table");
-  
+  //tr contabilidad
+  $lbl_contabilidad = $html->tag("label", "", array("Contabilidad"));
+  if($_SESSION['fecha_contabilidad'] != date("Y-m-d"))
+    $clase_fecha = "class='fecha_otro_dia'";
+  $lbl_fecha = $html->tag("label", "id='lbl_fecha_contabilidad' ".$clase_fecha, array($html->obtenerFechaTextual($_SESSION['fecha_contabilidad'], true, true, true, true)));
+  $inp_fecha = $html->tag("input", "type='hidden' id='fecha_contabilidad' value='".$_SESSION['fecha_contabilidad']."'", "", true);
+  $td_fecha = $html->tag("td", "class='alineacion_centro'", array($lbl_contabilidad,$html->espacios(2),$lbl_fecha,$inp_fecha));
+  $tr_fecha = $html->tag("tr", "", array($td_fecha));
+  //tr saldo titan
+  $lbl_saldo_titan = $html->tag("label", "", array("Saldo Inicial TITAN:"));
+  $lbl_saldo = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoTitan(true);'");
+  $td_saldo = $html->tag("td", "class='alineacion_centro'", array($lbl_saldo_titan,$html->espacios(2),$lbl_saldo));
+  $tr_saldo = $html->tag("tr", "", array($td_saldo));
+  //tabla titulo
+  $table_titulo = $html->tag("table", "class='tbl_titulo tabla_centrada'", array($tr_fecha,$tr_saldo));
+
   /*TABLA PRODUCTOS Y SERVICIOS*/
-  $html->tag("table", array("class"=>"tabla_centrada"));
-    $html->tag("tr");
-      $html->tag("td");
-        $objetoContabilidad->obtenerTablaServicios();
-      $html->end("td");
-      
+  $td_servicios = $html->tag("td", "", array($objetoContabilidad->obtenerTablaServicios()));
+  $tr_servicios = $html->tag("tr", "", array($td_servicios));
+  $table_servicios = $html->tag("table", "class='tabla_centrada'", array($tr_servicios));
+  
+//   $html->tag("table", array("class"=>"tabla_centrada"));
+//     $html->tag("tr");
       // $html->tag("td", array("class"=>"vertical_arriba"));
         // $html->tag("table", array("class"=>"fondo_azul"));
-              
               // /* TIMER 0 */
               // $html->tag("tr");
-                
                 // $html->tag("td");
                   // $html->tag("label", array("class"=>"label_formulario"));
                     // $html->printText("Xbox 1");
@@ -103,236 +91,41 @@
                     // $html->tag("img", array("id"=>"img_play_pause_0", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
                   // $html->end("button");
                 // $html->end("td");
-                
                 // $html->tag("td");
                   // $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(0);"));
                     // $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
                   // $html->end("button");
                 // $html->end("td");
               // $html->end("tr");
-              
-              // /* TIMER 1 */
-              // $html->tag("tr");
-                
-                // $html->tag("td");
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText("Xbox 2");
-                  // $html->end("label");
-                // $html->end("td");
-                // $html->tag("td");
-                  // $html->tag("input", array("id"=>"tim_duracion_horas_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText(":");
-                  // $html->end("label");
-                  // $html->tag("input", array("id"=>"tim_duracion_minutos_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText(":");
-                  // $html->end("label");
-                  // $html->tag("input", array("id"=>"tim_duracion_segundos_1", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("button", array("id"=>"btn_play_pause_1", "class"=>"boton_timer", "onclick"=>"IniciarCrono(1);"));
-                    // $html->tag("img", array("id"=>"img_play_pause_1", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-                  // $html->end("button");
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(1);"));
-                    // $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-                  // $html->end("button");
-                // $html->end("td");
-              // $html->end("tr");
-            
-              // /* TIMER 2 */
-              // $html->tag("tr");
-                
-                // $html->tag("td");
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText("Play 1");
-                  // $html->end("label");
-                // $html->end("td");
-                // $html->tag("td");
-                  // $html->tag("input", array("id"=>"tim_duracion_horas_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText(":");
-                  // $html->end("label");
-                  // $html->tag("input", array("id"=>"tim_duracion_minutos_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText(":");
-                  // $html->end("label");
-                  // $html->tag("input", array("id"=>"tim_duracion_segundos_2", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("button", array("id"=>"btn_play_pause_2", "class"=>"boton_timer", "onclick"=>"IniciarCrono(2);"));
-                    // $html->tag("img", array("id"=>"img_play_pause_2", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-                  // $html->end("button");
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(2);"));
-                    // $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-                  // $html->end("button");
-                // $html->end("td");
-              // $html->end("tr");
-              
-              // /* TIMER 3 */
-              // $html->tag("tr");
-                
-                // $html->tag("td");
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText("Play 2");
-                  // $html->end("label");
-                // $html->end("td");
-                // $html->tag("td");
-                  // $html->tag("input", array("id"=>"tim_duracion_horas_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText(":");
-                  // $html->end("label");
-                  // $html->tag("input", array("id"=>"tim_duracion_minutos_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText(":");
-                  // $html->end("label");
-                  // $html->tag("input", array("id"=>"tim_duracion_segundos_3", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("button", array("id"=>"btn_play_pause_3", "class"=>"boton_timer", "onclick"=>"IniciarCrono(3);"));
-                    // $html->tag("img", array("id"=>"img_play_pause_3", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-                  // $html->end("button");
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(3);"));
-                    // $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-                  // $html->end("button");
-                // $html->end("td");
-              // $html->end("tr");
-              
-              // /* TIMER 4 */
-              // $html->tag("tr");
-          
-                // $html->tag("td");
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText("Otro");
-                  // $html->end("label");
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("input", array("id"=>"tim_duracion_horas_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText(":");
-                  // $html->end("label");
-                  // $html->tag("input", array("id"=>"tim_duracion_minutos_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                  // $html->tag("label", array("class"=>"label_formulario"));
-                    // $html->printText(":");
-                  // $html->end("label");
-                  // $html->tag("input", array("id"=>"tim_duracion_minutos_4", "type"=>"text", "class"=>"input_timer verdana letra_9", "maxlength"=>"2"), true);
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("button", array("id"=>"btn_play_pause_4", "class"=>"boton_timer", "onclick"=>"IniciarCrono(4);"));
-                    // $html->tag("img", array("id"=>"img_play_pause_4", "src"=>"../imagenes/play.jpg", "class"=>"imagen_timer"), true);
-                  // $html->end("button");
-                // $html->end("td");
-                
-                // $html->tag("td");
-                  // $html->tag("button", array("class"=>"boton_timer", "onclick"=>"InicializarCrono(4);"));
-                    // $html->tag("img", array("src"=>"../imagenes/stop.jpg", "class"=>"imagen_timer"), true);
-                  // $html->end("button");
-                // $html->end("td");
-              // $html->end("tr");
-
             // $html->end("table");
           // $html->end("td");
+//     $html->end("tr");
+//   $html->end("table");
 
-    $html->end("tr");
-  $html->end("table");
+  //th's encabezados
+  $th_oculto = $html->tag("th", "class='oculto'");//se utilizan 2 de estos: para id y para color_fila
+  $th_color = $html->tag("th", "class='fondo_azul ancho_scroll'");
+  $th_servicio = $html->tag("th", "class='fondo_azul alineacion_centro ancho_140'",array("<label class='label_formulario'>Servicio</label>"));
+  $th_hora = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Hora</label>"));
+  $th_duracion = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Duración</label>"));
+  $th_termina = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Termina</label>"));
+  $th_total = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Total</label>"));
+  $th_pago = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Pago</label>"));
+  $th_gratis = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Gratis</label>"));
+  $th_cliente = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Cliente</label>"));
+  $th_observacion = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Observación</label>"));
+  $th_eliminar = $html->tag("th", "class='fondo_azul ancho_25'");
+  //tr encabezados
+  $tr_encabezados = $html->tag("tr", "", array( $th_oculto,$th_oculto,$th_color,$th_servicio,$th_hora,$th_duracion,$th_termina,
+                                                $th_total,$th_pago,$th_gratis,$th_cliente,$th_observacion,$th_eliminar));
+  //thead encabezados
+  $thead_encabezados = $html->tag("thead", "", array($tr_encabezados));
+  //tbody historial
+  $tbody_historial = $html->tag("tbody", "id='historial_ventas' class='cuerpo_historial'");
+  //table historial
+  $table_historial = $html->tag("table", "id='tbl_historial' class='zona_historial ancho_100p'", array($thead_encabezados,$tbody_historial));
 
-
-  $html->tag("table",array("id"=>"tbl_historial", "class"=>"zona_historial ancho_100p"));
-  
-  //ENCABEZADOS HISTORIAL   
-    $html->tag("thead");
-      $html->tag("tr");
-     
-        $html->tag("th", array("class"=>"oculto"));
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"oculto"));
-        $html->end("th");
-     
-        $html->tag("th", array("class"=>"fondo_azul ancho_scroll"));
-        $html->end("th");
-       
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_140"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Servicio");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Hora");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Duración");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Termina");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Total");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Pagó");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_50"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Gratis");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro ancho_70"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Cliente");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul alineacion_centro"));
-         $html->tag("label", array("class"=>"label_formulario"));
-           $html->printText("Observación");
-         $html->end("label");
-        $html->end("th");
-        
-        $html->tag("th", array("class"=>"fondo_azul ancho_25"));
-        $html->end("th");
-       
-       // $html->tag("th", array("class"=>"ancho_scroll"));
-       // $html->end("th");
-      $html->end("tr");
-   $html->end("thead");
-   
-   $html->tag("tbody", array("id"=>"historial_ventas", "class"=>"cuerpo_historial"));
-     
-   $html->end("tbody");
-   
-  $html->end("table");
+  $contenido_modulo = array($table_titulo,$table_servicios,$table_historial);
 ?>
 
   </body>

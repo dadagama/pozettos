@@ -32,6 +32,8 @@
 	height: 50px;
 	padding: 0px;
 	background: #fff;
+	border-color:#DDDDDD;
+  border-width:1px;
 }
 /*******************************************
 **            TIMERS                      **
@@ -93,6 +95,8 @@ tr.even { background: #fff; height: 25px;}
 {
 	padding: 0px;
 	background: #fff;
+	border-color:#DDDDDD;
+  border-width:1px;
 }
 .imagen_color
 {

@@ -48,49 +48,38 @@
 
 	session_start();
 		
-	require_once("../herramientas/GeneradorHtml.inc");
-	$html = new GeneradorHtml();
+	require_once("../herramientas/GeneradorHtml2.inc");
+	$html = new GeneradorHtml2();
 	
 	$_SESSION['arregloParametros'] = array(	"con_servidor" => "localhost",
 																					"con_usuario" => "root",
 																					"con_password" => "root",
 																					"con_nombre_bd" => "pozettos");
 
-  /* TITULO CON LA FECHA DEL DIA */
-  $html->tag("table",array("class"=>"tbl_titulo tabla_centrada borde_azul"));
-    $html->tag("tr");
-      $html->tag("td", array("class"=>"alineacion_centro"));
-        $html->tag("label");
-          $html->printText("Pozetto's.Net");
-        $html->end("label");
-      $html->end("td");
-      
-      $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Contabilidad", "type"=>"image", "src"=>"../imagenes/modulo_contabilidad.png", "value"=>date("Y-m-d"), "id"=>"con_fecha"), true);
-      $html->end("td");
-      
-      $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Deudores morosos", "type"=>"image", "src"=>"../imagenes/modulo_deuda.jpg", "onclick"=>"mostrarModulo('deuda');"), true);
-      $html->end("td");
-      
-      $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Estadisticas del negocio", "type"=>"image", "src"=>"../imagenes/reporte.jpg", "onclick"=>"mostrarModulo('estadistica');"), true);
-      $html->end("td");
-      
-      $html->tag("td", array("class"=>"ancho_40"));
-        $html->tag("input", array("title"=>"Clientes Fieles", "type"=>"image", "src"=>"../imagenes/add_user.png", "onclick"=>"mostrarModulo('cliente');"), true);
-      $html->end("td");
-    $html->end("tr");
-  $html->end("table");
+  //td's titulo
+  $td_titulo = $html->tag("td", "class='alineacion_centro'", array("<label>Pozetto's.Net</label>"));
+  $input_contabilidad = $html->tag("input", "title='Contabilidad' type='image' src='../imagenes/modulo_contabilidad.png' value='".date("Y-m-d")."' id='con_fecha'", "", true);
+  $td_contabilidad = $html->tag("td", "class='ancho_40'", array($input_contabilidad));
+  $input_deudores = $html->tag("input", "title='Deudores morosos' type='image' src='../imagenes/modulo_deuda.jpg' onclick=\"mostrarModulo('deuda');\"", "", true);
+  $td_deudores = $html->tag("td", "class='ancho_40'", array($input_deudores));
+  $input_estadistica = $html->tag("input", "title='Estadisticas del negocio' type='image' src='../imagenes/reporte.jpg' onclick=\"mostrarModulo('estadistica');\"", "", true);
+  $td_estadistica = $html->tag("td", "class='ancho_40'", array($input_estadistica));
+  $input_clientes = $html->tag("input", "title='Clientes Fieles' type='image' src='../imagenes/add_user.png' onclick=\"mostrarModulo('cliente');\"", "", true);
+  $td_clientes = $html->tag("td", "class='ancho_40'", array($input_clientes));
+  //tr titulo
+  $tr_titulo = $html->tag("tr", "", array($td_titulo,$td_contabilidad,$td_deudores,$td_estadistica,$td_clientes));
+  //table titulo
+  echo $html->tag("table", "class='tbl_titulo tabla_centrada borde_azul'", array($tr_titulo));
 
   //DIV CUERPO
-  $html->tag("div", array("id"=>"div_cuerpo"));
-    if(isset($_POST['modulo']))
-      $_SESSION['modulo'] = $_POST['modulo'];
-    else if(!isset($_SESSION['modulo']))
-      $_SESSION['modulo'] = "panel";
-    require_once("../modulo_".$_SESSION['modulo']."/fm_".$_SESSION['modulo'].".php");
-  $html->end("div");
+  if(isset($_POST['modulo']))
+    $_SESSION['modulo'] = $_POST['modulo'];
+  else if(!isset($_SESSION['modulo']))
+    $_SESSION['modulo'] = "panel";
+  require_once("../modulo_".$_SESSION['modulo']."/fm_".$_SESSION['modulo'].".php");
+  //la variable $contenido_modulo debe estar en todos los fm_
+  //es un arreglo que contiene los bloques de cada interfaz que se mostraran
+  echo $html->tag("div", "id='div_cuerpo'", $contenido_modulo);
 ?>
 	</body>
 </html>

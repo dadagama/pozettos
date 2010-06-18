@@ -17,10 +17,30 @@
 */
 var url_controlador_modulo = "";
 
+$(document).ready(inicializar);
+
+function inicializar()
+{
+	url_controlador_modulo = "panel.php";
+	$('#con_fecha').datepicker({  dateFormat: 'yy-mm-dd',
+                                onSelect: function(dateText, inst){
+                                  ajax('accion=mostrarModulo&nombre_modulo=contabilidad&con_fecha='+$("#con_fecha").val(), false, mostrarNuevoModulo_ajax, false);
+                                }
+                              });
+}
+
+function mostrarNuevoModulo_ajax(moduloNuevo)
+{
+	$('#div_cuerpo').empty();
+	$('#div_cuerpo').append(moduloNuevo);
+}
+
+function mostrarModulo(nombre_modulo)
+{
+  ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
+}
+
 function nada(){}
-function before(){alert('before');}
-function success(){alert('success');}
-function error(){alert('error');}
 
 function ajax(data_string, before_send_func, success_func, error_func)
 {
@@ -45,12 +65,6 @@ function ajax(data_string, before_send_func, success_func, error_func)
 	return false;
 }
 
-function mostrarNuevoModulo_ajax(moduloNuevo)
-{
-	$('#div_cuerpo').empty();
-	$('#div_cuerpo').append(moduloNuevo);
-}
-
 function mensajeConfirmar()
 {
 	if(confirm("Esta seguro?"))
@@ -62,21 +76,4 @@ function mensajeConfirmar()
 function mensajeError()
 {
 	alert("Hubo un error");
-}
-
-$(document).ready(inicializar);
-
-function inicializar()
-{
-	url_controlador_modulo = "panel.php";
-	$('#con_fecha').datepicker({  dateFormat: 'yy-mm-dd',
-                                onSelect: function(dateText, inst){ 
-                                  ajax('accion=mostrarModulo&nombre_modulo=contabilidad&con_fecha='+$("#con_fecha").val(), false, mostrarNuevoModulo_ajax, false); 
-                                }
-                              });
-}
-
-function mostrarModulo(nombre_modulo)
-{
-  ajax('accion=mostrarModulo&nombre_modulo='+nombre_modulo, false, mostrarNuevoModulo_ajax, false);
 }

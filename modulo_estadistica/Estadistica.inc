@@ -19,7 +19,7 @@
 
 
 require_once("../conexiones/ConexionBDMySQL.inc");
-require_once("../herramientas/GeneradorHtml.inc");
+require_once("../herramientas/GeneradorHtml2.inc");
 
 class Estadistica
 {
@@ -33,35 +33,26 @@ class Estadistica
     $this->_conexionBD->conectar();
     $this->_conexionBDAux = new ConexionBDMySQL($parametrosConexion);
     $this->_conexionBDAux->conectar();
-    $this->_html = new GeneradorHtml();
+    $this->_html = new GeneradorHtml2();
   }
   
   function cargarCategorias()
   {
-    $sql = "SELECT cat_id, cat_nombre 
+    $sql = "SELECT cat_id, cat_nombre
             FROM pozettos_categoria
-            WHERE cat_id != 1";
+            WHERE cat_id != 1
+            AND cat_vigente = 1";
     $this->_conexionBD->ejecutarSQL($sql);
-    $contador = 0;
-    $this->_html->tag("table");
-      $this->_html->tag("tr");          
-        while($info_categoria = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
-        {
-          if($contador % 1 == 0)
-          {
-            $this->_html->end("tr");
-            $this->_html->tag("tr");  
-          }
-          $this->_html->tag("td");
-            $this->_html->tag("label", array("class"=>"letra_azul verdana letra_9 negrilla"));
-              $this->_html->tag("input", array("type"=>"checkbox", "name"=>$info_categoria['cat_nombre'], "id"=>"chk_".$info_categoria['cat_id'], "checked"=>"checked"),true);
-              $this->_html->printText(utf8_encode($info_categoria['cat_nombre']));
-            $this->_html->end("label");
-          $this->_html->end("td");
-          $contador++;
-        }
-      $this->_html->end("tr");
-    $this->_html->end("table");
+    $arreglo_tr_categorias = "";
+    while($info_categoria = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
+    {
+            $input_categoria = $this->_html->tag("input", "type='checkbox' name='".$info_categoria['cat_nombre']."' id='chk_".$info_categoria['cat_id']."' checked='checked'", "", true);
+          $label_categoria = $this->_html->tag("label", "class='letra_azul verdana letra_9'", array($input_categoria,utf8_encode($info_categoria['cat_nombre'])));
+        $td_categoria = $this->_html->tag("td", "", array($label_categoria));
+      $tr_categorias .= $this->_html->tag("tr", "", array($td_categoria));
+      $contador++;
+    }
+    return $this->_html->tag("table", "", array($tr_categorias));
   }
   
   function actualizarEstadisticas(&$arreglo_parametros)
@@ -80,25 +71,23 @@ class Estadistica
          $fecha = "hiv_fecha >= '".$arreglo_parametros['opc_fecha_inicial']."' AND hiv_fecha <= '".$arreglo_parametros['opc_fecha_final']."'";
         break;
     }
-    $this->_html->tag("tr");
-      $this->_html->tag("td");
-        $this->_html->tag("table", array("class"=>"tbl_resumen"));
-          if($arreglo_parametros['Cabinas'])
-            $this->_construirTablaResumen($fecha, "Cabinas");
-          if($arreglo_parametros['Juegos'])
-            $this->_construirTablaResumen($fecha, "Juegos");
-          if($arreglo_parametros['Recargas'])
-            if($arreglo_parametros['opc_alcance'] == "diario")
-              $this->_construirTablaResumen($fecha, "Recargas", true, $arreglo_parametros['opc_fecha']);
-            else
-              $this->_construirTablaResumen($fecha, "Recargas");
-          if($arreglo_parametros['Llamadas'])
-            $this->_construirTablaResumen($fecha, "Llamadas");
-          if($arreglo_parametros['Otros'])
-            $this->_construirTablaResumen($fecha, "Otros");
-        $this->_html->end("table");
-      $this->_html->end("td");
-    $this->_html->end("tr");
+        $tablas_resumenes = "";
+        if($arreglo_parametros['Cabinas'])
+          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Cabinas");
+        if($arreglo_parametros['Juegos'])
+          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Juegos");
+        if($arreglo_parametros['Recargas'])
+          if($arreglo_parametros['opc_alcance'] == "diario")
+            $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Recargas", true, $arreglo_parametros['opc_fecha']);
+          else
+            $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Recargas");
+        if($arreglo_parametros['Llamadas'])
+          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Llamadas");
+        if($arreglo_parametros['Otros'])
+          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Otros");
+        $tabla_resumen = $this->_html->tag("table", "class='tbl_resumen'", array($tablas_resumenes));
+      $td_estadisticas = $this->_html->tag("td", "", array($tabla_resumen));
+    return $this->_html->tag("tr", "", array($td_estadisticas));
   }
   
   function _construirTablaResumen($where_fecha, $cat_nombre, $mostrar_saldo_titan = false, $fecha = "")
@@ -108,182 +97,104 @@ class Estadistica
             WHERE cas_ser_id = ser_id
             AND cas_cat_id = cat_id
             AND cat_nombre = '$cat_nombre'
+            AND cat_vigente = 1
+						AND cas_vigente = 1
+						AND ser_vigente = 1
             ORDER BY ser_nombre ASC";
     $this->_conexionBD->ejecutarSQL($sql);
     
-    $this->_html->tag("thead");
-      $this->_html->tag("tr");          
-        $this->_html->tag("th", array("class"=>"ancho_140"));
-          $this->_html->tag("label");
-            $this->_html->printText($cat_nombre);
-          $this->_html->end("label");
-        $this->_html->end("th");
-        
-        $this->_html->tag("th", array("class"=>"ancho_70"));
-          $this->_html->tag("label");
-            $this->_html->printText("Pagado");
-          $this->_html->end("label");
-        $this->_html->end("th");
-        
-        $this->_html->tag("th", array("class"=>"ancho_70"));
-          $this->_html->tag("label");
-            $this->_html->printText("Deben");
-          $this->_html->end("label");
-        $this->_html->end("th");
-        
-        $this->_html->tag("th", array("class"=>"ancho_70"));
-          $this->_html->tag("label");
-            $this->_html->printText("Gratis");
-          $this->_html->end("label");
-        $this->_html->end("th");
-      $this->_html->end("tr");
-    $this->_html->end("thead");
-      
+        $th_nombre_categoria = $this->_html->tag("th", "class='ancho_140'", array("<label>$cat_nombre</label>"));
+        $th_pagado = $this->_html->tag("th", "class='ancho_70'", array("<label>Pagado</label>"));
+        $th_deben = $this->_html->tag("th", "class='ancho_70'", array("<label>Deben</label>"));
+        $th_gratis = $this->_html->tag("th", "class='ancho_70'", array("<label>Gratis</label>"));
+      $tr_encabezado = $this->_html->tag("tr", "", array($th_nombre_categoria,$th_pagado,$th_deben,$th_gratis));
+    $thead_resumen = $this->_html->tag("thead", "", array($tr_encabezado));
+
     $total_pagado = 0;
     $total_deben = 0;
     $total_gratis = 0;
       
-    $this->_html->tag("tbody");
-      while($info_cabina = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
-      {     
-        $this->_html->tag("tr");
-          $this->_html->tag("td", array("class"=>"alineacion_izquierda"));
-            $this->_html->tag("label");
-              $this->_html->printText($info_cabina['ser_nombre']);
-            $this->_html->end("label");
-          $this->_html->end("td");
-          
-          $this->_html->tag("td", array("class"=>"alineacion_derecha"));
-            $this->_html->tag("label");
-              $sql = "SELECT SUM(hiv_total)
-                      FROM pozettos_historico_venta
-                      WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
+    $trs_servicios = "";
+    while($info_cabina = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
+    {
+        $td_nombre_servicio = $this->_html->tag("td", "class='alineacion_izquierda'", array("<label>".$info_cabina['ser_nombre']."</label>"));
+        $sql = "SELECT SUM(hiv_total)
+                FROM pozettos_historico_venta
+                WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
                       AND hiv_pago = 1
                       AND hiv_es_tiempo_gratis = 0
+                      AND hiv_vigente = 1
                       AND $where_fecha";
-              $this->_conexionBDAux->ejecutarSQL($sql);
-              $total = $this->_conexionBDAux->obtenerFilaComoCadena();
-              $total_pagado += (int)$total;
-              $this->_html->printText($this->_html->colocarPuntoMiles($total));
-            $this->_html->end("label");
-          $this->_html->end("td");
-          
-          $this->_html->tag("td", array("class"=>"alineacion_derecha"));
-            $this->_html->tag("label");
-              $sql = "SELECT SUM(hiv_total)
-                      FROM pozettos_historico_venta
-                      WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
+        $this->_conexionBDAux->ejecutarSQL($sql);
+        $total = (int)$this->_conexionBDAux->obtenerFilaComoCadena();
+        $total_pagado += $total;
+        $td_pago = $this->_html->tag("td", "class='alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
+
+        $sql = "SELECT SUM(hiv_total)
+                FROM pozettos_historico_venta
+                WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
                       AND hiv_pago = 0
                       AND hiv_es_tiempo_gratis = 0
+                      AND hiv_vigente = 1
                       AND $where_fecha";
-              $this->_conexionBDAux->ejecutarSQL($sql);
-              $total = $this->_conexionBDAux->obtenerFilaComoCadena();
-              $total_deben += (int)$total;
-              $this->_html->printText($this->_html->colocarPuntoMiles($total));
-            $this->_html->end("label");
-          $this->_html->end("td");
-          
-          $this->_html->tag("td", array("class"=>"alineacion_derecha"));
-            $this->_html->tag("label");
-              $sql = "SELECT SUM(hiv_total)
-                      FROM pozettos_historico_venta
-                      WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
+        $this->_conexionBDAux->ejecutarSQL($sql);
+        $total = (int)$this->_conexionBDAux->obtenerFilaComoCadena();
+        $total_deben += $total;
+        $td_deben = $this->_html->tag("td", "class='alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
+
+        $sql = "SELECT SUM(hiv_total)
+                FROM pozettos_historico_venta
+                WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
                       AND hiv_pago = 0
                       AND hiv_es_tiempo_gratis = 1
+                      AND hiv_vigente = 1
                       AND $where_fecha";
-              $this->_conexionBDAux->ejecutarSQL($sql);
-              $total = $this->_conexionBDAux->obtenerFilaComoCadena();
-              $total_gratis += (int)$total;
-              $this->_html->printText($this->_html->colocarPuntoMiles($total));
-            $this->_html->end("label");
-          $this->_html->end("td");
-        $this->_html->end("tr");
-      }
-      
-      $this->_html->tag("tr");
-        $this->_html->tag("td", array("class"=>"celda_subtotal"));
-          $this->_html->tag("label");
-            $this->_html->printText("Subtotal");
-          $this->_html->end("label");
-        $this->_html->end("td");
-        
-        $this->_html->tag("td", array("class"=>"celda_subtotal alineacion_derecha"));
-          $this->_html->tag("label");
-            $this->_html->printText($this->_html->colocarPuntoMiles($total_pagado));
-          $this->_html->end("label");
-        $this->_html->end("td");
-        
-        $this->_html->tag("td", array("class"=>"celda_subtotal alineacion_derecha"));
-          $this->_html->tag("label");
-            $this->_html->printText($this->_html->colocarPuntoMiles($total_deben));
-          $this->_html->end("label");
-        $this->_html->end("td");
-        
-        $this->_html->tag("td", array("class"=>"celda_subtotal alineacion_derecha"));
-          $this->_html->tag("label");
-            $this->_html->printText($this->_html->colocarPuntoMiles($total_gratis));
-          $this->_html->end("label");
-        $this->_html->end("td");
-      $this->_html->end("tr");
-      
-      $this->_html->tag("tr");
-        $this->_html->tag("td", array("class"=>"celda_total"));
-          $this->_html->tag("label");
-            $this->_html->printText("Total $cat_nombre");
-          $this->_html->end("label");
-        $this->_html->end("td");
-        
-        $this->_html->tag("td", array("class"=>"celda_total alineacion_centro", "colspan"=>"2"));
-          $this->_html->tag("label");
-            $this->_html->printText($this->_html->colocarPuntoMiles($total_pagado + $total_deben));
-          $this->_html->end("label");
-        $this->_html->end("td");
-        
-//         $this->_html->tag("td", array("class"=>"celda_total"));
-//         $this->_html->end("td");
-      $this->_html->end("tr");
-      
-      if($mostrar_saldo_titan)
-      {
-        $this->_html->tag("tr");
-          $this->_html->tag("td", array("class"=>"celda_total_2"));
-            $this->_html->tag("label");
-              $this->_html->printText("Saldo Inicial Titan");
-            $this->_html->end("label");
-          $this->_html->end("td");
-             
-          $this->_html->tag("td", array("class"=>"celda_total_2 alineacion_centro", "colspan"=>"3"));
-            $this->_html->tag("label");
-              $sql = "SELECT sit_saldo
-                      FROM pozettos_saldo_inicial_titan
-                      WHERE sit_fecha = '$fecha' LIMIT 1";
-              $this->_conexionBDAux->ejecutarSQL($sql);
-              if($this->_conexionBDAux->obtenerNumeroFilas() > 0)
-              {
-                $total = $this->_conexionBDAux->obtenerFilaComoCadena();
-                $this->_html->printText($this->_html->colocarPuntoMiles($total));
-              }
-              else
-                $this->_html->printText("0");
-            $this->_html->end("label");
-          $this->_html->end("td");
-        $this->_html->end("tr");
-              
-        $this->_html->tag("tr");          
-          $this->_html->tag("td", array("class"=>"celda_total_2"));
-            $this->_html->tag("label");
-              $this->_html->printText("Saldo Final Titan");
-            $this->_html->end("label");
-          $this->_html->end("td");
-             
-          $this->_html->tag("td", array("class"=>"celda_total_2 alineacion_centro", "colspan"=>"3"));
-            $this->_html->tag("label");
-              $this->_html->printText($this->_html->colocarPuntoMiles($total - $total_pagado - $total_deben - $total_gratis));
-            $this->_html->end("label");
-          $this->_html->end("td");
-        $this->_html->end("tr");
-      }
-    $this->_html->end("tbody");
+        $this->_conexionBDAux->ejecutarSQL($sql);
+        $total = (int)$this->_conexionBDAux->obtenerFilaComoCadena();
+        $total_gratis += $total;
+        $td_gratis = $this->_html->tag("td", "class='alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
+
+      $trs_servicios .= $this->_html->tag("tr", "", array($td_nombre_servicio,$td_pago,$td_deben,$td_gratis));
+    }
+    //subtotales
+      $td_subtotal = $this->_html->tag("td", "class='celda_subtotal'", array("<label>Subtotal</label>"));
+      $td_total_pagado = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_pagado)."</label>"));
+      $td_total_deben = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_deben)."</label>"));
+      $td_total_gratis = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_gratis)."</label>"));
+    $tr_subtotal = $this->_html->tag("tr", "", array($td_subtotal,$td_total_pagado,$td_total_deben,$td_total_gratis));
+    //totales
+      $td_total = $this->_html->tag("td", "class='celda_total'", array("<label>Total $cat_nombre</label>"));
+      $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_centro' colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_pagado + $total_deben)."</label>"));
+    $tr_total = $this->_html->tag("tr", "", array($td_total,$td_total_entrada));
+
+    $trs_titan = "";
+    if($mostrar_saldo_titan)
+    {
+        $td_label_titan = $this->_html->tag("td", "class='celda_total_2'", array("<label>Saldo Inicial Titan</label>"));
+        $sql = "SELECT sit_saldo
+                FROM pozettos_saldo_inicial_titan
+                WHERE sit_fecha = '$fecha'
+                AND sit_vigente = 1
+                LIMIT 1";
+        $this->_conexionBDAux->ejecutarSQL($sql);
+        if($this->_conexionBDAux->obtenerNumeroFilas() > 0)
+        {
+          $total = $this->_conexionBDAux->obtenerFilaComoCadena();
+          $total = $this->_html->colocarPuntoMiles($total);
+        }
+        else
+          $total = "0";
+        $td_saldo_titan = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>$total</label>"));
+      $tr_total_titan = $this->_html->tag("tr", "", array($td_label_titan,$td_saldo_titan));
+
+      $td_label_saldo_final = $this->_html->tag("td", "class='celda_total_2'", array("<label>Saldo Final Titan</label>"));
+      $td_saldo_final = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>".$this->_html->colocarPuntoMiles($total - $total_pagado - $total_deben - $total_gratis)."</label>"));
+      $tr_saldo_final = $this->_html->tag("tr", "", array($td_label_saldo_final,$td_saldo_final));
+
+      $trs_titan = $tr_total_titan." ".$tr_saldo_final;
+    }
+    $tbody_resumen = $this->_html->tag("tbody", "", array($trs_servicios,$tr_subtotal,$tr_total,$trs_titan));
+    return $thead_resumen." ".$tbody_resumen;
   }
 }
 ?>

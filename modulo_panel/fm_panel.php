@@ -26,19 +26,18 @@
 		
 	$_SESSION['modulo'] = "panel";
 	
-	require_once("../herramientas/GeneradorHtml.inc");
-	$html = new GeneradorHtml();
-	
-	$html->tag("table",array("class"=>"tbl_titulo tabla_centrada "));
-		$html->tag("tr");
-			$html->tag("td", array("class"=>"alineacion_centro"));
-				$html->tag("label");
-					$html->printText("Bienvenido, seleccione una de las opciones");
-				$html->end("label");
-			$html->end("td");
-		$html->end("tr");
-	$html->end("table");
-	
+	//require_once("../herramientas/GeneradorHtml.inc");
+	//$html = new GeneradorHtml();
+	$td_bienvenida = $html->tag("td", "class='alineacion_centro'", array("<label>Bienvenido, seleccione una de las opciones</label>"));
+	$tr_bienvenida = $html->tag("tr", "", array($td_bienvenida));
+	$table_bienvenida = $html->tag("table", "class='tbl_titulo tabla_centrada'", array($td_bienvenida));
+
+  $contenido_modulo = "";
+  if($viene_de_icono)//hizo click en el menu
+    echo $table_bienvenida;
+  else//actualizo la pagina f5
+    $contenido_modulo = $table_bienvenida;
+
 ?>
 	</body>
 </html>

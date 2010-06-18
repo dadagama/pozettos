@@ -25,16 +25,16 @@ $objetoEstadistica = new Estadistica($_SESSION['arregloParametros']);
 switch($_REQUEST['accion'])
 { 
   case "mostrarModulo":
+    $viene_de_icono = true;
     require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
     break;
   
   case "cargarCategorias":
-    $objetoEstadistica->cargarCategorias();
+    echo $objetoEstadistica->cargarCategorias();
     break;
   
   case "actualizarEstadisticas":
-    //print_r($_REQUEST);
-    $objetoEstadistica->actualizarEstadisticas($_REQUEST);
+    echo $objetoEstadistica->actualizarEstadisticas($_REQUEST);
     break;
 }
 ?>

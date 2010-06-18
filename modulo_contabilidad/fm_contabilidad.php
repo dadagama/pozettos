@@ -43,25 +43,25 @@
   $conexion_bd_bozettos = new ConexionBDMySQL($_SESSION['arregloParametros']);
   $conexion_bd_bozettos->conectar();
   
-  //tr contabilidad
-  $lbl_contabilidad = $html->tag("label", "", array("Contabilidad"));
-  if($_SESSION['fecha_contabilidad'] != date("Y-m-d"))
-    $clase_fecha = "class='fecha_otro_dia'";
-  $lbl_fecha = $html->tag("label", "id='lbl_fecha_contabilidad' ".$clase_fecha, array($html->obtenerFechaTextual($_SESSION['fecha_contabilidad'], true, true, true, true)));
-  $inp_fecha = $html->tag("input", "type='hidden' id='fecha_contabilidad' value='".$_SESSION['fecha_contabilidad']."'", "", true);
-  $td_fecha = $html->tag("td", "class='alineacion_centro'", array($lbl_contabilidad,$html->espacios(2),$lbl_fecha,$inp_fecha));
-  $tr_fecha = $html->tag("tr", "", array($td_fecha));
-  //tr saldo titan
-  $lbl_saldo_titan = $html->tag("label", "", array("Saldo Inicial TITAN:"));
-  $lbl_saldo = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoTitan(true);'");
-  $td_saldo = $html->tag("td", "class='alineacion_centro'", array($lbl_saldo_titan,$html->espacios(2),$lbl_saldo));
-  $tr_saldo = $html->tag("tr", "", array($td_saldo));
+    //tr contabilidad
+        $lbl_contabilidad = $html->tag("label", "", array("Contabilidad"));
+        if($_SESSION['fecha_contabilidad'] != date("Y-m-d"))
+          $clase_fecha = "class='fecha_otro_dia'";
+        $lbl_fecha = $html->tag("label", "id='lbl_fecha_contabilidad' ".$clase_fecha, array($html->obtenerFechaTextual($_SESSION['fecha_contabilidad'], true, true, true, true)));
+        $inp_fecha = $html->tag("input", "type='hidden' id='fecha_contabilidad' value='".$_SESSION['fecha_contabilidad']."'", "", true);
+      $td_fecha = $html->tag("td", "class='alineacion_centro'", array($lbl_contabilidad,$html->espacios(2),$lbl_fecha,$inp_fecha));
+    $tr_fecha = $html->tag("tr", "", array($td_fecha));
+    //tr saldo titan
+        $lbl_saldo_titan = $html->tag("label", "", array("Saldo Inicial TITAN:"));
+        $lbl_saldo = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoTitan(true);'");
+      $td_saldo = $html->tag("td", "class='alineacion_centro'", array($lbl_saldo_titan,$html->espacios(2),$lbl_saldo));
+    $tr_saldo = $html->tag("tr", "", array($td_saldo));
   //tabla titulo
   $table_titulo = $html->tag("table", "class='tbl_titulo tabla_centrada'", array($tr_fecha,$tr_saldo));
 
   /*TABLA PRODUCTOS Y SERVICIOS*/
-  $td_servicios = $html->tag("td", "", array($objetoContabilidad->obtenerTablaServicios()));
-  $tr_servicios = $html->tag("tr", "", array($td_servicios));
+      $td_servicios = $html->tag("td", "", array($objetoContabilidad->obtenerTablaServicios()));
+    $tr_servicios = $html->tag("tr", "", array($td_servicios));
   $table_servicios = $html->tag("table", "class='tabla_centrada'", array($tr_servicios));
   
 //   $html->tag("table", array("class"=>"tabla_centrada"));
@@ -102,30 +102,38 @@
 //     $html->end("tr");
 //   $html->end("table");
 
-  //th's encabezados
-  $th_oculto = $html->tag("th", "class='oculto'");//se utilizan 2 de estos: para id y para color_fila
-  $th_color = $html->tag("th", "class='fondo_azul ancho_scroll'");
-  $th_servicio = $html->tag("th", "class='fondo_azul alineacion_centro ancho_140'",array("<label class='label_formulario'>Servicio</label>"));
-  $th_hora = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Hora</label>"));
-  $th_duracion = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Duración</label>"));
-  $th_termina = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Termina</label>"));
-  $th_total = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Total</label>"));
-  $th_pago = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Pago</label>"));
-  $th_gratis = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Gratis</label>"));
-  $th_cliente = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Cliente</label>"));
-  $th_observacion = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Observación</label>"));
-  $th_eliminar = $html->tag("th", "class='fondo_azul ancho_25'");
-  //tr encabezados
-  $tr_encabezados = $html->tag("tr", "", array( $th_oculto,$th_oculto,$th_color,$th_servicio,$th_hora,$th_duracion,$th_termina,
-                                                $th_total,$th_pago,$th_gratis,$th_cliente,$th_observacion,$th_eliminar));
-  //thead encabezados
-  $thead_encabezados = $html->tag("thead", "", array($tr_encabezados));
-  //tbody historial
-  $tbody_historial = $html->tag("tbody", "id='historial_ventas' class='cuerpo_historial'");
+        //th's encabezados
+        $th_oculto = $html->tag("th", "class='oculto'",array("<label class='label_formulario'>coso</label>"));//se utilizan 2 de estos: para id y para color_fila
+        $th_color = $html->tag("th", "class='fondo_azul ancho_scroll'");
+        $th_servicio = $html->tag("th", "class='fondo_azul alineacion_centro ancho_140'",array("<label class='label_formulario'>Servicio</label>"));
+        $th_hora = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Hora</label>"));
+        $th_duracion = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Duración</label>"));
+        $th_termina = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Termina</label>"));
+        $th_total = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Total</label>"));
+        $th_pago = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Pago</label>"));
+        $th_gratis = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Gratis</label>"));
+        $th_cliente = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Cliente</label>"));
+        $th_observacion = $html->tag("th", "class='fondo_azul alineacion_centro'",array("<label class='label_formulario'>Observación</label>"));
+        $th_eliminar = $html->tag("th", "class='fondo_azul ancho_25'");
+      //tr encabezados
+      $tr_encabezados = $html->tag("tr", "", array( $th_oculto,$th_oculto,$th_color,$th_servicio,$th_hora,$th_duracion,$th_termina,
+                                                  $th_total,$th_pago,$th_gratis,$th_cliente,$th_observacion,$th_eliminar));
+    //thead encabezados
+    $thead_encabezados = $html->tag("thead", "", array($tr_encabezados));
+    //tbody historial
+    $tbody_historial = $html->tag("tbody", "id='historial_ventas' class='cuerpo_historial'");
   //table historial
   $table_historial = $html->tag("table", "id='tbl_historial' class='zona_historial ancho_100p'", array($thead_encabezados,$tbody_historial));
 
-  $contenido_modulo = array($table_titulo,$table_servicios,$table_historial);
+  $contenido_modulo = "";
+  if($viene_de_icono)//hizo click en el menu
+    echo $table_titulo, $table_servicios, $table_historial;
+  else//actualizo la pagina f5
+  {
+    $contenido_modulo .= $table_titulo;
+    $contenido_modulo .= $table_servicios;
+    $contenido_modulo .= $table_historial;
+  }
 ?>
 
   </body>

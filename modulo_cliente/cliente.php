@@ -25,6 +25,7 @@ $objetoCliente = new Cliente($_SESSION['arregloParametros']);
 switch($_REQUEST['accion'])
 {
 	case "mostrarModulo":
+    $viene_de_icono = true;
 		require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
 		break;
 		
@@ -33,8 +34,8 @@ switch($_REQUEST['accion'])
 		break;
 	
 	case "agregarCliente":
-	 echo $objetoCliente->agregarCliente($_REQUEST['cli_nombre'], $_REQUEST['cli_apellido'], $_REQUEST['cli_email']);
-	 break;
+    echo $objetoCliente->agregarCliente($_REQUEST['cli_nombre'], $_REQUEST['cli_apellido'], $_REQUEST['cli_email']);
+    break;
 	 
 	case "actualizarValor":
 		echo $objetoCliente->actualizarValor($_REQUEST['cli_id'],$_REQUEST['valor_nuevo'],$_REQUEST['nombre_campo']);

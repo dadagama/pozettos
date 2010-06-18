@@ -38,6 +38,18 @@ class GeneradorHtml2
     }
     return $html;       
   }
+
+  /**
+	 * Función que imprime una cantidad de saltos de linea html.<br/>
+	 * Cumple con el estandar xhtml.
+	 * @param	$num_saltos	cantidad de saltos a imprimir.
+	 */
+	function br($num_saltos = 1)
+	{
+		for($x = 0; $x < $num_saltos; $x++)
+			$brs .= "<br/>";
+		return $brs;
+	}
   
  	/**
 	 * Función que imprime una cantidad de espacios html.

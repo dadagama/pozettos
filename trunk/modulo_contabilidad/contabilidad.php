@@ -28,6 +28,7 @@ switch($_REQUEST['accion'])
 ******* ACCIONES GENERICAS  *******
 ***********************************/
 	case "mostrarModulo":
+    $viene_de_icono = true;
 		require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
 		break;
 	
@@ -66,18 +67,11 @@ switch($_REQUEST['accion'])
 		break;
 
 	case "actualizarCampoColor":
-		if($objetoContabilidad->actualizarCampoColor($_REQUEST['hiv_id'],$_REQUEST['hiv_color_fila']))
-			$objetoContabilidad->actualizarHistorialVentas();
-		else
-			echo false;
+		echo $objetoContabilidad->actualizarCampoColor($_REQUEST['hiv_id'],$_REQUEST['hiv_color_fila']);
 		break;
 
 	case "actualizarEstadoPago":
 		echo $objetoContabilidad->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']);
-		//if($objetoContabilidad->actualizarEstadoPago($_REQUEST['id_fila'], $_REQUEST['hiv_pago'], $_REQUEST['hiv_es_tiempo_gratis'], $_REQUEST['ultimo_clic']))
-			//$objetoContabilidad->actualizarHistorialVentas();
-		//else
-			//echo false;
 		break;
 		
 	case "eliminarFila":

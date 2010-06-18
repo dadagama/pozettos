@@ -64,7 +64,7 @@
   $td_deudores = $html->tag("td", "class='ancho_40'", array($input_deudores));
   $input_estadistica = $html->tag("input", "title='Estadisticas del negocio' type='image' src='../imagenes/reporte.jpg' onclick=\"mostrarModulo('estadistica');\"", "", true);
   $td_estadistica = $html->tag("td", "class='ancho_40'", array($input_estadistica));
-  $input_clientes = $html->tag("input", "title='Clientes Fieles' type='image' src='../imagenes/add_user.png' onclick=\"mostrarModulo('cliente');\"", "", true);
+  $input_clientes = $html->tag("input", "title='Clientes Fieles' type='image' src='../imagenes/home.png' onclick=\"mostrarModulo('cliente');\"", "", true);
   $td_clientes = $html->tag("td", "class='ancho_40'", array($input_clientes));
   //tr titulo
   $tr_titulo = $html->tag("tr", "", array($td_titulo,$td_contabilidad,$td_deudores,$td_estadistica,$td_clientes));
@@ -79,7 +79,7 @@
   require_once("../modulo_".$_SESSION['modulo']."/fm_".$_SESSION['modulo'].".php");
   //la variable $contenido_modulo debe estar en todos los fm_
   //es un arreglo que contiene los bloques de cada interfaz que se mostraran
-  echo $html->tag("div", "id='div_cuerpo'", $contenido_modulo);
+  echo $html->tag("div", "id='div_cuerpo'", array($contenido_modulo));
 ?>
 	</body>
 </html>

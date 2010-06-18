@@ -47,12 +47,14 @@ class Cliente
                           FROM pozettos_historico_venta
                           WHERE cli_id = hiv_cli_id
                                 AND hiv_pago = 1
-                                AND hiv_es_tiempo_gratis = 0) AS segundos_acumulados, 
+                                AND hiv_es_tiempo_gratis = 0
+                                AND hiv_vigente = 1) AS segundos_acumulados,
                         ( SELECT SUM(TIME_TO_SEC(hiv_dus_minutos))
                           FROM pozettos_historico_venta
                           WHERE cli_id = hiv_cli_id
                                 AND hiv_pago = 0
-                                AND hiv_es_tiempo_gratis = 1) AS segundos_gratis_cobrados
+                                AND hiv_es_tiempo_gratis = 1
+                                AND hiv_vigente = 1) AS segundos_gratis_cobrados
                   FROM pozettos_cliente) AS temp";
     $this->_conexionBD->ejecutarSQL($sql);
     $filas_clientes = "";              
@@ -87,12 +89,13 @@ class Cliente
   function agregarCliente($cli_nombre, $cli_apellido, $cli_email)
   {
     $sql = "INSERT INTO pozettos_cliente(cli_nombre, cli_apellido, cli_email)
-            VALUES('$cli_nombre', '$cli_apellido', '$cli_email')";
+            VALUES('".utf8_decode($cli_nombre)."', '".utf8_decode($cli_apellido)."', '".utf8_decode($cli_email)."')";
     $this->_conexionBD->ejecutarSQL($sql);
     if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
     {
       $sql = "SELECT cli_id, cli_nombre, cli_apellido, cli_email
               FROM pozettos_cliente
+              WHERE cli_vigente = 1
               ORDER BY cli_id DESC LIMIT 1";
       $this->_conexionBD->ejecutarSQL($sql);
       $info_cliente = $this->_conexionBD->obtenerFilaComoArregloAsociativo();

@@ -24,13 +24,5 @@ switch($_REQUEST['accion'])
 	case "mostrarModulo":
 		require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
 		break;
-		
-	/*case "mostrarContabilidad":
-		require_once("../modulo_contabilidad/fm_contabilidad.php");
-		break;
-		
-	case "mostrarDeudores":
-		require_once("../modulo_deuda/fm_deuda.php");
-		break;*/
 }
 ?>

@@ -65,22 +65,6 @@
   $caption_nuevo_cliente = $html2->tag("legend", "class='letra_azul verdana letra_9'", array("Nuevo Cliente"));
   $form_nuevo_cliente = $html2->tag("fieldset", "class='borde_azul ancho_200 padding_abajo_5 tabla_centrada'", array($caption_nuevo_cliente,$tbl_nuevo_cliente));
   
-//   /*codigo*/
-//   $lbl_codigo = $html2->tag("label", "class='letra_azul verdana letra_9  alineacion_derecha'", array(utf8_encode("Código")));
-//   $td_codigo = $html2->tag("td", "class='alineacion_derecha'", array($lbl_codigo));  
-//   $input_codigo = $html2->tag("input", "id='cli_id' type='text' class='letra_azul verdana letra_9'", array(), true);  
-//   $td_input_codigo = $html2->tag("td", "class='alineacion_derecha'", array($input_codigo));  
-//   $tr_codigo = $html2->tag("tr", "", array($td_codigo,$td_input_codigo));
-//   /*Boton*/
-//   $btn_buscar = $html2->tag("button", "class='boton_adicionar letra_azul verdana letra_9'", array("Buscar<br/>Cliente"));
-//   $td_boton = $html2->tag("td", "colspan='2' class='alineacion_centro'", array($btn_buscar));
-//   $tr_boton = $html2->tag("tr", "", array($td_boton));
-// 	/*TABLA NUEVO CLIENTE*/
-//   $tbl_nuevo_cliente = $html2->tag("table", "", array($tr_codigo,$tr_nombre,$tr_apellido,$tr_correo,$tr_boton));
-//   /*FORMULARIO BUSCAR CLIENTE*/
-//   $caption_buscar_cliente = $html2->tag("legend", "class='letra_azul verdana letra_9'", array("Buscar Cliente"));
-//   $form_buscar_cliente = $html2->tag("fieldset", "class='borde_azul ancho_200 padding_abajo_5 tabla_centrada'", array($caption_buscar_cliente,$tbl_nuevo_cliente));
-  
   /*codigo*/
   $lbl_cli_codigo = $html2->tag("label", "class='label_formulario verdana letra_9'", array("Cod"));
   $th_cli_codigo = $html2->tag("th", "class='fondo_azul ancho_20'", array($lbl_cli_codigo));  
@@ -92,13 +76,13 @@
   $th_cli_apellido = $html2->tag("th", "class='fondo_azul ancho_200'", array($lbl_cli_apellido));  
   /*correo*/
   $lbl_cli_correo = $html2->tag("label", "class='label_formulario verdana letra_9'", array("Correo"));
-  $th_cli_correo = $html2->tag("th", "class='fondo_azul ancho_140'", array($lbl_cli_correo));
+  $th_cli_correo = $html2->tag("th", "class='fondo_azul ancho_200'", array($lbl_cli_correo));
   /*Tiempo acumulado*/
-  $lbl_cli_tiempo_acumulado = $html2->tag("label", "class='label_formulario verdana letra_9'", array("Tiempo</br>acumulado"));
-  $th_cli_tiempo_acumulado = $html2->tag("th", "class='fondo_azul ancho_80'", array($lbl_cli_tiempo_acumulado));
+  $lbl_cli_tiempo_acumulado = $html2->tag("label", "", array("Tiempo</label><br/><label>acumulado"));
+  $th_cli_tiempo_acumulado = $html2->tag("th", "class='fondo_azul ancho_80 label_formulario verdana letra_9'", array($lbl_cli_tiempo_acumulado));
   /*horas gratis*/
-  $lbl_cli_gratis_internet = $html2->tag("label", "class='label_formulario verdana letra_9'", array("Horas<br/>gratis"));
-  $th_cli_gratis_internet = $html2->tag("th", "class='fondo_azul ancho_80'", array($lbl_cli_gratis_internet));
+  $lbl_cli_gratis_internet = $html2->tag("label", "", array("Horas</label><br/><label>gratis"));
+  $th_cli_gratis_internet = $html2->tag("th", "class='fondo_azul ancho_80 label_formulario verdana letra_9'", array($lbl_cli_gratis_internet));
   /*fila encabezados*/
   $tr_encabezados = $html2->tag("tr", "", array($th_cli_codigo,$th_cli_nombre,$th_cli_apellido,$th_cli_correo,$th_cli_tiempo_acumulado,$th_cli_gratis_internet));
   /*thead*/
@@ -119,8 +103,15 @@
   $tr_registros = $html2->tag("tr", "", array($td_clientes,$td_info_cliente));
   /*TABLA GENERAL*/
   $tbl_general  = $html2->tag("table", "class='tabla_centrada'", array($tr_formularios,$tr_registros));
-  
-  $html2->printHtml(array($tbl_titulo, $tbl_general));
+
+  $contenido_modulo = "";
+  if($viene_de_icono)//hizo click en el menu
+    echo $tbl_titulo, $tbl_general;
+  else//actualizo la pagina f5
+  {
+    $contenido_modulo .= $tbl_titulo;
+    $contenido_modulo .= $tbl_general;
+  }
 ?>
 	</body>
 </html>

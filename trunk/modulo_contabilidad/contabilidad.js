@@ -35,7 +35,10 @@ function inicializar()
   //options_hora = "";
   //options_minutos = "";
   obtenerOptions();
-  $("#tbl_historial").tablesorter({headers: {
+
+  $("#tbl_historial").tablesorter({ headers: {
+                                              0: {sorter: 'digit' },
+                                              1: {sorter: 'text' },
                                               2: {sorter: false },
                                               3: {sorter: false },
                                               4: {sorter: false },
@@ -73,7 +76,7 @@ function obtenerOptionsAjax(jsonOptions)
 function actualizarOrdenamiento()
 {
   $("#tbl_historial").trigger("update");
-  var sorting = [[1,0],[0,1]]; 
+  var sorting = [[1,0],[0,1]];
   $("#tbl_historial").trigger("sorton",[sorting]); 
 }
 
@@ -344,11 +347,19 @@ function actualizarCampoColor(id, color_fila)
   ajax("accion=actualizarCampoColor&hiv_id="+id+"&hiv_color_fila="+color_fila, null, actualizarCampoColorAjax, null);
 }
 
-function actualizarCampoColorAjax(actualizo)
+function actualizarCampoColorAjax(json_color)
 {
-  if(actualizo)
-    //actualizarHistorialVentas();
-    actualizarHistorialVentasAjax(actualizo);
+  if(json_color)
+  {
+    var obj_color = eval("("+json_color+")");
+    $("#hiv_fila_"+obj_color.id).attr('style','{background:'+obj_color.color+';}');
+    var color = "";
+    if(obj_color.color != 'null')
+      color = obj_color.color;
+    $("#hiv_color_oculto_"+obj_color.id).html(color);
+    actualizarOrdenamiento();
+    //$("#tbl_historial").trigger("update");
+  }
   else
     console.log("No se acualizo ningun color");
 }
@@ -416,7 +427,8 @@ function eliminarFilaAjax(id_eliminado)
   if(id_eliminado)
   {
     $("#"+id_eliminado).remove();
-    actualizarOrdenamiento();    
+    actualizarOrdenamiento();
+    //$("#tbl_historial").trigger("update");    
   }
 }
 

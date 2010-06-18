@@ -25,6 +25,7 @@ $objetoDeuda = new Deuda($_SESSION['arregloParametros']);
 switch($_REQUEST['accion'])
 {	
 	case "mostrarModulo":
+    $viene_de_icono = true;
 		require_once("../modulo_".$_REQUEST['nombre_modulo']."/fm_".$_REQUEST['nombre_modulo'].".php");
 		break;
 	
@@ -37,7 +38,7 @@ switch($_REQUEST['accion'])
 		break;
 		
 	case "actualizarHistorialDeudas":
-		$objetoDeuda->actualizarHistorialDeudas();
+		echo $objetoDeuda->actualizarHistorialDeudas();
 		break;
 }
 ?>

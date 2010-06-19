@@ -38,7 +38,7 @@ function cargarCategoriasAjax(categorias)
 
 function actualizarParametros()
 {
-  var alcance = $("#opc_alcance").val();
+  var alcance = $("input[name='opc_alcance']:checked").val();
   $("#tbl_diario").addClass("oculto");
   $("#tbl_mensual").addClass("oculto");
   $("#tbl_rango").addClass("oculto");

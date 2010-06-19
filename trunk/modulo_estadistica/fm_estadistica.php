@@ -49,18 +49,17 @@
   $table_titulo =  $html->tag("table", "class='tbl_titulo tabla_centrada'", array($tr_titulo));
 
 	//thead de opciones
-  $th_categoria = $html->tag("th", "class='fondo_azul alineacion_centro'", array("<label class='label_formulario'>Categorías</label>"));
+  $th_categoria = $html->tag("th", "class='fondo_azul alineacion_centro ancho_140'", array("<label class='label_formulario'>Categorías</label>"));
   $th_alcance = $html->tag("th", "class='fondo_azul alineacion_centro ancho_200'", array("<label class='label_formulario'>Alcance</label>"));
   $tr_encabezados = $html->tag("tr", "", array($th_categoria,$th_alcance));
   $thead_opciones = $html->tag("thead", "", array($tr_encabezados));
 	//tbody de opciones
   $td_categorias = $html->tag("td", "id='td_categorias' rowspan='2'");
-  $td_alcance = $html->tag("td", "class='alineacion_centro'", array("
-    <select id='opc_alcance' name='opc_alcance' class='alineacion_izquierda letra_azul verdana letra_9' onchange='actualizarParametros();'>
-			<option value='diario'>Diario</option>
-			<option value='mensual'>Mensual</option>
-			<option value='rango'>Rango de fechas</option>
-		</select>"));
+  $td_alcance = $html->tag("td", "class='alineacion_izquierda alto_30'", array("
+    <label title='Mostrar las estadísticas de un solo día' class='alineacion_izquierda letra_azul verdana letra_9'><input type='radio' checked='checked' onchange='actualizarParametros();' name='opc_alcance' value='diario' />Diario</label><br/>
+    <label title='Mostrar las estadísticas del mes' class='alineacion_izquierda letra_azul verdana letra_9'><input type='radio' onchange='actualizarParametros();'  name='opc_alcance' value='mensual'/>Mensual</label><br/>
+    <label title='Mostrar las estadísticas entre 2 fechas' class='alineacion_izquierda letra_azul verdana letra_9'><input type='radio' onchange='actualizarParametros();'  name='opc_alcance' value='rango'/>Rango de fechas</label>
+  "));
 	$tr_alcance = $html->tag("tr", "", array($td_categorias,$td_alcance));
 
   //table diario
@@ -70,31 +69,37 @@
   $tr_fecha = $html->tag("tr", "", array($td_fecha,$td_input_fecha));
   $table_diario = $html->tag("table", "id='tbl_diario' class='tabla_centrada'", array($tr_fecha));
   //table mensual
+  $arreglo_fecha = explode("-", $_SESSION['fecha_contabilidad']);
+  $arreglo_meses = array("01"=>"Enero","02"=>"Febrero","03"=>"Marzo","04"=>"Abril",
+                  "05"=>"Mayo","06"=>"Junio","07"=>"Julio","08"=>"Agosto",
+                  "09"=>"Septiembre","10"=>"Octubre","11"=>"Noviembre","12"=>"Diciembre");
+  $opciones_mes = "";
+  foreach($arreglo_meses AS $num_mes => $nombre_mes)
+  {
+    $seleccionado_mes = "";
+    if($num_mes == $arreglo_fecha[1])
+      $seleccionado_mes = "selected='selected'";
+    $opciones_mes .= "<option value='$num_mes' $seleccionado_mes>$nombre_mes</option>";
+  }
   $td_label_mes = $html->tag("td", "class='alineacion_derecha'", array("<label class='letra_azul verdana letra_9'>Mes</label>"));
   $select_mes = $html->tag("select",
                             "id='opc_mes' name='opc_mes' class='ancho_100 alineacion_izquierda letra_azul verdana letra_9'",
-                            array("
-                              <option value='01'>Enero</option>
-                          		<option value='02'>Febrero</option>
-                          		<option value='03'>Marzo</option>
-                          		<option value='04'>Abril</option>
-                          		<option value='05'>Mayo</option>
-                          		<option value='06'>Junio</option>
-                          		<option value='07'>Julio</option>
-                          		<option value='08'>Agosto</option>
-                          		<option value='09'>Septiembre</option>
-                          		<option value='10'>Octubre</option>
-                          		<option value='11'>Noviembre</option>
-                          		<option value='12'>Diciembre</option>"));
+                            array($opciones_mes));
   $td_select_mes = $html->tag("td", "", array($select_mes));
   $tr_mes = $html->tag("tr", "", array($td_label_mes,$td_select_mes));
   $td_label_anno = $html->tag("td", "class='alineacion_derecha'", array("<label class='letra_azul verdana letra_9'>Año</label>"));
+  $arreglo_annos = array("2010","2011","2012");
+  $opciones_annos = "";
+  foreach($arreglo_annos AS $anno)
+  {
+    $seleccionado_anno = "";
+    if($anno == $arreglo_fecha[0])
+      $seleccionado_anno = "selected='selected'";
+    $opciones_annos .= "<option value='$anno' $seleccionado_anno>$anno</option>";
+  }
   $select_anno = $html->tag("select",
                             "id='opc_anno' name='opc_anno' class='ancho_100 alineacion_izquierda letra_azul verdana letra_9'",
-                            array("
-                              <option value='2010'>2010</option>
-															<option value='2011'>2011</option>
-															<option value='2012'>2012</option>"));
+                            array($opciones_annos));
   $td_select_anno = $html->tag("td", "", array($select_anno));
   $tr_anno = $html->tag("tr", "", array($td_label_anno,$td_select_anno));
   $table_mensual = $html->tag("table", "id='tbl_mensual' class='tabla_centrada oculto'", array($tr_mes,$tr_anno));

@@ -38,8 +38,8 @@ class Cliente
   
   function actualizarListaClientes()
   {
-    $sql = "SELECT temp.*, TIME_FORMAT(SEC_TO_TIME((segundos_acumulados/5) - if(segundos_gratis_cobrados,segundos_gratis_cobrados,0)), '%H:%i') AS cli_horas_gratis_disponibles
-                    , TIME_FORMAT(SEC_TO_TIME(segundos_acumulados - (if(segundos_gratis_cobrados,segundos_gratis_cobrados,0)*5)), '%H:%i') AS cli_tiempo_acumulado
+    $sql = "SELECT temp.*, TIME_FORMAT(SEC_TO_TIME((if(segundos_acumulados,segundos_acumulados,0)/5) - if(segundos_gratis_cobrados,segundos_gratis_cobrados,0)), '%H') AS cli_horas_gratis_disponibles
+                    , TIME_FORMAT(SEC_TO_TIME(if(segundos_acumulados,segundos_acumulados,0) - (if(segundos_gratis_cobrados,segundos_gratis_cobrados,0)*5)), '%H:%i') AS cli_tiempo_acumulado
                     , SEC_TO_TIME(segundos_acumulados) as sg_acumulados
                     , SEC_TO_TIME(segundos_gratis_cobrados) as sg_gratis_cobrados
             FROM (SELECT cli_id, cli_nombre, cli_apellido, cli_email,

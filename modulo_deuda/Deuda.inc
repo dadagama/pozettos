@@ -112,7 +112,7 @@ class Deuda
 		while($info_tupla_historico = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
 		{
   		  $td_cli_id = $this->_html->tag("td", 
-                                        "class='alineacion_centro verdana letra_9' id='cli_id_".$info_tupla_historico['hiv_id']."' title='C骴igo del cliente'", 
+                                        "class='alineacion_centro verdana letra_9' id='cli_id_".$info_tupla_historico['hiv_id']."' title='C贸digo del cliente'", 
                                         array("<label>".$info_tupla_historico['hiv_cli_id']."</label>"));
         $td_cli_nombre = $this->_html->tag("td", 
                                         "class='alineacion_izquierda verdana letra_9' title='Cliente que debe'", 
@@ -124,7 +124,7 @@ class Deuda
                                         "class='alineacion_izquierda verdana letra_9' title='Servicio prestado'", 
                                         array("<label>".utf8_encode($info_tupla_historico['ser_nombre'])."</label>"));
         $td_duracion = $this->_html->tag("td", 
-                                        "class='alineacion_centro verdana letra_9' title='Duracion del servicio prestado'", 
+                                        "class='alineacion_centro verdana letra_9' title='Duraci贸n del servicio prestado'", 
                                         array("<label>".utf8_encode($info_tupla_historico['dus_texto'])."</label>"));
         $td_total = $this->_html->tag("td", 
                                         "class='alineacion_derecha verdana letra_9' title='Total a pagar por el servicio'", 
@@ -145,14 +145,14 @@ class Deuda
   		  }
   		  $input_pago = $this->_html->tag("input", "$checked_pago type='checkbox' id='hiv_chk_pago_".$info_tupla_historico['hiv_id']."' onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'pago');\"", "", true);
         $td_pago = $this->_html->tag("td", 
-                                      "class='alineacion_centro $clase_celda_pago' title='Ya pago el total del servicio'", 
+                                      "class='alineacion_centro $clase_celda_pago' title='Ya pag贸 el total del servicio'", 
                                       array($input_pago));
   		  $input_gratis = $this->_html->tag("input", "$checked_gratis type='checkbox' id='hiv_chk_gratis_".$info_tupla_historico['hiv_id']."' onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');\"", "", true);
         $td_gratis = $this->_html->tag("td", 
                                       "class='alineacion_centro $clase_celda_gratis' title='No se cobra porque es gratis'", 
                                       array($input_gratis));
         $td_observacion = $this->_html->tag("td", 
-                                            "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Informaci髇 adicional' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", 
+                                            "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Informaci贸n adicional' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", 
                                             array("<label>".utf8_encode($info_tupla_historico['hiv_observacion'])."</label>"));
 
 		    

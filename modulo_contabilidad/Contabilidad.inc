@@ -373,9 +373,11 @@ class Contabilidad
       $info_tupla_historico = $this->_conexionBD->obtenerFilaComoArregloAsociativo();
 
       //td's servicio
-      $td_oculto_id = $this->_html->tag("td", "class='oculto'", array("<label>".$info_tupla_historico['hiv_id']."</label>"));
+      if($info_tupla_historico['hiv_color_fila'])$color = $info_tupla_historico['hiv_color_fila'];
+      else $color = "";
+      $td_oculto_color = $this->_html->tag("td", "class='oculto'", array("<span id='hiv_color_oculto_".$info_tupla_historico['hiv_id']."'> $color</span>"));
 
-      $td_oculto_color = $this->_html->tag("td", "class='oculto'", array("<label>".$info_tupla_historico['hiv_color_fila']."</label>"));
+      $td_oculto_id = $this->_html->tag("td", "class='oculto'", array("<span>".$info_tupla_historico['hiv_id']."</span>"));
 
       $input_color = $this->_html->tag("input", "title='Colocar un color a la fila' type='image' src='../imagenes/color.jpg' id='hiv_color_".$info_tupla_historico['hiv_id']."' class='boton_color'", "", true);
       $td_color = $this->_html->tag("td", "class='alineacion_centro'", array($input_color));
@@ -384,7 +386,7 @@ class Contabilidad
       $td_nombre = $this->_html->tag("td", "class='alineacion_izquierda' title='Servicio prestado'", array($label_nombre));
 
       $label_hora = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_hora']));
-      $td_hora = $this->_html->tag("td", "class='alineacion_centro verdana letra_9 cursor_cruz' title='Hora en que se presta el servicio'", array($label_hora));
+      $td_hora = $this->_html->tag("td", "class='alineacion_centro verdana letra_9 cursor_cruz' id='hiv_hora_".$info_tupla_historico['hiv_id']."' onclick=\"editableHoraInicio('hiv_hora_".$info_tupla_historico['hiv_id']."',true);\" title='Hora en que se presta el servicio'", array($label_hora));
 
       $input_dus_minutos = $label_dus_minutos = $class = $onclick = "";
       if($info_tupla_historico['dus_minutos'])
@@ -394,7 +396,7 @@ class Contabilidad
         $input_dus_minutos = $this->_html->tag("input", "type='hidden' value='".$info_tupla_historico['dus_minutos']."' id='hidden_hiv_dus_minutos_".$info_tupla_historico['hiv_id']."'", "", true);
         $label_dus_minutos = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['dus_texto']));
       }
-      $td_dus_minutos = $this->_html->tag("td", "$class $onclick title='Duracion del servicio prestado' id='hiv_dus_minutos_".$info_tupla_historico['hiv_id']."'", array($input_dus_minutos,$label_dus_minutos));
+      $td_dus_minutos = $this->_html->tag("td", "$class $onclick title='Duración del servicio prestado' id='hiv_dus_minutos_".$info_tupla_historico['hiv_id']."'", array($input_dus_minutos,$label_dus_minutos));
 
       $label_hora_termina = "";
       if($info_tupla_historico['hiv_hora_termina'])
@@ -418,7 +420,7 @@ class Contabilidad
         $clase_celda_pago = "";//es gratis => en blanco
       }
       $input_pago = $this->_html->tag("input", "type='checkbox' id='hiv_chk_pago_".$info_tupla_historico['hiv_id']."' $checked_pago onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'pago');\"", "", true);
-      $td_pago = $this->_html->tag("td", "class='alineacion_centro $clase_celda_pago' title='Ya pago el total del servicio' id='hiv_pago_".$info_tupla_historico['hiv_id']."'", array($input_pago));
+      $td_pago = $this->_html->tag("td", "class='alineacion_centro $clase_celda_pago' title='Ya pagó el total del servicio' id='hiv_pago_".$info_tupla_historico['hiv_id']."'", array($input_pago));
 
       $input_gratis = $this->_html->tag("input", "type='checkbox' id='hiv_chk_gratis_".$info_tupla_historico['hiv_id']."' $checked_gratis onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');\"", "", true);
       $td_gratis = $this->_html->tag("td", "class='alineacion_centro $clase_celda_gratis' title='No se cobra porque es gratis' id='hiv_gratis_".$info_tupla_historico['hiv_id']."'", array($input_gratis));
@@ -432,7 +434,7 @@ class Contabilidad
                                       "class='alineacion_centro verdana letra_9 cursor_cruz' title='".$info_tupla_historico['hiv_cli_id']." -> ".utf8_encode($info_tupla_historico['cli_nombre'])." ".utf8_encode($info_tupla_historico['cli_apellido'])."' id='cli_fila_".$info_tupla_historico['hiv_id']."' onclick=\"editableCliente('cli_fila_".$info_tupla_historico['hiv_id']."',true);\"",
                                       array($label_cliente,$span_deuda_vieja));
 
-      $label_observacion = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_observacion']));
+      $label_observacion = $this->_html->tag("label", "class='cursor_cruz'", array(utf8_encode($info_tupla_historico['hiv_observacion'])));
       $td_observacion = $this->_html->tag("td", "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Nota adicional si se necesita' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", array($label_observacion));
 
       $img_eliminar = $this->_html->tag("img", "class='imagen_delete' src='../imagenes/delete.png'", "", true);
@@ -446,7 +448,7 @@ class Contabilidad
       //tr servicio
       return $this->_html->tag( "tr",
                                 "id='hiv_fila_".$info_tupla_historico['hiv_id']."' name='fila_historico' $estilo_fila",
-                                array($td_oculto_id,$td_oculto_color,
+                                array($td_oculto_color,$td_oculto_id,
                                       $td_color,$td_nombre,$td_hora,
                                       $td_dus_minutos,$td_hora_termina,
                                       $td_total,$td_pago,$td_gratis,
@@ -492,10 +494,11 @@ class Contabilidad
     while($info_tupla_historico = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
     {
       //td's servicio
-      $td_oculto_id = $this->_html->tag("td", "class='oculto'", array("<label>".$info_tupla_historico['hiv_id']."</label>"));
       if($info_tupla_historico['hiv_color_fila'])$color = $info_tupla_historico['hiv_color_fila'];
-      else $color = "";
-      $td_oculto_color = $this->_html->tag("td", "class='oculto'", array("<label id='hiv_color_oculto_".$info_tupla_historico['hiv_id']."'>$color</label>"));
+      else $color = " ";
+      $td_oculto_color = $this->_html->tag("td", "class='oculto'", array("<span id='hiv_color_oculto_".$info_tupla_historico['hiv_id']."'> $color</span>"));
+      
+      $td_oculto_id = $this->_html->tag("td", "class='oculto'", array("<span>".$info_tupla_historico['hiv_id']."</span>"));
 
       $input_color = $this->_html->tag("input", "title='Colocar un color a la fila' type='image' src='../imagenes/color.jpg' id='hiv_color_".$info_tupla_historico['hiv_id']."' class='boton_color'", "", true);
       $td_color = $this->_html->tag("td", "class='alineacion_centro'", array($input_color));
@@ -504,7 +507,7 @@ class Contabilidad
       $td_nombre = $this->_html->tag("td", "class='alineacion_izquierda' title='Servicio prestado'", array($label_nombre));
 
       $label_hora = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_hora']));
-      $td_hora = $this->_html->tag("td", "class='alineacion_centro verdana letra_9 cursor_cruz' title='Hora en que se presta el servicio'", array($label_hora));
+      $td_hora = $this->_html->tag("td", "class='alineacion_centro verdana letra_9 cursor_cruz' id='hiv_hora_".$info_tupla_historico['hiv_id']."' onclick=\"editableHoraInicio('hiv_hora_".$info_tupla_historico['hiv_id']."',true);\" title='Hora en que se presta el servicio'", array($label_hora));
 
       $input_dus_minutos = $label_dus_minutos = $class = $onclick = "";
       if($info_tupla_historico['dus_minutos'])
@@ -514,7 +517,7 @@ class Contabilidad
         $input_dus_minutos = $this->_html->tag("input", "type='hidden' value='".$info_tupla_historico['dus_minutos']."' id='hidden_hiv_dus_minutos_".$info_tupla_historico['hiv_id']."'", "", true);
         $label_dus_minutos = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['dus_texto']));
       }
-      $td_dus_minutos = $this->_html->tag("td", "$class $onclick title='Duracion del servicio prestado' id='hiv_dus_minutos_".$info_tupla_historico['hiv_id']."'", array($input_dus_minutos,$label_dus_minutos));
+      $td_dus_minutos = $this->_html->tag("td", "$class $onclick title='Duración del servicio prestado' id='hiv_dus_minutos_".$info_tupla_historico['hiv_id']."'", array($input_dus_minutos,$label_dus_minutos));
 
       $label_hora_termina = "";
       if($info_tupla_historico['hiv_hora_termina'])
@@ -538,7 +541,7 @@ class Contabilidad
         $clase_celda_pago = "";//es gratis => en blanco
       }
       $input_pago = $this->_html->tag("input", "type='checkbox' id='hiv_chk_pago_".$info_tupla_historico['hiv_id']."' $checked_pago onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'pago');\"", "", true);
-      $td_pago = $this->_html->tag("td", "class='alineacion_centro $clase_celda_pago' title='Ya pago el total del servicio' id='hiv_pago_".$info_tupla_historico['hiv_id']."'", array($input_pago));
+      $td_pago = $this->_html->tag("td", "class='alineacion_centro $clase_celda_pago' title='Ya pagó el total del servicio' id='hiv_pago_".$info_tupla_historico['hiv_id']."'", array($input_pago));
 
       $input_gratis = $this->_html->tag("input", "type='checkbox' id='hiv_chk_gratis_".$info_tupla_historico['hiv_id']."' $checked_gratis onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');\"", "", true);
       $td_gratis = $this->_html->tag("td", "class='alineacion_centro $clase_celda_gratis' title='No se cobra porque es gratis' id='hiv_gratis_".$info_tupla_historico['hiv_id']."'", array($input_gratis));
@@ -552,7 +555,7 @@ class Contabilidad
                                       "class='alineacion_centro verdana letra_9 cursor_cruz' title='".$info_tupla_historico['hiv_cli_id']." -> ".utf8_encode($info_tupla_historico['cli_nombre'])." ".utf8_encode($info_tupla_historico['cli_apellido'])."' id='cli_fila_".$info_tupla_historico['hiv_id']."' onclick=\"editableCliente('cli_fila_".$info_tupla_historico['hiv_id']."',true);\"",
                                       array($label_cliente,$span_deuda_vieja));
 
-      $label_observacion = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_observacion']));
+      $label_observacion = $this->_html->tag("label", "class='cursor_cruz'", array(utf8_encode($info_tupla_historico['hiv_observacion'])));
       $td_observacion = $this->_html->tag("td", "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Nota adicional si se necesita' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", array($label_observacion));
 
       $img_eliminar = $this->_html->tag("img", "class='imagen_delete' src='../imagenes/delete.png'", "", true);
@@ -565,7 +568,7 @@ class Contabilidad
       //tr servicio
       $filas_servicios .= $this->_html->tag( "tr",
                                             "id='hiv_fila_".$info_tupla_historico['hiv_id']."' name='fila_historico' $estilo_fila",
-                                            array($td_oculto_id,$td_oculto_color,
+                                            array($td_oculto_color,$td_oculto_id,
                                                   $td_color,$td_nombre,$td_hora,
                                                   $td_dus_minutos,$td_hora_termina,
                                                   $td_total,$td_pago,$td_gratis,

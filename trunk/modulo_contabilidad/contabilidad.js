@@ -37,8 +37,8 @@ function inicializar()
   obtenerOptions();
 
   $("#tbl_historial").tablesorter({ headers: {
-                                              0: {sorter: 'digit' },
-                                              1: {sorter: 'text' },
+                                              0: {sorter: 'text' },
+                                              1: {sorter: 'digit' },
                                               2: {sorter: false },
                                               3: {sorter: false },
                                               4: {sorter: false },
@@ -76,7 +76,7 @@ function obtenerOptionsAjax(jsonOptions)
 function actualizarOrdenamiento()
 {
   $("#tbl_historial").trigger("update");
-  var sorting = [[1,0],[0,1]];
+  var sorting = [[0,1],[1,1]];
   $("#tbl_historial").trigger("sorton",[sorting]); 
 }
 
@@ -206,7 +206,8 @@ function actualizarInicio(fila_id, evento)
 {
   if(evento == 13)
   {
-    var filtro = filtro = /^\d{1,2}[\.\:]\d{1,2}$/;//#.# ó #:#
+  ///^\d{1,2}[\.\:]\d{1,2}$/;//#.# ó #:# viejita
+    var filtro = filtro = /^(([1][0-2]?)|[1-9])[\.\:]([0-5]?[0-9])$/;//formato de hora valida
     if (filtro.test($('#'+fila_id).children().val()))
     {
       var arreglo_id = fila_id.split("_");
@@ -353,7 +354,7 @@ function actualizarCampoColorAjax(json_color)
   {
     var obj_color = eval("("+json_color+")");
     $("#hiv_fila_"+obj_color.id).attr('style','{background:'+obj_color.color+';}');
-    var color = "";
+    var color = " ";
     if(obj_color.color != 'null')
       color = obj_color.color;
     $("#hiv_color_oculto_"+obj_color.id).html(color);

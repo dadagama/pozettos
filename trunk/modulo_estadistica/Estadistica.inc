@@ -26,6 +26,8 @@ class Estadistica
   var $_conexionBD; 
   var $_conexionBDAux;
   var $_html;
+  var $_resumen_general;
+  var $_total_general;
   
   function __construct($parametrosConexion)
   {
@@ -34,6 +36,8 @@ class Estadistica
     $this->_conexionBDAux = new ConexionBDMySQL($parametrosConexion);
     $this->_conexionBDAux->conectar();
     $this->_html = new GeneradorHtml2();
+    $this->_resumen_general = array();
+    $this->_total_general = 0;
   }
   
   function cargarCategorias()
@@ -71,23 +75,44 @@ class Estadistica
          $fecha = "hiv_fecha >= '".$arreglo_parametros['opc_fecha_inicial']."' AND hiv_fecha <= '".$arreglo_parametros['opc_fecha_final']."'";
         break;
     }
-        $tablas_resumenes = "";
-        if($arreglo_parametros['Cabinas'])
-          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Cabinas");
-        if($arreglo_parametros['Juegos'])
-          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Juegos");
-        if($arreglo_parametros['Recargas'])
-          if($arreglo_parametros['opc_alcance'] == "diario")
-            $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Recargas", true, $arreglo_parametros['opc_fecha']);
-          else
-            $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Recargas");
-        if($arreglo_parametros['Llamadas'])
-          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Llamadas");
-        if($arreglo_parametros['Otros'])
-          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Otros");
-        $tabla_resumen = $this->_html->tag("table", "class='tbl_resumen'", array($tablas_resumenes));
-      $td_estadisticas = $this->_html->tag("td", "", array($tabla_resumen));
+      $tablas_resumenes = "";  
+      if($arreglo_parametros['Cabinas'])
+        $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Cabinas");
+      if($arreglo_parametros['Juegos'])
+        $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Juegos");
+      if($arreglo_parametros['Recargas'])
+        if($arreglo_parametros['opc_alcance'] == "diario")
+          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Recargas", true, $arreglo_parametros['opc_fecha']);
+        else
+          $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Recargas");
+      if($arreglo_parametros['Llamadas'])
+        $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Llamadas");
+      if($arreglo_parametros['Otros'])
+        $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Otros");
+      $tablas_resumenes = $this->_construirTablaResumenGeneral()."".$tablas_resumenes;
+      $tabla_resumen = $this->_html->tag("table", "class='tbl_resumen'", array($tablas_resumenes));
+    $td_estadisticas = $this->_html->tag("td", "", array($tabla_resumen));
     return $this->_html->tag("tr", "", array($td_estadisticas));
+  }
+  
+  function _construirTablaResumenGeneral()
+  {
+        $th_categoria = $this->_html->tag("th", "class='ancho_140'", array("<label>Nombre Categoria</label>"));
+        $th_total = $this->_html->tag("th", "class='ancho_70'", array("<label>Total por Categoría</label>"));
+      $tr_encabezado = $this->_html->tag("tr", "", array($th_categoria,$th_total));
+    $thead_resumen = $this->_html->tag("thead", "", array($tr_encabezado));
+    
+    $totales = "";
+    foreach ($this->_resumen_general  AS $fila)
+      $totales .= $this->_html->tag("tr", "", array($fila));
+      
+      $td_total = $this->_html->tag("td", "class='celda_total'", array("<label>Total</label>"));
+      $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($this->_total_general)."</label>"));
+    $tr_total = $this->_html->tag("tr", "", array($td_total,$td_total_entrada));
+    $totales .= $tr_total;
+    $tbody_resumen = $this->_html->tag("tbody", "", array($totales));
+    
+    return $thead_resumen." ".$tbody_resumen;
   }
   
   function _construirTablaResumen($where_fecha, $cat_nombre, $mostrar_saldo_titan = false, $fecha = "")
@@ -167,6 +192,12 @@ class Estadistica
       $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_centro' colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_pagado + $total_deben)."</label>"));
     $tr_total = $this->_html->tag("tr", "", array($td_total,$td_total_entrada));
 
+    //añado totales al arreglo de resumen general
+    $td_label_total_general = $this->_html->tag("td", "class='celda_subtotal'", array("<label>$cat_nombre</label>"));
+    $td_total_general = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($total_pagado + $total_deben)."</label>"));
+    $this->_resumen_general[] = $td_label_total_general."".$td_total_general;
+    $this->_total_general += ($total_pagado + $total_deben); 
+    
     $trs_titan = "";
     if($mostrar_saldo_titan)
     {
@@ -178,13 +209,10 @@ class Estadistica
                 LIMIT 1";
         $this->_conexionBDAux->ejecutarSQL($sql);
         if($this->_conexionBDAux->obtenerNumeroFilas() > 0)
-        {
           $total = $this->_conexionBDAux->obtenerFilaComoCadena();
-          $total = $this->_html->colocarPuntoMiles($total);
-        }
         else
           $total = "0";
-        $td_saldo_titan = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>$total</label>"));
+        $td_saldo_titan = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
       $tr_total_titan = $this->_html->tag("tr", "", array($td_label_titan,$td_saldo_titan));
 
       $td_label_saldo_final = $this->_html->tag("td", "class='celda_total_2'", array("<label>Saldo Final Titan</label>"));

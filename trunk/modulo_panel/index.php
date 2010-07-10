@@ -1,6 +1,23 @@
+<?php
+	function showLogin() 
+	{
+			header('WWW-Authenticate: Basic realm="Demo System"');
+			header('HTTP/1.0 401 Unauthorized');
+			echo "Usted no tiene permisos para ingresar.\n";
+			exit;
+	}
+
+	$username = $_SERVER['PHP_AUTH_USER'];
+	$userpass = $_SERVER['PHP_AUTH_PW'];
+	if (!($username == "123" && $userpass == "123"))
+			showLogin();
+
+	session_start();
+?>
 <html>
 	<head>
 		<title>Pozetto's.NET</title>
+		<link rel="icon" type="image/gif" href="../imagenes/animated_favicon1.gif"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<link rel="stylesheet" type="text/css" href="../estilos/general.css"/>
     <link rel="stylesheet" type="text/css" href="../estilos/redmond/ui.all.css" />
@@ -33,20 +50,7 @@
 
 */
 
-	function showLogin() 
-	{
-			header('WWW-Authenticate: Basic realm="Demo System"');
-			header('HTTP/1.0 401 Unauthorized');
-			echo "Usted no tiene permisos para ingresar.\n";
-			exit;
-	}
 
-	$username = $_SERVER['PHP_AUTH_USER'];
-	$userpass = $_SERVER['PHP_AUTH_PW'];
-	if (!($username == "123" && $userpass == "123"))
-			showLogin();
-
-	session_start();
 		
 	require_once("../herramientas/GeneradorHtml2.inc");
 	$html = new GeneradorHtml2();

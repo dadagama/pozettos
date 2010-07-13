@@ -143,11 +143,12 @@ class Estadistica
     while($info_cabina = $this->_conexionBD->obtenerFilaComoArregloAsociativo())
     {
         $td_nombre_servicio = $this->_html->tag("td", "class='alineacion_izquierda'", array("<label>".$info_cabina['ser_nombre']."</label>"));
-        $sql = "SELECT SUM(hiv_total)
+        $sql = "SELECT SUM(IF(hiv_deuda_Real != 0, (hiv_total - hiv_deuda_Real), hiv_total))
                 FROM pozettos_historico_venta
                 WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
-                      AND hiv_pago = 1
-                      AND hiv_es_tiempo_gratis = 0
+                      AND ( (hiv_pago = 1 AND hiv_es_tiempo_gratis = 0)
+                            OR
+                            (hiv_pago = 0 AND hiv_es_tiempo_gratis = 0 AND hiv_deuda_Real != 0))
                       AND hiv_vigente = 1
                       AND $where_fecha";
         $this->_conexionBDAux->ejecutarSQL($sql);
@@ -155,7 +156,7 @@ class Estadistica
         $total_pagado += $total;
         $td_pago = $this->_html->tag("td", "class='alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
 
-        $sql = "SELECT SUM(hiv_total)
+        $sql = "SELECT SUM(IF(hiv_deuda_Real != 0, hiv_deuda_Real, hiv_total))
                 FROM pozettos_historico_venta
                 WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
                       AND hiv_pago = 0

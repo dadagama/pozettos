@@ -28,8 +28,43 @@ function inicializar()
 function actualizarOrdenamiento()
 {
   $("#tbl_historial").trigger("update");
-  var sorting = [[1,0],[8,0],[2,0]];
+  var sorting = [[1,0],[10,0],[2,0]];
   $("#tbl_historial").trigger("sorton",[sorting]); 
+}
+
+function actualizarCalculadora(id_fila)
+{
+  var debe = parseInt($("#hiv_deuda_real_"+id_fila).children("label").html());
+  var total = parseInt($("#hiv_total_"+id_fila).children("label").html());
+  var valor_actual = parseInt($("#lbl_calculadora").html());
+  var delta = 1;
+  if(!$("#hiv_chk_sumar_"+id_fila).attr("checked"))
+    delta = (delta * (-1));
+  if(debe != 0)
+    $("#lbl_calculadora").html(valor_actual + (debe * delta));
+  else
+    $("#lbl_calculadora").html(valor_actual + (total * delta));
+}
+
+function editableDeudaReal(fila_id,editable)
+{
+  if(editable)
+  {
+    var hiv_deuda_real = $('#'+fila_id).children().text();
+    var input_deuda_real = "<input type='text' maxlength='6' class='ancho_100p verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_deuda_real\",13)){ editableDeudaReal(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_deuda_real\",event.keyCode)){ editableDeudaReal(\""+fila_id+"\",false);}' value='"+hiv_deuda_real+"'/>";
+    $('#'+fila_id).children().replaceWith(input_deuda_real);
+    $('#'+fila_id).children().select();
+    $('#'+fila_id).removeAttr("onclick");
+  }
+  else
+  {
+    $('#'+fila_id).attr('onClick','editableDeudaReal(\"'+fila_id+'\",true);');
+    var hiv_deuda_real = parseInt($('#'+fila_id).children().val());
+    if(hiv_deuda_real == "" || isNaN(hiv_deuda_real))
+      hiv_deuda_real = "0";
+    var label_deuda_real = "<label class='cursor_cruz'>"+hiv_deuda_real+"</label>";
+    $('#'+fila_id).children().replaceWith(label_deuda_real);
+  }
 }
 
 function editableObservacion(fila_id,editable)
@@ -82,12 +117,21 @@ function actualizarAjax(actualizo)
 
 function actualizarEstadoPago(id_fila, ultimo_clic)
 {
-	if(mensajeConfirmar())
-	{
-		var hiv_pago = $('#hiv_chk_pago_'+id_fila).attr('checked');
-		var hiv_es_tiempo_gratis = $('#hiv_chk_gratis_'+id_fila).attr('checked');
+  var hiv_pago = $('#hiv_chk_pago_'+id_fila).attr('checked');
+	var hiv_es_tiempo_gratis = $('#hiv_chk_gratis_'+id_fila).attr('checked');
+  
+  if($("#hiv_deuda_real_"+id_fila).children("label").html() != "0")
+  {
+    if(confirm("Esto coloca la deuda en CERO. ¿esta seguro?"))
+      ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
+    else
+  	{
+  		$('#hiv_chk_pago_'+id_fila).removeAttr('checked');
+  		$('#hiv_chk_gratis_'+id_fila).removeAttr('checked');
+  	}
+  }  
+	else if(mensajeConfirmar())
 		ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
-	}
 	else
 	{
 		$('#hiv_chk_pago_'+id_fila).removeAttr('checked');

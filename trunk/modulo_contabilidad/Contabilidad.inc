@@ -210,7 +210,7 @@ class Contabilidad
   
   function actualizarDeudaCliente($cli_id)
   {
-    $sql = "SELECT SUM(hiv_total)
+    $sql = "SELECT SUM(IF(hiv_deuda_Real != 0, hiv_deuda_Real, hiv_total))
             FROM pozettos_historico_venta
             WHERE hiv_fecha != '".$this->_fecha_contabilidad."'
             AND hiv_cli_id = '$cli_id'
@@ -356,7 +356,7 @@ class Contabilidad
                       ser_nombre,
                       cli_nombre,
                       cli_apellido,
-                      ( SELECT SUM(hiv2.hiv_total)
+                      ( SELECT SUM(IF(hiv2.hiv_deuda_Real != 0, hiv2.hiv_deuda_Real, hiv2.hiv_total))
                         FROM pozettos_historico_venta AS hiv2
                         WHERE hiv2.hiv_fecha != '".$this->_fecha_contabilidad."'
                         AND hiv2.hiv_cli_id = hiv1.hiv_cli_id
@@ -479,7 +479,7 @@ class Contabilidad
                     ser_nombre,
                     cli_nombre,
                     cli_apellido,
-                    ( SELECT SUM(hiv2.hiv_total)
+                    ( SELECT SUM(IF(hiv2.hiv_deuda_Real != 0, hiv2.hiv_deuda_Real, hiv2.hiv_total))
                       FROM pozettos_historico_venta AS hiv2
                       WHERE hiv2.hiv_fecha != '".$this->_fecha_contabilidad."'
                       AND hiv2.hiv_cli_id = hiv1.hiv_cli_id

@@ -279,12 +279,14 @@ class Contabilidad
     //echo "==>$hiv_chk_pago, $hiv_chk_gratis, $ultimo_clic";
     $hiv_pago = 0;
     $hiv_es_tiempo_gratis = 0;
+    $set_adicional = "";
     if($ultimo_clic == "pago")
     {
       if($hiv_chk_pago == "true")
       {
         $hiv_es_tiempo_gratis = 0;
         $hiv_pago = 1;
+        $set_adicional = ", hiv_deuda_real = 0";
       }
     }
     else if($ultimo_clic == "gratis")
@@ -293,14 +295,14 @@ class Contabilidad
       {
         $hiv_es_tiempo_gratis = 1;
         $hiv_pago = 0;
+        $set_adicional = ", hiv_deuda_real = 0";
       }
     }
   
-    $reiniciar_color = "";
     $sql = "UPDATE pozettos_historico_venta
             SET hiv_pago = '$hiv_pago',
             hiv_es_tiempo_gratis = '$hiv_es_tiempo_gratis'
-            $reiniciar_color
+            $set_adicional
             WHERE hiv_id = '$id_fila'";
     //echo $sql;
     $this->_conexionBD->ejecutarSQL($sql);
@@ -312,9 +314,7 @@ class Contabilidad
   
   function eliminarFila($id)
   {
-    //el delete realmente deberia ser vigente = 0
-//    $sql = "DELETE FROM pozettos_historico_venta
-//            WHERE hiv_id = '$id'";
+    //el borrado es lógico
     $sql = "UPDATE pozettos_historico_venta
             SET hiv_vigente = 0
             WHERE hiv_id = '$id'";
@@ -351,6 +351,7 @@ class Contabilidad
                       IF(hiv1.hiv_ser_tipo = 'servicio', dus_minutos, null) as dus_minutos,
                       IF(hiv1.hiv_ser_tipo = 'servicio', time_format(ADDTIME(hiv1.hiv_hora, hiv1.hiv_dus_minutos),'%l:%i'), null) as hiv_hora_termina,
                       hiv1.hiv_total,
+                      hiv1.hiv_deuda_real,
                       hiv1.hiv_observacion,
                       ser_nombre,
                       cli_nombre,
@@ -406,6 +407,9 @@ class Contabilidad
       $label_total = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_total']));
       $td_total = $this->_html->tag("td", "class='alineacion_derecha verdana letra_9 cursor_cruz' title='Total a pagar por el servicio' id='hiv_total_".$info_tupla_historico['hiv_id']."' onclick=\"editableTotal('hiv_total_".$info_tupla_historico['hiv_id']."',true);\"", array($label_total));
 
+      $label_deuda_real = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_deuda_real']));
+      $td_deuda_real = $this->_html->tag("td", "class='alineacion_derecha verdana letra_9 cursor_cruz' title='Lo que debe realmente del valor total' id='hiv_deuda_real_".$info_tupla_historico['hiv_id']."' onclick=\"editableDeudaReal('hiv_deuda_real_".$info_tupla_historico['hiv_id']."',true);\"", array($label_deuda_real));
+
       $checked_pago = $checked_gratis = $clase_celda_gratis = "";
       $clase_celda_pago = "celda_debe";//por defecto roja
       if($info_tupla_historico['hiv_pago'])
@@ -427,7 +431,7 @@ class Contabilidad
 
       $label_cliente = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_cli_id']));
       $img_deuda_vieja = "";
-      if($info_tupla_historico['deuda_vieja'])
+      if($info_tupla_historico['deuda_vieja'] && $info_tupla_historico['hiv_cli_id'] != "1")
         $img_deuda_vieja = $this->_html->tag("img", "id='cli_img_debe_".$info_tupla_historico['hiv_id']."' class='imagen_deuda' src='../imagenes/deuda.gif' title='Debe ".$info_tupla_historico['deuda_vieja']." de otros dias'", "", true);
       $span_deuda_vieja = $this->_html->tag("span", "id='cli_span_debe_".$info_tupla_historico['hiv_id']."'", array($img_deuda_vieja));
       $td_cliente = $this->_html->tag("td",
@@ -451,7 +455,7 @@ class Contabilidad
                                 array($td_oculto_color,$td_oculto_id,
                                       $td_color,$td_nombre,$td_hora,
                                       $td_dus_minutos,$td_hora_termina,
-                                      $td_total,$td_pago,$td_gratis,
+                                      $td_total,$td_deuda_real,$td_pago,$td_gratis,
                                       $td_cliente,$td_observacion,$td_eliminar));
     }
     else
@@ -470,6 +474,7 @@ class Contabilidad
                     IF(hiv1.hiv_ser_tipo = 'servicio', dus_minutos, null) as dus_minutos,
                     IF(hiv1.hiv_ser_tipo = 'servicio', time_format(ADDTIME(hiv1.hiv_hora, hiv1.hiv_dus_minutos),'%l:%i'), null) as hiv_hora_termina,
                     hiv1.hiv_total, 
+                    hiv1.hiv_deuda_real,
                     hiv1.hiv_observacion, 
                     ser_nombre,
                     cli_nombre,
@@ -527,6 +532,9 @@ class Contabilidad
       $label_total = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_total']));
       $td_total = $this->_html->tag("td", "class='alineacion_derecha verdana letra_9 cursor_cruz' title='Total a pagar por el servicio' id='hiv_total_".$info_tupla_historico['hiv_id']."' onclick=\"editableTotal('hiv_total_".$info_tupla_historico['hiv_id']."',true);\"", array($label_total));
 
+      $label_deuda_real = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_deuda_real']));
+      $td_deuda_real = $this->_html->tag("td", "class='alineacion_derecha verdana letra_9 cursor_cruz' title='Lo que debe realmente del valor total' id='hiv_deuda_real_".$info_tupla_historico['hiv_id']."' onclick=\"editableDeudaReal('hiv_deuda_real_".$info_tupla_historico['hiv_id']."',true);\"", array($label_deuda_real));
+
       $checked_pago = $checked_gratis = $clase_celda_gratis = "";
       $clase_celda_pago = "celda_debe";//por defecto roja
       if($info_tupla_historico['hiv_pago'])
@@ -548,7 +556,7 @@ class Contabilidad
 
       $label_cliente = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_cli_id']));
       $img_deuda_vieja = "";
-      if($info_tupla_historico['deuda_vieja'])
+      if($info_tupla_historico['deuda_vieja'] && $info_tupla_historico['hiv_cli_id'] != "1")
         $img_deuda_vieja = $this->_html->tag("img", "id='cli_img_debe_".$info_tupla_historico['hiv_id']."' class='imagen_deuda' src='../imagenes/deuda.gif' title='Debe ".$info_tupla_historico['deuda_vieja']." de otros dias'", "", true);
       $span_deuda_vieja = $this->_html->tag("span", "id='cli_span_debe_".$info_tupla_historico['hiv_id']."'", array($img_deuda_vieja));
       $td_cliente = $this->_html->tag("td",
@@ -571,7 +579,7 @@ class Contabilidad
                                             array($td_oculto_color,$td_oculto_id,
                                                   $td_color,$td_nombre,$td_hora,
                                                   $td_dus_minutos,$td_hora_termina,
-                                                  $td_total,$td_pago,$td_gratis,
+                                                  $td_total,$td_deuda_real,$td_pago,$td_gratis,
                                                   $td_cliente,$td_observacion,$td_eliminar));
     }
     return $filas_servicios;

@@ -16,24 +16,16 @@
 
 */
 
-/**********************************
-******* ACCIONES GENERICAS  *******
-***********************************/
-
 $(document).ready(inicializar);
 
 var options_clientes;
 var options_duracion;
-//var options_hora;
-//var options_minutos;
 
 function inicializar()
 {
   url_controlador_modulo = "../modulo_contabilidad/contabilidad.php";
   options_clientes = "";
   options_duracion = "";
-  //options_hora = "";
-  //options_minutos = "";
   obtenerOptions();
 
   $("#tbl_historial").tablesorter({ headers: {
@@ -49,7 +41,8 @@ function inicializar()
                                               9: {sorter: false },
                                               10: {sorter: false },
                                               11: {sorter: false },
-                                              12: {sorter: false }
+                                              12: {sorter: false },
+                                              13: {sorter: false }
                                             },
                                     widgets: ['zebra']
                                   });
@@ -67,8 +60,6 @@ function obtenerOptionsAjax(jsonOptions)
   var obj_options = eval("("+jsonOptions+")");
   options_clientes = obj_options.options_clientes;
   options_duracion = obj_options.options_duracion;
-  //options_hora = obj_options.options_hora;
-  //options_minutos = obj_options.options_minutos;
   //evitar un llamado adicional de ajax para obtener saldo inicial titan
   $("#sit_saldo").text(obj_options.sit_saldo);
 }
@@ -120,7 +111,7 @@ function editableCliente(fila_id,editable)
   if(editable)
   {
     var cli_id = $('#'+fila_id).children("label").text();
-    var select_clientes = "<select class='ancho_100p' onchange='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
+    var select_clientes = "<select class='ancho_55' onchange='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}' onBlur='if(actualizarDeudaCliente(\""+fila_id+"\",13)){ editableCliente(\""+fila_id+"\",false);}'>";
     select_clientes += options_clientes;
     select_clientes += "</select>";
     $('#'+fila_id+' label').replaceWith(select_clientes);
@@ -181,6 +172,27 @@ function editableTotal(fila_id,editable)
       hiv_total = "0";
     var label_total = "<label class='cursor_cruz'>"+hiv_total+"</label>";
     $('#'+fila_id).children().replaceWith(label_total);
+  }
+}
+
+function editableDeudaReal(fila_id,editable)
+{
+  if(editable)
+  {
+    var hiv_deuda_real = $('#'+fila_id).children().text();
+    var input_deuda_real = "<input type='text' maxlength='6' class='ancho_100p verdana letra_9' onBlur='if(actualizarValor(\""+fila_id+"\",\"hiv_deuda_real\",13)){ editableDeudaReal(\""+fila_id+"\",false);}' onKeypress='if(actualizarValor(\""+fila_id+"\",\"hiv_deuda_real\",event.keyCode)){ editableDeudaReal(\""+fila_id+"\",false);}' value='"+hiv_deuda_real+"'/>";
+    $('#'+fila_id).children().replaceWith(input_deuda_real);
+    $('#'+fila_id).children().select();
+    $('#'+fila_id).removeAttr("onclick");
+  }
+  else
+  {
+    $('#'+fila_id).attr('onClick','editableDeudaReal(\"'+fila_id+'\",true);');
+    var hiv_deuda_real = parseInt($('#'+fila_id).children().val());
+    if(hiv_deuda_real == "" || isNaN(hiv_deuda_real))
+      hiv_deuda_real = "0";
+    var label_deuda_real = "<label class='cursor_cruz'>"+hiv_deuda_real+"</label>";
+    $('#'+fila_id).children().replaceWith(label_deuda_real);
   }
 }
 
@@ -369,7 +381,19 @@ function actualizarEstadoPago(id_fila, ultimo_clic)
 {
   var hiv_pago = $('#hiv_chk_pago_'+id_fila).attr('checked');
   var hiv_es_tiempo_gratis = $('#hiv_chk_gratis_'+id_fila).attr('checked');
-  ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
+
+  if($("#hiv_deuda_real_"+id_fila).children("label").html() != "0")
+  {
+    if(confirm("Esto coloca la deuda en CERO. ¿esta seguro?"))
+      ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
+    else
+    {
+      $('#hiv_chk_pago_'+id_fila).removeAttr('checked');
+      $('#hiv_chk_gratis_'+id_fila).removeAttr('checked');
+    }
+  }
+  else
+    ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
 }
 
 function actualizarEstadoPagoAjax(json_estado_pago)
@@ -377,6 +401,8 @@ function actualizarEstadoPagoAjax(json_estado_pago)
   var obj_estado_pago = eval("("+json_estado_pago+")");
   if(obj_estado_pago.hiv_id)
   {
+    //se coloca en ceros el campo deuda
+    $("#hiv_deuda_real_"+obj_estado_pago.hiv_id).children("label").html("0");
     if(obj_estado_pago.ultimo_clic == "pago")
     {
       if($('#hiv_chk_pago_'+obj_estado_pago.hiv_id).attr('checked'))

@@ -1,6 +1,7 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="../modulo_contabilidad/contabilidad.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   </head>
   <body>
 <?php
@@ -110,6 +111,7 @@
         $th_duracion = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Duración</label>"));
         $th_termina = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Termina</label>"));
         $th_total = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Total</label>"));
+        $th_deuda_real = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Deuda</label><br/><label class='label_formulario'>Real</label>"));        
         $th_pago = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Pago</label>"));
         $th_gratis = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Gratis</label>"));
         $th_cliente = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Cliente</label>"));
@@ -117,7 +119,7 @@
         $th_eliminar = $html->tag("th", "class='fondo_azul ancho_25'");
       //tr encabezados
       $tr_encabezados = $html->tag("tr", "", array( $th_oculto,$th_oculto,$th_color,$th_servicio,$th_hora,$th_duracion,$th_termina,
-                                                  $th_total,$th_pago,$th_gratis,$th_cliente,$th_observacion,$th_eliminar));
+                                                  $th_total,$th_deuda_real,$th_pago,$th_gratis,$th_cliente,$th_observacion,$th_eliminar));
     //thead encabezados
     $thead_encabezados = $html->tag("thead", "", array($tr_encabezados));
     //tbody historial

@@ -15,7 +15,18 @@
     along with Pozettos.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-
+/*******************************************
+**            CALCULADORA                 **
+********************************************/
+#tbl_calculadora
+{
+  top: 5px;
+  right: 5px;
+  width: 100px;
+  height: 50px;
+  position: fixed;
+  border: 1px solid #4F8FFF;
+}
 /*******************************************
 **            ZONA SERVICIOS              **
 ********************************************/

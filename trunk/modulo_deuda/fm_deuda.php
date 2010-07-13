@@ -57,7 +57,7 @@
     $tbody_historial = $html->tag("tbody", "id='historial_deudas' class='cuerpo_historial'");
   $table_historial = $html->tag("table","id='tbl_historial' class='zona_historial ancho_100p'", array($thead_historial,$tbody_historial));
   
-        $th_calculadora = $html->tag("th", "class='fondo_azul alineacion_centro'", array("<label class='label_formulario'>Total Seleccionado</label>"));
+        $th_calculadora = $html->tag("th", "class='fondo_azul alineacion_centro'", array("<label class='label_formulario'>Total</label>"));
       $tr_encabezado_calculadora = $html->tag("tr", "", array($th_calculadora));
   	$thead_calculadora = $html->tag("thead", "", array($tr_encabezado_calculadora));
         $td_calculadora = $html->tag("td", "class='alineacion_centro'", array("<label class='verdana letra_9' id='lbl_calculadora'>0</label>"));

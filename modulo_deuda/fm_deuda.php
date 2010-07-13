@@ -50,9 +50,9 @@
         $th_deuda_real = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Deuda</label><br/><label class='label_formulario'>Real</label>"));
         $th_pago = $html->tag("th", "class='fondo_azul alineacion_centro'", array("<label class='label_formulario'>Pagó</label>"));
         $th_gratis = $html->tag("th", "class='fondo_azul alineacion_centro'", array("<label class='label_formulario'>Gratis</label>"));
-        $th_sumar = $html->tag("th", "class='fondo_azul alineacion_centro'", array("<label class='label_formulario'>Sumar</label>"));
         $th_observacion = $html->tag("th", "class='fondo_azul alineacion_centro'", array("<label class='label_formulario'>Observación</label>"));
-    	$tr_encabezados = $html->tag("tr", "", array($th_cod,$th_cliente,$th_fecha,$th_servicio,$th_duracion,$th_total,$th_deuda_real,$th_pago,$th_gratis,$th_sumar,$th_observacion));
+        $th_sumar = $html->tag("th", "class='fondo_azul alineacion_centro'", array("<label class='label_formulario'>Sumar</label>"));
+    	$tr_encabezados = $html->tag("tr", "", array($th_cod,$th_cliente,$th_fecha,$th_servicio,$th_duracion,$th_total,$th_deuda_real,$th_pago,$th_gratis,$th_observacion,$th_sumar));
   	$thead_historial = $html->tag("thead", "", array($tr_encabezados));
     $tbody_historial = $html->tag("tbody", "id='historial_deudas' class='cuerpo_historial'");
   $table_historial = $html->tag("table","id='tbl_historial' class='zona_historial ancho_100p'", array($thead_historial,$tbody_historial));

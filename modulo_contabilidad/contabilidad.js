@@ -62,6 +62,7 @@ function obtenerOptionsAjax(jsonOptions)
   options_duracion = obj_options.options_duracion;
   //evitar un llamado adicional de ajax para obtener saldo inicial titan
   $("#sit_saldo").text(obj_options.sit_saldo);
+  $("#egd_saldo").text(obj_options.egd_saldo);
 }
 
 function actualizarOrdenamiento()
@@ -105,6 +106,39 @@ function actualizarSaldoTitan(evento)
     return false;
 }
 
+function editableSaldoEgresos(editable)
+{
+  if(editable)
+  {
+    var egd_saldo = $('#egd_saldo').text();
+    var input_saldo = "<input id='egd_saldo' type='text' maxlength='7' class='ancho_55 verdana' onBlur='if(actualizarSaldoEgresos(13)){ editableSaldoEgresos(false);}' onKeypress='if(actualizarSaldoEgresos(event.keyCode)){ editableSaldoEgresos(false);}' value='"+egd_saldo+"'/>";
+    $('#egd_saldo').replaceWith(input_saldo);
+    $('#egd_saldo').select();
+  }
+  else
+  {
+    var valor_saldo = $('#egd_saldo').val();
+    var egd_saldo = parseInt(valor_saldo.replace(".", ""));
+    if(egd_saldo == "" || isNaN(egd_saldo))
+      egd_saldo = "0";
+    var label_saldo = "<label id='egd_saldo' onclick='editableSaldoEgresos(true);' class='verdana letra_9 cursor_cruz'>"+egd_saldo+"</label>";
+    $('#egd_saldo').replaceWith(label_saldo);
+  }
+}
+
+function actualizarSaldoEgresos(evento)
+{
+  if(evento == 13)
+  {
+    var valor_saldo = $('#egd_saldo').val();
+    var egd_saldo = parseInt(valor_saldo.replace(".", ""));
+    var egd_fecha = $("#fecha_contabilidad").val();
+    ajax('accion=actualizarSaldoEgresos&egd_saldo='+egd_saldo+"&egd_fecha="+egd_fecha, false, actualizarAjax, false);
+    return true;
+  }
+  else
+    return false;
+}
 
 function editableCliente(fila_id,editable)
 {

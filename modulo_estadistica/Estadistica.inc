@@ -89,13 +89,13 @@ class Estadistica
         $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Llamadas");
       if($arreglo_parametros['Otros'])
         $tablas_resumenes .= $this->_construirTablaResumen($fecha, "Otros");
-      $tablas_resumenes = $this->_construirTablaResumenGeneral()."".$tablas_resumenes;
+      $tablas_resumenes = $this->_construirTablaResumenGeneral($arreglo_parametros)."".$tablas_resumenes;
       $tabla_resumen = $this->_html->tag("table", "class='tbl_resumen'", array($tablas_resumenes));
     $td_estadisticas = $this->_html->tag("td", "", array($tabla_resumen));
     return $this->_html->tag("tr", "", array($td_estadisticas));
   }
   
-  function _construirTablaResumenGeneral()
+  function _construirTablaResumenGeneral(&$arreglo_parametros)
   {
         $th_categoria = $this->_html->tag("th", "class='ancho_140'", array("<label>Nombre Categoria</label>"));
         $th_total = $this->_html->tag("th", "class='ancho_70'", array("<label>Total por Categoría</label>"));
@@ -106,8 +106,27 @@ class Estadistica
     foreach ($this->_resumen_general  AS $fila)
       $totales .= $this->_html->tag("tr", "", array($fila));
       
+    //coloco plata que sale
+    if($arreglo_parametros['opc_alcance'] == "diario")
+    {
+        $td_label_egresos = $this->_html->tag("td", "class='celda_total_2'", array("<label>Plata que salió</label>"));
+        $sql = "SELECT egd_saldo
+                FROM pozettos_egreso_diario
+                WHERE egd_fecha = '".$arreglo_parametros['opc_fecha']."'
+                AND egd_vigente = 1
+                LIMIT 1";
+        $this->_conexionBDAux->ejecutarSQL($sql);
+        if($this->_conexionBDAux->obtenerNumeroFilas() > 0)
+          $total_egreso = $this->_conexionBDAux->obtenerFilaComoCadena();
+        else
+          $total_egreso = "0";
+        $td_saldo_egreso = $this->_html->tag("td", "class='celda_total_2 alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_egreso)."</label>"));
+      $tr_total_egreso = $this->_html->tag("tr", "", array($td_label_egresos,$td_saldo_egreso));
+      $totales .= $tr_total_egreso;
+    }
+      
       $td_total = $this->_html->tag("td", "class='celda_total'", array("<label>Total</label>"));
-      $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($this->_total_general)."</label>"));
+      $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($this->_total_general - $total_egreso)."</label>"));
     $tr_total = $this->_html->tag("tr", "", array($td_total,$td_total_entrada));
     $totales .= $tr_total;
     $tbody_resumen = $this->_html->tag("tbody", "", array($totales));

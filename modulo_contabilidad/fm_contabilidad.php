@@ -50,15 +50,21 @@
           $clase_fecha = "class='fecha_otro_dia'";
         $lbl_fecha = $html->tag("label", "id='lbl_fecha_contabilidad' ".$clase_fecha, array($html->obtenerFechaTextual($_SESSION['fecha_contabilidad'], true, true, true, true)));
         $inp_fecha = $html->tag("input", "type='hidden' id='fecha_contabilidad' value='".$_SESSION['fecha_contabilidad']."'", "", true);
-      $td_fecha = $html->tag("td", "class='alineacion_centro'", array($lbl_contabilidad,$html->espacios(2),$lbl_fecha,$inp_fecha));
+      $td_fecha = $html->tag("td", "class='alineacion_centro' colspan='4'", array($lbl_contabilidad,$html->espacios(2),$lbl_fecha,$inp_fecha));
     $tr_fecha = $html->tag("tr", "", array($td_fecha));
     //tr saldo titan
         $lbl_saldo_titan = $html->tag("label", "", array("Saldo Inicial TITAN:"));
-        $lbl_saldo = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoTitan(true);'");
-      $td_saldo = $html->tag("td", "class='alineacion_centro'", array($lbl_saldo_titan,$html->espacios(2),$lbl_saldo));
-    $tr_saldo = $html->tag("tr", "", array($td_saldo));
+      $td_lbl_saldo = $html->tag("td", "class='alineacion_izquierda'", array($lbl_saldo_titan));
+        $lbl_valor_saldo = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoTitan(true);'");
+      $td_valor_saldo = $html->tag("td", "class='alineacion_centro ancho_140'", array($lbl_valor_saldo));
+    //tr egreso diario
+        $lbl_egreso = $html->tag("label", "", array("Plata que sale:"));
+      $td_lbl_egreso = $html->tag("td", "class='alineacion_izquierda'", array($lbl_egreso));
+        $lbl_valor_egreso = $html->tag("label", "id='egd_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoEgresos(true);'");
+      $td_valor_egreso = $html->tag("td", "class='alineacion_centro ancho_140'", array($lbl_valor_egreso));
+    $tr_saldos = $html->tag("tr", "", array($td_lbl_saldo,$td_valor_saldo,$td_lbl_egreso,$td_valor_egreso));
   //tabla titulo
-  $table_titulo = $html->tag("table", "class='tbl_titulo tabla_centrada'", array($tr_fecha,$tr_saldo));
+  $table_titulo = $html->tag("table", "class='tbl_titulo tabla_centrada'", array($tr_fecha,$tr_saldos));
 
   /*TABLA PRODUCTOS Y SERVICIOS*/
       $td_servicios = $html->tag("td", "", array($objetoContabilidad->obtenerTablaServicios()));

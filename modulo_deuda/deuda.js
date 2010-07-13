@@ -28,7 +28,7 @@ function inicializar()
 function actualizarOrdenamiento()
 {
   $("#tbl_historial").trigger("update");
-  var sorting = [[1,0],[10,0],[2,0]];
+  var sorting = [[1,0],[9,0],[2,0]];
   $("#tbl_historial").trigger("sorton",[sorting]); 
 }
 

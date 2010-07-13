@@ -131,6 +131,21 @@ class Contabilidad
       return false;
   }
   
+  function actualizarSaldoEgresos($egd_saldo, $egd_fecha)
+  {
+    if(!$egd_saldo)
+      $egd_saldo = "0";
+    $sql = "UPDATE pozettos_egreso_diario
+            SET egd_saldo = '$egd_saldo'
+            WHERE egd_fecha = '$egd_fecha'";
+    //echo $sql;
+    $this->_conexionBD->ejecutarSQL($sql);
+    if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
+      return true;
+    else
+      return false;
+  }
+  
   function obtenerOptions()
   {
     $arreglo_options = array();
@@ -189,6 +204,23 @@ class Contabilidad
               VALUES ('0','". $this->_fecha_contabilidad ."')";
       $this->_conexionBD->ejecutarSQL($sql);
       $arreglo_options['sit_saldo'] = "0";
+    }
+    
+    /* SALDO EGRESOS */
+    $sql = "SELECT egd_saldo
+            FROM pozettos_egreso_diario
+            WHERE egd_fecha='". $this->_fecha_contabilidad ."'
+            AND egd_vigente = 1
+            LIMIT 1";
+    $this->_conexionBD->ejecutarSQL($sql);
+    if($this->_conexionBD->obtenerNumeroFilas())
+      $arreglo_options['egd_saldo'] = $this->_conexionBD->obtenerFilaComoCadena();
+    else
+    {
+      $sql = "INSERT INTO pozettos_egreso_diario (egd_saldo, egd_fecha)
+              VALUES ('0','". $this->_fecha_contabilidad ."')";
+      $this->_conexionBD->ejecutarSQL($sql);
+      $arreglo_options['egd_saldo'] = "0";
     }
     return json_encode($arreglo_options);
   }

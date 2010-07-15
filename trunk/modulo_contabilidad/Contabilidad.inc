@@ -394,6 +394,7 @@ class Contabilidad
                         AND hiv2.hiv_cli_id = hiv1.hiv_cli_id
                         AND hiv2.hiv_pago = 0
                         AND hiv2.hiv_es_tiempo_gratis = 0
+                        AND hiv2.hiv_vigente
                       ) AS deuda_vieja
               FROM  pozettos_historico_venta as hiv1, pozettos_servicio, pozettos_cliente, pozettos_duracion_servicio
               WHERE hiv1.hiv_ser_id = ser_id
@@ -517,6 +518,7 @@ class Contabilidad
                       AND hiv2.hiv_cli_id = hiv1.hiv_cli_id
                       AND hiv2.hiv_pago = 0
                       AND hiv2.hiv_es_tiempo_gratis = 0
+                      AND hiv2.hiv_vigente
                     ) AS deuda_vieja
             FROM  pozettos_historico_venta as hiv1, pozettos_servicio, pozettos_cliente, pozettos_duracion_servicio
             WHERE hiv1.hiv_ser_id = ser_id

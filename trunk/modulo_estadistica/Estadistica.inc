@@ -28,6 +28,7 @@ class Estadistica
   var $_html;
   var $_resumen_general;
   var $_total_general;
+  var $_total_venta_fullcarga;
   
   function __construct($parametrosConexion)
   {
@@ -38,6 +39,7 @@ class Estadistica
     $this->_html = new GeneradorHtml2();
     $this->_resumen_general = array();
     $this->_total_general = 0;
+    $this->_total_venta_fullcarga = 0;
   }
   
   function cargarCategorias()
@@ -198,6 +200,12 @@ class Estadistica
         $total = (int)$this->_conexionBDAux->obtenerFilaComoCadena();
         $total_gratis += $total;
         $td_gratis = $this->_html->tag("td", "class='alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
+        
+        
+        if($info_cabina['ser_id'] == "10")//es recarga FULLCARGA
+        {
+          $this->_total_venta_fullcarga = $total_pagado + $total_deben + $total_gratis;
+        }
 
       $trs_servicios .= $this->_html->tag("tr", "", array($td_nombre_servicio,$td_pago,$td_deben,$td_gratis));
     }
@@ -236,7 +244,7 @@ class Estadistica
       $tr_total_titan = $this->_html->tag("tr", "", array($td_label_titan,$td_saldo_titan));
 
       $td_label_saldo_final = $this->_html->tag("td", "class='celda_total_2'", array("<label>Saldo Final Titan</label>"));
-      $td_saldo_final = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>".$this->_html->colocarPuntoMiles($total - $total_pagado - $total_deben - $total_gratis)."</label>"));
+      $td_saldo_final = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>".$this->_html->colocarPuntoMiles($total - $this->_total_venta_fullcarga)."</label>"));
       $tr_saldo_final = $this->_html->tag("tr", "", array($td_label_saldo_final,$td_saldo_final));
 
       $trs_titan = $tr_total_titan." ".$tr_saldo_final;

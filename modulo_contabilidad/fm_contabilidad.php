@@ -52,20 +52,30 @@
         $inp_fecha = $html->tag("input", "type='hidden' id='fecha_contabilidad' value='".$_SESSION['fecha_contabilidad']."'", "", true);
       $td_fecha = $html->tag("td", "class='alineacion_centro' colspan='4'", array($lbl_contabilidad,$html->espacios(2),$lbl_fecha,$inp_fecha));
     $tr_fecha = $html->tag("tr", "", array($td_fecha));
-    //tr saldo titan
-        $lbl_saldo_titan = $html->tag("label", "", array("Saldo Inicial TITAN:"));
-      $td_lbl_saldo = $html->tag("td", "class='alineacion_izquierda'", array($lbl_saldo_titan));
-        $lbl_valor_saldo = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoTitan(true);'");
-      $td_valor_saldo = $html->tag("td", "class='alineacion_centro ancho_140'", array($lbl_valor_saldo));
-    //tr egreso diario
-        $lbl_egreso = $html->tag("label", "", array("Plata que sale:"));
-      $td_lbl_egreso = $html->tag("td", "class='alineacion_izquierda'", array($lbl_egreso));
-        $lbl_valor_egreso = $html->tag("label", "id='egd_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoEgresos(true);'");
-      $td_valor_egreso = $html->tag("td", "class='alineacion_centro ancho_140'", array($lbl_valor_egreso));
-    $tr_saldos = $html->tag("tr", "", array($td_lbl_saldo,$td_valor_saldo,$td_lbl_egreso,$td_valor_egreso));
   //tabla titulo
   $table_titulo = $html->tag("table", "class='tbl_titulo tabla_centrada'", array($tr_fecha,$tr_saldos));
-
+  
+    //tr base
+        $lbl_base = $html->tag("label", "class='label_formulario'", array("Base"));
+      $td_lbl_base = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_base));
+        $lbl_valor_base = $html->tag("label", "id='bas_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoBase(true);'");
+      $td_valor_base = $html->tag("td", "class='alineacion_derecha ancho_70'", array($lbl_valor_base));
+    $tr_base = $html->tag("tr", "", array($td_lbl_base,$td_valor_base));
+    //tr saldo titan
+        $lbl_saldo_titan = $html->tag("label", "class='label_formulario'", array("Saldo Inicial Titan"));
+      $td_lbl_saldo_titan = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_saldo_titan));
+        $lbl_valor_saldo_titan = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoTitan(true);'");
+      $td_valor_saldo_titan = $html->tag("td", "class='alineacion_derecha ancho_70'", array($lbl_valor_saldo_titan));
+    $tr_titan = $html->tag("tr", "", array($td_lbl_saldo_titan,$td_valor_saldo_titan));
+    //tr egreso diario
+        $lbl_egreso = $html->tag("label", "class='label_formulario'", array("Plata que sale"));
+      $td_lbl_egreso = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_egreso));
+        $lbl_valor_egreso = $html->tag("label", "id='egd_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoEgresos(true);'");
+      $td_valor_egreso = $html->tag("td", "class='alineacion_derecha ancho_70'", array($lbl_valor_egreso));
+    $tr_egreso = $html->tag("tr", "", array($td_lbl_egreso,$td_valor_egreso));
+  //tabla saldos
+  $table_saldos = $html->tag("table", "id='tabla_saldos'", array($tr_base,$tr_titan,$tr_egreso));
+  
   /*TABLA PRODUCTOS Y SERVICIOS*/
       $td_servicios = $html->tag("td", "", array($objetoContabilidad->obtenerTablaServicios()));
     $tr_servicios = $html->tag("tr", "", array($td_servicios));
@@ -135,10 +145,11 @@
 
   $contenido_modulo = "";
   if($viene_de_icono)//hizo click en el menu
-    echo $table_titulo, $table_servicios, $table_historial;
+    echo $table_titulo, $table_saldos, $table_servicios, $table_historial;
   else//actualizo la pagina f5
   {
     $contenido_modulo .= $table_titulo;
+    $contenido_modulo .= $table_saldos;
     $contenido_modulo .= $table_servicios;
     $contenido_modulo .= $table_historial;
   }

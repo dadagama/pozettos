@@ -116,6 +116,21 @@ class Contabilidad
     }
   }
   
+  function actualizarSaldoBase($bas_saldo, $bas_fecha)
+  {
+    if(!$bas_saldo)
+      $bas_saldo = "0";
+    $sql = "UPDATE pozettos_base_diaria
+            SET bas_saldo = '$bas_saldo'
+            WHERE bas_fecha = '$bas_fecha'";
+    //echo $sql;
+    $this->_conexionBD->ejecutarSQL($sql);
+    if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
+      return true;
+    else
+      return false;
+  }
+  
   function actualizarSaldoTitan($sit_saldo, $sit_fecha)
   {
     if(!$sit_saldo)
@@ -221,6 +236,23 @@ class Contabilidad
               VALUES ('0','". $this->_fecha_contabilidad ."')";
       $this->_conexionBD->ejecutarSQL($sql);
       $arreglo_options['egd_saldo'] = "0";
+    }
+    
+    /* SALDO BASE */
+    $sql = "SELECT bas_saldo
+            FROM pozettos_base_diaria
+            WHERE bas_fecha='". $this->_fecha_contabilidad ."'
+            AND bas_vigente = 1
+            LIMIT 1";
+    $this->_conexionBD->ejecutarSQL($sql);
+    if($this->_conexionBD->obtenerNumeroFilas())
+      $arreglo_options['bas_saldo'] = $this->_conexionBD->obtenerFilaComoCadena();
+    else
+    {
+      $sql = "INSERT INTO pozettos_base_diaria (bas_saldo, bas_fecha)
+              VALUES ('0','". $this->_fecha_contabilidad ."')";
+      $this->_conexionBD->ejecutarSQL($sql);
+      $arreglo_options['bas_saldo'] = "0";
     }
     return json_encode($arreglo_options);
   }

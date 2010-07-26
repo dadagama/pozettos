@@ -40,6 +40,10 @@ switch($_REQUEST['accion'])
 		echo $objetoContabilidad->cargarSaldoInicialTitan($_REQUEST['sit_fecha']);
 		break;
 	
+  case "actualizarSaldoBase":
+		echo $objetoContabilidad->actualizarSaldoBase($_REQUEST['bas_saldo'], $_REQUEST['bas_fecha']);
+		break;
+    
 	case "actualizarSaldoTitan":
 		echo $objetoContabilidad->actualizarSaldoTitan($_REQUEST['sit_saldo'], $_REQUEST['sit_fecha']);
 		break;

@@ -109,8 +109,24 @@ class Estadistica
       $totales .= $this->_html->tag("tr", "", array($fila));
       
     //coloco plata que sale
+    //y saldo base
     if($arreglo_parametros['opc_alcance'] == "diario")
     {
+        $td_label_base = $this->_html->tag("td", "class='celda_subtotal'", array("<label>Base</label>"));
+        $sql = "SELECT bas_saldo
+                FROM pozettos_base_diaria
+                WHERE bas_fecha = '".$arreglo_parametros['opc_fecha']."'
+                AND bas_vigente = 1
+                LIMIT 1";
+        $this->_conexionBDAux->ejecutarSQL($sql);
+        if($this->_conexionBDAux->obtenerNumeroFilas() > 0)
+          $total_base = $this->_conexionBDAux->obtenerFilaComoCadena();
+        else
+          $total_base = "0";
+        $td_saldo_base = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_base)."</label>"));
+      $tr_total_base = $this->_html->tag("tr", "", array($td_label_base,$td_saldo_base));
+      $totales .= $tr_total_base;
+    
         $td_label_egresos = $this->_html->tag("td", "class='celda_total_2'", array("<label>Plata que salió</label>"));
         $sql = "SELECT egd_saldo
                 FROM pozettos_egreso_diario
@@ -128,7 +144,7 @@ class Estadistica
     }
       
       $td_total = $this->_html->tag("td", "class='celda_total'", array("<label>Total</label>"));
-      $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($this->_total_general - $total_egreso)."</label>"));
+      $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($this->_total_general - $total_egreso + $total_base)."</label>"));
     $tr_total = $this->_html->tag("tr", "", array($td_total,$td_total_entrada));
     $totales .= $tr_total;
     $tbody_resumen = $this->_html->tag("tbody", "", array($totales));

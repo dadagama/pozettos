@@ -35,6 +35,16 @@
 	border-color:#DDDDDD;
   border-width:1px;
 }
+#tabla_saldos
+{
+  top: 5px;
+  right: 5px;
+  width: 210px;
+  height: 60px;
+  position: absolute;
+  border: 1px solid #4F8FFF;
+  background: #fff;
+}
 /*******************************************
 **            TIMERS                      **
 ********************************************/

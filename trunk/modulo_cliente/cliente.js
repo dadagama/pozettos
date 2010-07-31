@@ -50,6 +50,7 @@ function agregarClienteAjax(info_cliente)
   {
     $("#tbody_clientes").append(info_cliente);
     $("#tbl_clientes").trigger("update");
+    alert("Se agrego un cliente correctamente");
   }
   else
     console.log('Error al registrar el cliente');

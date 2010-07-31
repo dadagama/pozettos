@@ -88,7 +88,7 @@ function editableSaldoBase(editable)
     var bas_saldo = parseInt(valor_saldo.replace(".", ""));
     if(bas_saldo == "" || isNaN(bas_saldo))
       bas_saldo = "0";
-    var label_saldo = "<label id='bas_saldo' ondblclick='editableSaldoBase(true);' class='verdana letra_9 cursor_cruz'>"+bas_saldo+"</label>";
+    var label_saldo = "<label id='bas_saldo'class='verdana letra_9 cursor_cruz'>"+bas_saldo+"</label>";
     $('#bas_saldo').replaceWith(label_saldo);
   }
 }
@@ -122,7 +122,7 @@ function editableSaldoTitan(editable)
     var sit_saldo = parseInt(valor_saldo.replace(".", ""));
     if(sit_saldo == "" || isNaN(sit_saldo))
       sit_saldo = "0";
-    var label_saldo = "<label id='sit_saldo' ondblclick='editableSaldoTitan(true);' class='verdana letra_9 cursor_cruz'>"+sit_saldo+"</label>";
+    var label_saldo = "<label id='sit_saldo' class='verdana letra_9 cursor_cruz'>"+sit_saldo+"</label>";
     $('#sit_saldo').replaceWith(label_saldo);
   }
 }
@@ -156,7 +156,7 @@ function editableSaldoEgresos(editable)
     var egd_saldo = parseInt(valor_saldo.replace(".", ""));
     if(egd_saldo == "" || isNaN(egd_saldo))
       egd_saldo = "0";
-    var label_saldo = "<label id='egd_saldo' ondblclick='editableSaldoEgresos(true);' class='verdana letra_9 cursor_cruz'>"+egd_saldo+"</label>";
+    var label_saldo = "<label id='egd_saldo' class='verdana letra_9 cursor_cruz'>"+egd_saldo+"</label>";
     $('#egd_saldo').replaceWith(label_saldo);
   }
 }

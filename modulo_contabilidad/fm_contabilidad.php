@@ -58,20 +58,20 @@
     //tr base
         $lbl_base = $html->tag("label", "class='label_formulario'", array("Base"));
       $td_lbl_base = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_base));
-        $lbl_valor_base = $html->tag("label", "id='bas_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoBase(true);'");
-      $td_valor_base = $html->tag("td", "class='alineacion_derecha ancho_70'", array($lbl_valor_base));
+        $lbl_valor_base = $html->tag("label", "id='bas_saldo' class='verdana letra_9 cursor_cruz'");
+      $td_valor_base = $html->tag("td", "class='alineacion_derecha ancho_70 cursor_cruz borde_azul' ondblclick='editableSaldoBase(true);'", array($lbl_valor_base));
     $tr_base = $html->tag("tr", "", array($td_lbl_base,$td_valor_base));
     //tr saldo titan
         $lbl_saldo_titan = $html->tag("label", "class='label_formulario'", array("Saldo Inicial Titan"));
       $td_lbl_saldo_titan = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_saldo_titan));
-        $lbl_valor_saldo_titan = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoTitan(true);'");
-      $td_valor_saldo_titan = $html->tag("td", "class='alineacion_derecha ancho_70'", array($lbl_valor_saldo_titan));
+        $lbl_valor_saldo_titan = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz'");
+      $td_valor_saldo_titan = $html->tag("td", "class='alineacion_derecha ancho_70 cursor_cruz borde_azul' ondblclick='editableSaldoTitan(true);'", array($lbl_valor_saldo_titan));
     $tr_titan = $html->tag("tr", "", array($td_lbl_saldo_titan,$td_valor_saldo_titan));
     //tr egreso diario
         $lbl_egreso = $html->tag("label", "class='label_formulario'", array("Plata que sale"));
       $td_lbl_egreso = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_egreso));
-        $lbl_valor_egreso = $html->tag("label", "id='egd_saldo' class='verdana letra_9 cursor_cruz' ondblclick='editableSaldoEgresos(true);'");
-      $td_valor_egreso = $html->tag("td", "class='alineacion_derecha ancho_70'", array($lbl_valor_egreso));
+        $lbl_valor_egreso = $html->tag("label", "id='egd_saldo' class='verdana letra_9 cursor_cruz'");
+      $td_valor_egreso = $html->tag("td", "class='alineacion_derecha ancho_70 cursor_cruz borde_azul' ondblclick='editableSaldoEgresos(true);'", array($lbl_valor_egreso));
     $tr_egreso = $html->tag("tr", "", array($td_lbl_egreso,$td_valor_egreso));
   //tabla saldos
   $table_saldos = $html->tag("table", "id='tabla_saldos'", array($tr_base,$tr_titan,$tr_egreso));

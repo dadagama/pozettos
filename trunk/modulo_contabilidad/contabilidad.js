@@ -217,7 +217,9 @@ function actualizarDeudaClienteAjax(jsonDeuda)
   if(obj_deuda.valor_deuda != 0)
   {
     $("#cli_span_debe_"+obj_deuda.hiv_id).children().remove();
-    $("#cli_span_debe_"+obj_deuda.hiv_id).html("<img id='cli_img_debe_"+obj_deuda.hiv_id+"' class='imagen_deuda' src='../imagenes/deuda.gif' title='Debe "+obj_deuda.valor_deuda+" de otros dias'/>");
+    //para el cliente 'Nadie' no muestro imagen de deuda
+    if(obj_deuda.cli_id != '1')
+      $("#cli_span_debe_"+obj_deuda.hiv_id).html("<img id='cli_img_debe_"+obj_deuda.hiv_id+"' class='imagen_deuda' src='../imagenes/deuda.gif' title='Debe "+obj_deuda.valor_deuda+" de otros dias'/>");
   }
   else
     $("#cli_span_debe_"+obj_deuda.hiv_id).children().remove();

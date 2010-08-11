@@ -51,7 +51,7 @@ function ajax(data_string, before_send_func, success_func, error_func)
 	if(!error_func)
 		error_func = nada;
 	$.ajax({
-		async:		true,
+		async:		false,
 		type: 		"POST",
 		dataType:	"html",
 		contentType:"application/x-www-form-urlencoded",

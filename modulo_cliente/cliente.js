@@ -34,6 +34,8 @@ function actualizarListaClientesAjax(info_clientes)
   $("#tbody_clientes").html(info_clientes);
   $("#tbl_clientes").tablesorter({widgets: ['zebra']});
   $("#tbl_clientes").trigger("update");
+  var sorting = [[1,0]];
+  $("#tbl_clientes").trigger("sorton",[sorting]);
 }
 
 function agregarCliente()
@@ -49,7 +51,7 @@ function agregarClienteAjax(info_cliente)
   if(info_cliente)
   {
     $("#tbody_clientes").append(info_cliente);
-    $("#tbl_clientes").trigger("update");
+    $("#tbl_clientes").trigger("update"); 
     alert("Se agrego un cliente correctamente");
   }
   else

@@ -289,7 +289,7 @@ function actualizarInicio(fila_id, evento)
 {
   if(evento == 13)
   {
-  ///^\d{1,2}[\.\:]\d{1,2}$/;//#.# ó #:# viejita
+  ///^\d{1,2}[\.\:]\d{1,2}$/;//#.# ï¿½ #:# viejita
     var filtro = filtro = /^(([1][0-2]?)|[1-9])[\.\:]([0-5]?[0-9])$/;//formato de hora valida
     if (filtro.test($('#'+fila_id).children().val()))
     {
@@ -324,10 +324,10 @@ function editableDuracion(fila_id,editable)
   }
   else
   {
-    var duracion = $('#'+fila_id+" select option:selected").text();
+    var duracion = $('#'+fila_id).children("select").find(':selected').text();
     var label_duracion = "<label class='cursor_cruz'>"+duracion+"</label>";
     $('#hidden_'+fila_id).val($('#'+fila_id).children("select").val());
-    $('#'+fila_id).children("select").replaceWith(label_duracion);
+   $('#'+fila_id).children("select").replaceWith(label_duracion);
   }
 }
 
@@ -353,7 +353,8 @@ function actualizarTiemposYTotalAjax(json_horas)
   //la respuesta, ya los inputs se han transformado en labels
   //se espera que siempre sea asi
   $("#hiv_hora_"+obj_horas.hiv_id).children().text(obj_horas.hiv_hora);
-  $("#hiv_dus_minutos_"+obj_horas.hiv_id).children().text(obj_horas.dus_texto);
+  //ya se actualiza en la funcion editableDuracion
+  //$("#hiv_dus_minutos_"+obj_horas.hiv_id).children().text(obj_horas.dus_texto);
   $("#hiv_hora_termina_"+obj_horas.hiv_id).children().text(obj_horas.hiv_hora_termina);
   $("#hiv_total_"+obj_horas.hiv_id).children().text(obj_horas.hiv_total);
   return true;
@@ -455,7 +456,7 @@ function actualizarEstadoPago(id_fila, ultimo_clic)
 
   if($("#hiv_deuda_real_"+id_fila).children("label").html() != "0")
   {
-    if(confirm("Esto coloca la deuda en CERO. ¿esta seguro?"))
+    if(confirm("Esto coloca la deuda en CERO. ï¿½esta seguro?"))
       ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
     else
     {

@@ -168,8 +168,8 @@ class Estadistica
         $th_nombre_categoria = $this->_html->tag("th", "class='ancho_140'", array("<label>$cat_nombre</label>"));
         $th_pagado = $this->_html->tag("th", "class='ancho_70'", array("<label>Pagado</label>"));
         $th_deben = $this->_html->tag("th", "class='ancho_70'", array("<label>Deben</label>"));
-        $th_gratis = $this->_html->tag("th", "class='ancho_70'", array("<label>Gratis</label>"));
-      $tr_encabezado = $this->_html->tag("tr", "", array($th_nombre_categoria,$th_pagado,$th_deben,$th_gratis));
+//         $th_gratis = $this->_html->tag("th", "class='ancho_70'", array("<label>Gratis</label>"));
+      $tr_encabezado = $this->_html->tag("tr", "", array($th_nombre_categoria,$th_pagado,$th_deben/*,$th_gratis*/));
     $thead_resumen = $this->_html->tag("thead", "", array($tr_encabezado));
 
     $total_pagado = 0;
@@ -208,22 +208,22 @@ class Estadistica
         $total_deben += $total;
         $td_deben = $this->_html->tag("td", "class='alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
 
-        $sql = "SELECT SUM(hiv_total)
-                FROM pozettos_historico_venta
-                WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
-                      AND hiv_pago = 0
-                      AND hiv_es_tiempo_gratis = 1
-                      AND hiv_vigente = 1
-                      AND $where_fecha";
-        $this->_conexionBDAux->ejecutarSQL($sql);
-        $total = (int)$this->_conexionBDAux->obtenerFilaComoCadena();
-        $total_gratis += $total;
-        $td_gratis = $this->_html->tag("td", "class='alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
+//         $sql = "SELECT SUM(hiv_total)
+//                 FROM pozettos_historico_venta
+//                 WHERE hiv_ser_id = '".$info_cabina['ser_id']."'
+//                       AND hiv_pago = 0
+//                       AND hiv_es_tiempo_gratis = 1
+//                       AND hiv_vigente = 1
+//                       AND $where_fecha";
+//         $this->_conexionBDAux->ejecutarSQL($sql);
+//         $total = (int)$this->_conexionBDAux->obtenerFilaComoCadena();
+//         $total_gratis += $total;
+//         $td_gratis = $this->_html->tag("td", "class='alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total)."</label>"));
         
         
         if($info_cabina['ser_id'] == "10")//es recarga FULLCARGA
         {
-          $this->_total_venta_fullcarga = $total_pagado + $total_deben + $total_gratis;
+          $this->_total_venta_fullcarga = $total_pagado + $total_deben/* + $total_gratis*/;
         }
 
       $trs_servicios .= $this->_html->tag("tr", "", array($td_nombre_servicio,$td_pago,$td_deben,$td_gratis));
@@ -232,8 +232,8 @@ class Estadistica
       $td_subtotal = $this->_html->tag("td", "class='celda_subtotal'", array("<label>Subtotal</label>"));
       $td_total_pagado = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_pagado)."</label>"));
       $td_total_deben = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_deben)."</label>"));
-      $td_total_gratis = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_gratis)."</label>"));
-    $tr_subtotal = $this->_html->tag("tr", "", array($td_subtotal,$td_total_pagado,$td_total_deben,$td_total_gratis));
+//       $td_total_gratis = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_gratis)."</label>"));
+    $tr_subtotal = $this->_html->tag("tr", "", array($td_subtotal,$td_total_pagado,$td_total_deben/*,$td_total_gratis*/));
     //totales
       $td_total = $this->_html->tag("td", "class='celda_total'", array("<label>Total $cat_nombre</label>"));
       $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_centro' colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_pagado + $total_deben)."</label>"));

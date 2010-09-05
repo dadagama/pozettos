@@ -483,26 +483,26 @@ class Contabilidad
         $checked_pago = "checked='checked'";
         $clase_celda_pago = "celda_pago";//si pago => verde
       }
-      else if($info_tupla_historico['hiv_es_tiempo_gratis'])
-      {
-        $checked_gratis = "checked='checked'";
-        $clase_celda_gratis = "celda_pago";//es gratis => verde
-        $clase_celda_pago = "";//es gratis => en blanco
-      }
+//       else if($info_tupla_historico['hiv_es_tiempo_gratis'])
+//       {
+//         $checked_gratis = "checked='checked'";
+//         $clase_celda_gratis = "celda_pago";//es gratis => verde
+//         $clase_celda_pago = "";//es gratis => en blanco
+//       }
       $input_pago = $this->_html->tag("input", "type='checkbox' id='hiv_chk_pago_".$info_tupla_historico['hiv_id']."' $checked_pago onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'pago');\"", "", true);
       $td_pago = $this->_html->tag("td", "class='alineacion_centro $clase_celda_pago' title='Ya pagó el total del servicio' id='hiv_pago_".$info_tupla_historico['hiv_id']."'", array($input_pago));
 
-      $input_gratis = $this->_html->tag("input", "type='checkbox' id='hiv_chk_gratis_".$info_tupla_historico['hiv_id']."' $checked_gratis onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');\"", "", true);
-      $td_gratis = $this->_html->tag("td", "class='alineacion_centro $clase_celda_gratis' title='No se cobra porque es gratis' id='hiv_gratis_".$info_tupla_historico['hiv_id']."'", array($input_gratis));
+//       $input_gratis = $this->_html->tag("input", "type='checkbox' id='hiv_chk_gratis_".$info_tupla_historico['hiv_id']."' $checked_gratis onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');\"", "", true);
+//       $td_gratis = $this->_html->tag("td", "class='alineacion_centro $clase_celda_gratis' title='No se cobra porque es gratis' id='hiv_gratis_".$info_tupla_historico['hiv_id']."'", array($input_gratis));
 
-      $label_cliente = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_cli_id']));
-      $img_deuda_vieja = "";
-      if($info_tupla_historico['deuda_vieja'] && $info_tupla_historico['hiv_cli_id'] != "1")
-        $img_deuda_vieja = $this->_html->tag("img", "id='cli_img_debe_".$info_tupla_historico['hiv_id']."' class='imagen_deuda' src='../imagenes/deuda.gif' title='Debe ".$info_tupla_historico['deuda_vieja']." de otros dias'", "", true);
-      $span_deuda_vieja = $this->_html->tag("span", "id='cli_span_debe_".$info_tupla_historico['hiv_id']."'", array($img_deuda_vieja));
-      $td_cliente = $this->_html->tag("td",
-                                      "class='alineacion_centro verdana letra_9 cursor_cruz' title='".$info_tupla_historico['hiv_cli_id']." -> ".utf8_encode($info_tupla_historico['cli_nombre'])." ".utf8_encode($info_tupla_historico['cli_apellido'])."' id='cli_fila_".$info_tupla_historico['hiv_id']."' onclick=\"editableCliente('cli_fila_".$info_tupla_historico['hiv_id']."',true);\"",
-                                      array($label_cliente,$span_deuda_vieja));
+//       $label_cliente = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_cli_id']));
+//       $img_deuda_vieja = "";
+//       if($info_tupla_historico['deuda_vieja'] && $info_tupla_historico['hiv_cli_id'] != "1")
+//         $img_deuda_vieja = $this->_html->tag("img", "id='cli_img_debe_".$info_tupla_historico['hiv_id']."' class='imagen_deuda' src='../imagenes/deuda.gif' title='Debe ".$info_tupla_historico['deuda_vieja']." de otros dias'", "", true);
+//       $span_deuda_vieja = $this->_html->tag("span", "id='cli_span_debe_".$info_tupla_historico['hiv_id']."'", array($img_deuda_vieja));
+//       $td_cliente = $this->_html->tag("td",
+//                                       "class='alineacion_centro verdana letra_9 cursor_cruz' title='".$info_tupla_historico['hiv_cli_id']." -> ".utf8_encode($info_tupla_historico['cli_nombre'])." ".utf8_encode($info_tupla_historico['cli_apellido'])."' id='cli_fila_".$info_tupla_historico['hiv_id']."' onclick=\"editableCliente('cli_fila_".$info_tupla_historico['hiv_id']."',true);\"",
+//                                       array($label_cliente,$span_deuda_vieja));
 
       $label_observacion = $this->_html->tag("label", "class='cursor_cruz'", array(utf8_encode($info_tupla_historico['hiv_observacion'])));
       $td_observacion = $this->_html->tag("td", "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Nota adicional si se necesita' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", array($label_observacion));
@@ -521,8 +521,8 @@ class Contabilidad
                                 array($td_oculto_color,$td_oculto_id,
                                       $td_color,$td_nombre,$td_hora,
                                       $td_dus_minutos,$td_hora_termina,
-                                      $td_total,$td_deuda_real,$td_pago,$td_gratis,
-                                      $td_cliente,$td_observacion,$td_eliminar));
+                                      $td_total,$td_deuda_real,$td_pago,/*$td_gratis,
+                                      $td_cliente,*/$td_observacion,$td_eliminar));
     }
     else
       return false;
@@ -610,26 +610,26 @@ class Contabilidad
         $checked_pago = "checked='checked'";
         $clase_celda_pago = "celda_pago";//si pago => verde
       }
-      else if($info_tupla_historico['hiv_es_tiempo_gratis'])
-      {
-        $checked_gratis = "checked='checked'";
-        $clase_celda_gratis = "celda_pago";//es gratis => verde
-        $clase_celda_pago = "";//es gratis => en blanco
-      }
+//       else if($info_tupla_historico['hiv_es_tiempo_gratis'])
+//       {
+//         $checked_gratis = "checked='checked'";
+//         $clase_celda_gratis = "celda_pago";//es gratis => verde
+//         $clase_celda_pago = "";//es gratis => en blanco
+//       }
       $input_pago = $this->_html->tag("input", "type='checkbox' id='hiv_chk_pago_".$info_tupla_historico['hiv_id']."' $checked_pago onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'pago');\"", "", true);
       $td_pago = $this->_html->tag("td", "class='alineacion_centro $clase_celda_pago' title='Ya pagó el total del servicio' id='hiv_pago_".$info_tupla_historico['hiv_id']."'", array($input_pago));
 
-      $input_gratis = $this->_html->tag("input", "type='checkbox' id='hiv_chk_gratis_".$info_tupla_historico['hiv_id']."' $checked_gratis onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');\"", "", true);
-      $td_gratis = $this->_html->tag("td", "class='alineacion_centro $clase_celda_gratis' title='No se cobra porque es gratis' id='hiv_gratis_".$info_tupla_historico['hiv_id']."'", array($input_gratis));
+//       $input_gratis = $this->_html->tag("input", "type='checkbox' id='hiv_chk_gratis_".$info_tupla_historico['hiv_id']."' $checked_gratis onchange=\"actualizarEstadoPago(".$info_tupla_historico['hiv_id'].",'gratis');\"", "", true);
+//       $td_gratis = $this->_html->tag("td", "class='alineacion_centro $clase_celda_gratis' title='No se cobra porque es gratis' id='hiv_gratis_".$info_tupla_historico['hiv_id']."'", array($input_gratis));
 
-      $label_cliente = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_cli_id']));
-      $img_deuda_vieja = "";
-      if($info_tupla_historico['deuda_vieja'] && $info_tupla_historico['hiv_cli_id'] != "1")
-        $img_deuda_vieja = $this->_html->tag("img", "id='cli_img_debe_".$info_tupla_historico['hiv_id']."' class='imagen_deuda' src='../imagenes/deuda.gif' title='Debe ".$info_tupla_historico['deuda_vieja']." de otros dias'", "", true);
-      $span_deuda_vieja = $this->_html->tag("span", "id='cli_span_debe_".$info_tupla_historico['hiv_id']."'", array($img_deuda_vieja));
-      $td_cliente = $this->_html->tag("td",
-                                      "class='alineacion_centro verdana letra_9 cursor_cruz' title='".$info_tupla_historico['hiv_cli_id']." -> ".utf8_encode($info_tupla_historico['cli_nombre'])." ".utf8_encode($info_tupla_historico['cli_apellido'])."' id='cli_fila_".$info_tupla_historico['hiv_id']."' onclick=\"editableCliente('cli_fila_".$info_tupla_historico['hiv_id']."',true);\"",
-                                      array($label_cliente,$span_deuda_vieja));
+//       $label_cliente = $this->_html->tag("label", "class='cursor_cruz'", array($info_tupla_historico['hiv_cli_id']));
+//       $img_deuda_vieja = "";
+//       if($info_tupla_historico['deuda_vieja'] && $info_tupla_historico['hiv_cli_id'] != "1")
+//         $img_deuda_vieja = $this->_html->tag("img", "id='cli_img_debe_".$info_tupla_historico['hiv_id']."' class='imagen_deuda' src='../imagenes/deuda.gif' title='Debe ".$info_tupla_historico['deuda_vieja']." de otros dias'", "", true);
+//       $span_deuda_vieja = $this->_html->tag("span", "id='cli_span_debe_".$info_tupla_historico['hiv_id']."'", array($img_deuda_vieja));
+//       $td_cliente = $this->_html->tag("td",
+//                                       "class='alineacion_centro verdana letra_9 cursor_cruz' title='".$info_tupla_historico['hiv_cli_id']." -> ".utf8_encode($info_tupla_historico['cli_nombre'])." ".utf8_encode($info_tupla_historico['cli_apellido'])."' id='cli_fila_".$info_tupla_historico['hiv_id']."' onclick=\"editableCliente('cli_fila_".$info_tupla_historico['hiv_id']."',true);\"",
+//                                       array($label_cliente,$span_deuda_vieja));
 
       $label_observacion = $this->_html->tag("label", "class='cursor_cruz'", array(utf8_encode($info_tupla_historico['hiv_observacion'])));
       $td_observacion = $this->_html->tag("td", "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Nota adicional si se necesita' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", array($label_observacion));
@@ -647,8 +647,8 @@ class Contabilidad
                                             array($td_oculto_color,$td_oculto_id,
                                                   $td_color,$td_nombre,$td_hora,
                                                   $td_dus_minutos,$td_hora_termina,
-                                                  $td_total,$td_deuda_real,$td_pago,$td_gratis,
-                                                  $td_cliente,$td_observacion,$td_eliminar));
+                                                  $td_total,$td_deuda_real,$td_pago,/*$td_gratis,
+                                                  $td_cliente,*/$td_observacion,$td_eliminar));
     }
     return $filas_servicios;
   }

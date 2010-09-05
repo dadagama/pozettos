@@ -68,10 +68,10 @@
   $td_deudores = $html->tag("td", "class='ancho_40'", array($input_deudores));
   $input_estadistica = $html->tag("input", "title='Estadisticas del negocio' type='image' src='../imagenes/reporte.jpg' onclick=\"mostrarModulo('estadistica');\"", "", true);
   $td_estadistica = $html->tag("td", "class='ancho_40'", array($input_estadistica));
-  $input_clientes = $html->tag("input", "title='Clientes Fieles' type='image' src='../imagenes/home.png' onclick=\"mostrarModulo('cliente');\"", "", true);
-  $td_clientes = $html->tag("td", "class='ancho_40'", array($input_clientes));
+//   $input_clientes = $html->tag("input", "title='Clientes Fieles' type='image' src='../imagenes/home.png' onclick=\"mostrarModulo('cliente');\"", "", true);
+//   $td_clientes = $html->tag("td", "class='ancho_40'", array($input_clientes));
   //tr titulo
-  $tr_titulo = $html->tag("tr", "", array($td_titulo,$td_contabilidad,$td_deudores,$td_estadistica,$td_clientes));
+  $tr_titulo = $html->tag("tr", "", array($td_titulo,$td_contabilidad,$td_deudores,$td_estadistica/*,$td_clientes*/));
   //table titulo
   echo $html->tag("table", "class='tbl_titulo tabla_centrada borde_azul'", array($tr_titulo));
 

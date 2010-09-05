@@ -28,7 +28,7 @@ function inicializar()
 function actualizarOrdenamiento()
 {
   $("#tbl_historial").trigger("update");
-  var sorting = [[1,0],[9,0],[2,0]];
+  var sorting = [[6,0],[0,0]];
   $("#tbl_historial").trigger("sorton",[sorting]); 
 }
 
@@ -85,6 +85,7 @@ function editableObservacion(fila_id,editable)
       hiv_observacion = "";
     var label_observacion = "<label class='cursor_cruz'>"+hiv_observacion+"</label>";
     $('#'+fila_id).children().replaceWith(label_observacion);
+    actualizarOrdenamiento();
   }
 }
 

@@ -11,9 +11,11 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-		You should have received a copy of the GNU General Public License
+    You should have received a copy of the GNU General Public License
     along with Pozzettos.  If not, see <http://www.gnu.org/licenses/>.
 */
+DROP TABLE IF EXISTS pozettos_base_diaria;
+DROP TABLE IF EXISTS pozettos_egreso_diario;
 DROP TABLE IF EXISTS pozettos_duracion_servicio;
 /*DROP TABLE IF EXISTS pozettos_usuario;*/
 DROP TABLE IF EXISTS pozettos_historico_venta;
@@ -29,7 +31,8 @@ CREATE TABLE pozettos_saldo_inicial_titan
 (
 	sit_fecha DATE NOT NULL COMMENT 'Fecha que corresponde al saldo inicial',
 	sit_saldo INTEGER NOT NULL DEFAULT 0 COLLATE utf8_unicode_ci NOT NULL DEFAULT 0 COMMENT 'saldo inicial diario de titan',
-	sit_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control'
+	sit_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	sit_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena la informacion del saldo inicial de TITAN para cada dia de la contabilidad';
 
 /*
@@ -58,42 +61,43 @@ CREATE TABLE pozettos_duracion_servicio
 (
 	dus_minutos TIME COLLATE utf8_unicode_ci NOT NULL COMMENT 'duracion que se presta el servicio',
 	dus_texto VARCHAR( 10 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'El texto que representa la duracion en formato hh:mm',
-	dus_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control'
+	dus_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	dus_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena los tiempos que pueden prestar los servicios';
 
-INSERT INTO pozettos_duracion_servicio VALUES('00:00:00','Libre',1);
-INSERT INTO pozettos_duracion_servicio VALUES('00:15:00','00:15',1);
-INSERT INTO pozettos_duracion_servicio VALUES('00:30:00','00:30',1);
-INSERT INTO pozettos_duracion_servicio VALUES('00:45:00','00:45',1);
-INSERT INTO pozettos_duracion_servicio VALUES('01:00:00','01:00',1);
-INSERT INTO pozettos_duracion_servicio VALUES('01:15:00','01:15',1);
-INSERT INTO pozettos_duracion_servicio VALUES('01:30:00','01:30',1);
-INSERT INTO pozettos_duracion_servicio VALUES('01:45:00','01:45',1);
-INSERT INTO pozettos_duracion_servicio VALUES('02:00:00','02:00',1);
-INSERT INTO pozettos_duracion_servicio VALUES('02:15:00','02:15',1);
-INSERT INTO pozettos_duracion_servicio VALUES('02:30:00','02:30',1);
-INSERT INTO pozettos_duracion_servicio VALUES('02:45:00','02:45',1);
-INSERT INTO pozettos_duracion_servicio VALUES('03:00:00','03:00',1);
-INSERT INTO pozettos_duracion_servicio VALUES('03:15:00','03:15',1);
-INSERT INTO pozettos_duracion_servicio VALUES('03:30:00','03:30',1);
-INSERT INTO pozettos_duracion_servicio VALUES('03:45:00','03:45',1);
-INSERT INTO pozettos_duracion_servicio VALUES('04:00:00','04:00',1);
-INSERT INTO pozettos_duracion_servicio VALUES('04:15:00','04:15',1);
-INSERT INTO pozettos_duracion_servicio VALUES('04:30:00','04:30',1);
-INSERT INTO pozettos_duracion_servicio VALUES('04:45:00','04:45',1);
-INSERT INTO pozettos_duracion_servicio VALUES('05:00:00','05:00',1);
-INSERT INTO pozettos_duracion_servicio VALUES('05:15:00','05:15',1);
-INSERT INTO pozettos_duracion_servicio VALUES('05:30:00','05:30',1);
-INSERT INTO pozettos_duracion_servicio VALUES('05:45:00','05:45',1);
-INSERT INTO pozettos_duracion_servicio VALUES('06:00:00','06:00',1);
-INSERT INTO pozettos_duracion_servicio VALUES('06:15:00','06:15',1);
-INSERT INTO pozettos_duracion_servicio VALUES('06:30:00','06:30',1);
-INSERT INTO pozettos_duracion_servicio VALUES('06:45:00','06:45',1);
-INSERT INTO pozettos_duracion_servicio VALUES('07:00:00','07:00',1);
-INSERT INTO pozettos_duracion_servicio VALUES('07:15:00','07:15',1);
-INSERT INTO pozettos_duracion_servicio VALUES('07:30:00','07:30',1);
-INSERT INTO pozettos_duracion_servicio VALUES('07:45:00','07:45',1);
-INSERT INTO pozettos_duracion_servicio VALUES('08:00:00','08:00',1);
+INSERT INTO pozettos_duracion_servicio VALUES('00:00:00','Libre',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('00:15:00','00:15',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('00:30:00','00:30',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('00:45:00','00:45',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('01:00:00','01:00',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('01:15:00','01:15',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('01:30:00','01:30',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('01:45:00','01:45',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('02:00:00','02:00',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('02:15:00','02:15',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('02:30:00','02:30',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('02:45:00','02:45',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('03:00:00','03:00',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('03:15:00','03:15',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('03:30:00','03:30',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('03:45:00','03:45',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('04:00:00','04:00',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('04:15:00','04:15',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('04:30:00','04:30',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('04:45:00','04:45',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('05:00:00','05:00',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('05:15:00','05:15',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('05:30:00','05:30',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('05:45:00','05:45',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('06:00:00','06:00',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('06:15:00','06:15',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('06:30:00','06:30',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('06:45:00','06:45',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('07:00:00','07:00',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('07:15:00','07:15',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('07:30:00','07:30',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('07:45:00','07:45',1,null);
+INSERT INTO pozettos_duracion_servicio VALUES('08:00:00','08:00',1,null);
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
@@ -119,15 +123,11 @@ CREATE TABLE pozettos_cliente
 	cli_url_foto VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'c_0.png' COMMENT 'url donde se encuentra alojada la foto del perfil del cliente',
 	cli_email VARCHAR( 100 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'direccion de correo electrónico del cliente',
 	cli_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	cli_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (cli_id)
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de los clientes del negocio';
 
-INSERT INTO pozettos_cliente VALUES(1,'','Nadie','','c_1.png','nadie@gmail.com',1);
-/*INSERT INTO pozettos_cliente VALUES(2,'40bd001563085fc35165329ea1ff5c5ecbdbbeef','Darwin David','García Maya','c_2.png','dadagama@gmail.com');
-INSERT INTO pozettos_cliente VALUES(3,'','Melissa','García Maya','c_3.png','cristian@gmail.com');
-INSERT INTO pozettos_cliente VALUES(4,'','Cristian','García Maya','c_4.png','cristian@gmail.com');
-INSERT INTO pozettos_cliente VALUES(5,'','Tomas','García','c_5.png','cristian@gmail.com');
-INSERT INTO pozettos_cliente VALUES(6,'','Luz Elena','Maya','c_6.png','cristian@gmail.com');*/
+INSERT INTO pozettos_cliente VALUES(1,'','Nadie','','c_1.png','nadie@gmail.com',1,null);
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
@@ -139,32 +139,33 @@ CREATE TABLE pozettos_servicio
 	ser_url_foto VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'url de la foto del producto',
 	ser_onclick VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'url de la foto del producto',
 	ser_tipo VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'cadena con el tipo de servicio',
-	ser_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT 1 COMMENT 'Bandera para funciones de control'
+	ser_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT 1 COMMENT 'Bandera para funciones de control',
+	ser_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de los servicios ofrecidos en el negocio';
 
-INSERT INTO pozettos_servicio VALUES(1,'Xbox 1', '../imagenes/x1.png','agregarFilaHistorial(1,\'servicio\');','servicio',1);
-INSERT INTO pozettos_servicio VALUES(2,'Xbox 2', '../imagenes/x2.png','agregarFilaHistorial(2,\'servicio\');','servicio',1);
-INSERT INTO pozettos_servicio VALUES(3,'Xbox 3', '../imagenes/x3.png','agregarFilaHistorial(3,\'servicio\');','servicio',0);
-INSERT INTO pozettos_servicio VALUES(4,'Xbox 4', '../imagenes/x4.png','agregarFilaHistorial(4,\'servicio\');','servicio',0);
-INSERT INTO pozettos_servicio VALUES(5,'Cabina 1', '../imagenes/pc1.png','agregarFilaHistorial(5,\'servicio\');','servicio',1);
-INSERT INTO pozettos_servicio VALUES(6,'Cabina 2', '../imagenes/pc2.png','agregarFilaHistorial(6,\'servicio\');','servicio',1);
-INSERT INTO pozettos_servicio VALUES(7,'Cabina 3', '../imagenes/pc3.png','agregarFilaHistorial(7,\'servicio\');','servicio',1);
-INSERT INTO pozettos_servicio VALUES(8,'Cabina 4', '../imagenes/pc4.png','agregarFilaHistorial(8,\'servicio\');','servicio',1);
-INSERT INTO pozettos_servicio VALUES(9,'Wii 1', '../imagenes/wii.png','agregarFilaHistorial(9,\'servicio\');','servicio',1);
-INSERT INTO pozettos_servicio VALUES(10,'Recarga FULLCARGA', '../imagenes/fullcarga.png','agregarFilaHistorial(10,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(11,'Recarga TIGO', '../imagenes/tigo.png','agregarFilaHistorial(11,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(12,'Minutos Celular', '../imagenes/celular.png','agregarFilaHistorial(12,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(13,'Minuto Inalambrico', '../imagenes/inalambrico.png','agregarFilaHistorial(13,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(14,'Minuto Fijo Local', '../imagenes/fijo.png','agregarFilaHistorial(14,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(15,'Cabina Internacional', '../imagenes/internacional.png','agregarFilaHistorial(15,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(16,'Fotocopia', '../imagenes/fotocopiadora.png','agregarFilaHistorial(16,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(17,'Impresion', '../imagenes/impresora.png','agregarFilaHistorial(17,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(18,'Escaneada', '../imagenes/escaner.png','agregarFilaHistorial(18,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(19,'Papeleria', '../imagenes/papeleria.png','agregarFilaHistorial(19,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(20,'Quemada', '../imagenes/cd.png','agregarFilaHistorial(20,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(21,'Mecato', '../imagenes/mecato.png','agregarFilaHistorial(21,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(22,'Tarjeta YA!', '../imagenes/tarjetaYa.png','agregarFilaHistorial(22,\'producto\');','producto',1);
-INSERT INTO pozettos_servicio VALUES(50,'Otro', '../imagenes/otro.png','agregarFilaHistorial(50,\'producto\');','producto',1);
+INSERT INTO pozettos_servicio VALUES(1,'Xbox 1', '../imagenes/x1.png','agregarFilaHistorial(1,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(2,'Xbox 2', '../imagenes/x2.png','agregarFilaHistorial(2,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(3,'Xbox 3', '../imagenes/x3.png','agregarFilaHistorial(3,\'servicio\');','servicio',0,null);
+INSERT INTO pozettos_servicio VALUES(4,'Xbox 4', '../imagenes/x4.png','agregarFilaHistorial(4,\'servicio\');','servicio',0,null);
+INSERT INTO pozettos_servicio VALUES(5,'Cabina 1', '../imagenes/pc1.png','agregarFilaHistorial(5,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(6,'Cabina 2', '../imagenes/pc2.png','agregarFilaHistorial(6,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(7,'Cabina 3', '../imagenes/pc3.png','agregarFilaHistorial(7,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(8,'Cabina 4', '../imagenes/pc4.png','agregarFilaHistorial(8,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(9,'Wii 1', '../imagenes/wii.png','agregarFilaHistorial(9,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(10,'Recarga FULLCARGA', '../imagenes/fullcarga.png','agregarFilaHistorial(10,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(11,'Recarga TIGO', '../imagenes/tigo.png','agregarFilaHistorial(11,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(12,'Minutos Celular', '../imagenes/celular.png','agregarFilaHistorial(12,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(13,'Minuto Inalambrico', '../imagenes/inalambrico.png','agregarFilaHistorial(13,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(14,'Minuto Fijo Local', '../imagenes/fijo.png','agregarFilaHistorial(14,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(15,'Cabina Internacional', '../imagenes/internacional.png','agregarFilaHistorial(15,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(16,'Fotocopia', '../imagenes/fotocopiadora.png','agregarFilaHistorial(16,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(17,'Impresion', '../imagenes/impresora.png','agregarFilaHistorial(17,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(18,'Escaneada', '../imagenes/escaner.png','agregarFilaHistorial(18,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(19,'Papeleria', '../imagenes/papeleria.png','agregarFilaHistorial(19,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(20,'Quemada', '../imagenes/cd.png','agregarFilaHistorial(20,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(21,'Mecato', '../imagenes/mecato.png','agregarFilaHistorial(21,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(22,'Tarjeta YA!', '../imagenes/tarjetaYa.png','agregarFilaHistorial(22,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(50,'Otro', '../imagenes/otro.png','agregarFilaHistorial(50,\'producto\');','producto',1,null);
 
 
 /*     ******************************************************************     */
@@ -174,15 +175,16 @@ CREATE TABLE pozettos_categoria
 (
 	cat_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/codigo de la categoria',
 	cat_nombre VARCHAR( 500 ) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre de la categoria del servicio',
-	cat_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control'
+	cat_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	cat_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de las categorias a las que pueden pertenecer los servicios';
 
-INSERT INTO pozettos_categoria VALUES(1,'Todo',1);
-INSERT INTO pozettos_categoria VALUES(2,'Recargas',1);
-INSERT INTO pozettos_categoria VALUES(3,'Llamadas',1);
-INSERT INTO pozettos_categoria VALUES(4,'Juegos',1);
-INSERT INTO pozettos_categoria VALUES(5,'Cabinas',1);
-INSERT INTO pozettos_categoria VALUES(6,'Otros',1);
+INSERT INTO pozettos_categoria VALUES(1,'Todo',1,null);
+INSERT INTO pozettos_categoria VALUES(2,'Recargas',1,null);
+INSERT INTO pozettos_categoria VALUES(3,'Llamadas',1,null);
+INSERT INTO pozettos_categoria VALUES(4,'Juegos',1,null);
+INSERT INTO pozettos_categoria VALUES(5,'Cabinas',1,null);
+INSERT INTO pozettos_categoria VALUES(6,'Otros',1,null);
 
 /*     ******************************************************************     */
 /*     ******************************************************************     */
@@ -191,51 +193,52 @@ CREATE TABLE pozettos_categoria_servicios
 (
 	cas_ser_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código del servicio',
 	cas_cat_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'identificador/código de la categoria',
-	cas_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control'
+	cas_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	cas_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de los servicios ofrecidos en el negocio';
 
-INSERT INTO pozettos_categoria_servicios VALUES(1,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(2,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(3,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(4,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(5,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(6,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(7,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(8,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(9,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(10,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(11,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(12,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(13,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(14,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(15,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(16,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(17,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(18,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(19,1,1);
-INSERT INTO pozettos_categoria_servicios VALUES(10,2,1);
-INSERT INTO pozettos_categoria_servicios VALUES(11,2,1);
-INSERT INTO pozettos_categoria_servicios VALUES(12,3,1);
-INSERT INTO pozettos_categoria_servicios VALUES(13,3,1);
-INSERT INTO pozettos_categoria_servicios VALUES(14,3,1);
-INSERT INTO pozettos_categoria_servicios VALUES(15,3,1);
-INSERT INTO pozettos_categoria_servicios VALUES(1,4,1);
-INSERT INTO pozettos_categoria_servicios VALUES(2,4,1);
-INSERT INTO pozettos_categoria_servicios VALUES(3,4,1);
-INSERT INTO pozettos_categoria_servicios VALUES(4,4,1);
-INSERT INTO pozettos_categoria_servicios VALUES(9,4,1);
-INSERT INTO pozettos_categoria_servicios VALUES(5,5,1);
-INSERT INTO pozettos_categoria_servicios VALUES(6,5,1);
-INSERT INTO pozettos_categoria_servicios VALUES(7,5,1);
-INSERT INTO pozettos_categoria_servicios VALUES(8,5,1);
-INSERT INTO pozettos_categoria_servicios VALUES(16,6,1);
-INSERT INTO pozettos_categoria_servicios VALUES(17,6,1);
-INSERT INTO pozettos_categoria_servicios VALUES(18,6,1);
-INSERT INTO pozettos_categoria_servicios VALUES(19,6,1);
-INSERT INTO pozettos_categoria_servicios VALUES(20,6,1);
-INSERT INTO pozettos_categoria_servicios VALUES(21,6,1);
-INSERT INTO pozettos_categoria_servicios VALUES(22,6,1);
-INSERT INTO pozettos_categoria_servicios VALUES(50,6,1);
+INSERT INTO pozettos_categoria_servicios VALUES(1,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(2,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(3,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(4,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(5,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(6,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(7,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(8,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(9,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(10,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(11,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(12,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(13,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(14,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(15,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(16,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(17,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(18,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(19,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(10,2,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(11,2,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(12,3,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(13,3,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(14,3,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(15,3,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(1,4,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(2,4,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(3,4,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(4,4,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(9,4,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(5,5,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(6,5,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(7,5,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(8,5,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(16,6,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(17,6,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(18,6,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(19,6,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(20,6,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(21,6,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(22,6,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(50,6,1,null);
 
 
 /*     ******************************************************************     */
@@ -246,143 +249,144 @@ CREATE TABLE pozettos_tarifas_servicio
 	tas_ser_id INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'referencia a identificador/código del servicio',
 	tas_dus_minutos TIME COLLATE utf8_unicode_ci NOT NULL COMMENT 'duracion por uso del servicio',
 	tas_precio INTEGER COLLATE utf8_unicode_ci NOT NULL COMMENT 'tarifa a cobrar por uso del servicio',
-	tas_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control'
+	tas_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	tas_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena la información de las tarifas de cada servicio por minutos de uso';
 
 /*XBOX 1*/
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'00:00:00',0);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'00:15:00',500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'00:30:00',1000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'00:45:00',1400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'01:00:00',1800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'01:15:00',2300);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'01:30:00',2700);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'01:45:00',3200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'02:00:00',3600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'02:15:00',4000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'02:30:00',4400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'02:45:00',4800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'03:00:00',5200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'03:15:00',5600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'03:30:00',6000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'03:45:00',6400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'04:00:00',6800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'04:15:00',7200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'04:30:00',7500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'04:45:00',7900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'05:00:00',8200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'05:15:00',8600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'05:30:00',8900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'05:45:00',9300);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'06:00:00',9600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'06:15:00',9900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'06:30:00',10200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'06:45:00',10500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'07:00:00',10800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'07:15:00',11100);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'07:30:00',11400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'00:15:00',400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'00:30:00',800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'00:45:00',1200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'01:00:00',1500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'01:15:00',1900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'01:30:00',2300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'01:45:00',2700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'02:00:00',3000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'02:15:00',3400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'02:30:00',3800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'02:45:00',4200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'03:00:00',4500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'03:15:00',4900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'03:30:00',5300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'03:45:00',5700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'04:00:00',6000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'04:15:00',6400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'04:30:00',6800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'04:45:00',7200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'05:00:00',7500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'05:15:00',7900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'05:30:00',8300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'05:45:00',8700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'06:00:00',9000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'06:15:00',9400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'06:30:00',9800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'06:45:00',10200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'07:00:00',10500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'07:15:00',10900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'07:30:00',11300);
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'07:45:00',11700);
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(1,'08:00:00',12000);
 /*XBOX 2*/
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'00:00:00',0);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'00:15:00',500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'00:30:00',1000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'00:45:00',1400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'01:00:00',1800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'01:15:00',2300);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'01:30:00',2700);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'01:45:00',3200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'02:00:00',3600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'02:15:00',4000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'02:30:00',4400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'02:45:00',4800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'03:00:00',5200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'03:15:00',5600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'03:30:00',6000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'03:45:00',6400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'04:00:00',6800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'04:15:00',7200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'04:30:00',7500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'04:45:00',7900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'05:00:00',8200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'05:15:00',8600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'05:30:00',8900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'05:45:00',9300);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'06:00:00',9600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'06:15:00',9900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'06:30:00',10200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'06:45:00',10500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'07:00:00',10800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'07:15:00',11100);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'07:30:00',11400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'00:15:00',400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'00:30:00',800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'00:45:00',1200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'01:00:00',1500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'01:15:00',1900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'01:30:00',2300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'01:45:00',2700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'02:00:00',3000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'02:15:00',3400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'02:30:00',3800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'02:45:00',4200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'03:00:00',4500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'03:15:00',4900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'03:30:00',5300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'03:45:00',5700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'04:00:00',6000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'04:15:00',6400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'04:30:00',6800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'04:45:00',7200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'05:00:00',7500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'05:15:00',7900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'05:30:00',8300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'05:45:00',8700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'06:00:00',9000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'06:15:00',9400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'06:30:00',9800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'06:45:00',10200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'07:00:00',10500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'07:15:00',10900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'07:30:00',11300);
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'07:45:00',11700);
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(2,'08:00:00',12000);
-/*XBOX 2*/
+/*XBOX 3*/
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'00:00:00',0);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'00:15:00',500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'00:30:00',1000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'00:45:00',1400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'01:00:00',1800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'01:15:00',2300);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'01:30:00',2700);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'01:45:00',3200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'02:00:00',3600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'02:15:00',4000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'02:30:00',4400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'02:45:00',4800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'03:00:00',5200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'03:15:00',5600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'03:30:00',6000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'03:45:00',6400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'04:00:00',6800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'04:15:00',7200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'04:30:00',7500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'04:45:00',7900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'05:00:00',8200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'05:15:00',8600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'05:30:00',8900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'05:45:00',9300);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'06:00:00',9600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'06:15:00',9900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'06:30:00',10200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'06:45:00',10500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'07:00:00',10800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'07:15:00',11100);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'07:30:00',11400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'00:15:00',400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'00:30:00',800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'00:45:00',1200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'01:00:00',1500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'01:15:00',1900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'01:30:00',2300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'01:45:00',2700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'02:00:00',3000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'02:15:00',3400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'02:30:00',3800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'02:45:00',4200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'03:00:00',4500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'03:15:00',4900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'03:30:00',5300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'03:45:00',5700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'04:00:00',6000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'04:15:00',6400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'04:30:00',6800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'04:45:00',7200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'05:00:00',7500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'05:15:00',7900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'05:30:00',8300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'05:45:00',8700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'06:00:00',9000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'06:15:00',9400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'06:30:00',9800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'06:45:00',10200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'07:00:00',10500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'07:15:00',10900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'07:30:00',11300);
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'07:45:00',11700);
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(3,'08:00:00',12000);
 /*XBOX 4*/
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'00:00:00',0);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'00:15:00',500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'00:30:00',1000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'00:45:00',1400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'01:00:00',1800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'01:15:00',2300);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'01:30:00',2700);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'01:45:00',3200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'02:00:00',3600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'02:15:00',4000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'02:30:00',4400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'02:45:00',4800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'03:00:00',5200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'03:15:00',5600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'03:30:00',6000);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'03:45:00',6400);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'04:00:00',6800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'04:15:00',7200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'04:30:00',7500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'04:45:00',7900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'05:00:00',8200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'05:15:00',8600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'05:30:00',8900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'05:45:00',9300);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'06:00:00',9600);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'06:15:00',9900);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'06:30:00',10200);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'06:45:00',10500);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'07:00:00',10800);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'07:15:00',11100);
-INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'07:30:00',11400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'00:15:00',400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'00:30:00',800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'00:45:00',1200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'01:00:00',1500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'01:15:00',1900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'01:30:00',2300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'01:45:00',2700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'02:00:00',3000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'02:15:00',3400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'02:30:00',3800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'02:45:00',4200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'03:00:00',4500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'03:15:00',4900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'03:30:00',5300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'03:45:00',5700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'04:00:00',6000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'04:15:00',6400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'04:30:00',6800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'04:45:00',7200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'05:00:00',7500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'05:15:00',7900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'05:30:00',8300);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'05:45:00',8700);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'06:00:00',9000);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'06:15:00',9400);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'06:30:00',9800);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'06:45:00',10200);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'07:00:00',10500);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'07:15:00',10900);
+INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'07:30:00',11300);
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'07:45:00',11700);
 INSERT INTO pozettos_tarifas_servicio(tas_ser_id,tas_dus_minutos,tas_precio) VALUES(4,'08:00:00',12000);
 /*CABINA 1*/
@@ -553,6 +557,31 @@ CREATE TABLE pozettos_historico_venta
 	hiv_meridiano CHAR(2) NOT NULL DEFAULT 'NN' COMMENT 'El meridiano en que se presto el servicio (AM/PM)',
 	hiv_dus_minutos TIME NOT NULL DEFAULT '00:00:00' COMMENT 'La duracion del servicio prestado',
 	hiv_total INTEGER NOT NULL DEFAULT 0 COLLATE utf8_unicode_ci NOT NULL DEFAULT 0 COMMENT 'valor total del servicio vendido',
-	hiv_observacion VARCHAR( 200 ) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'descripción de la venta',
-	hiv_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control'
+  hiv_deuda_Real INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'valor real que debe del total',
+  hiv_observacion VARCHAR( 200 ) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'descripción de la venta',
+	hiv_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	hiv_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena el histórico de ventas de productos';
+
+
+/*     ******************************************************************     */
+/*     ******************************************************************     */
+
+CREATE TABLE pozettos_base_diaria
+(
+	bas_fecha DATE NOT NULL COMMENT 'Fecha que corresponde al dinero base del dia',
+	bas_saldo INTEGER NOT NULL DEFAULT 0 COLLATE utf8_unicode_ci NOT NULL DEFAULT 0 COMMENT 'Total de dinero base del dia',
+	bas_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	bas_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = MyISAM COMMENT = 'Almacena la informacion del total de dinero base del dia en la contabilidad';
+
+/*     ******************************************************************     */
+/*     ******************************************************************     */
+
+CREATE TABLE pozettos_egreso_diario
+(
+	egd_fecha DATE NOT NULL COMMENT 'Fecha que corresponde al dinero que sale',
+	egd_saldo INTEGER NOT NULL DEFAULT 0 COLLATE utf8_unicode_ci NOT NULL DEFAULT 0 COMMENT 'Total de dinero que sale',
+	egd_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+	egd_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = MyISAM COMMENT = 'Almacena la informacion del total de dinero que sale diariamente en la contabilidad';

@@ -52,6 +52,10 @@ switch($_REQUEST['accion'])
 		echo $objetoContabilidad->actualizarSaldoEgresos($_REQUEST['egd_saldo'], $_REQUEST['egd_fecha']);
 		break;
 	
+  case "actualizarSaldoAbonos":
+    echo $objetoContabilidad->actualizarSaldoAbonos($_REQUEST['sav_saldo'], $_REQUEST['sav_fecha']);
+    break;
+
 	case "actualizarDeudaCliente":
 		$objetoContabilidad->actualizarValor($_REQUEST['hiv_id'],$_REQUEST['valor_nuevo'],"hiv_cli_id");
 		//$valor_nuevo tiene el id del nuevo cliente y puedo consultar la deuda

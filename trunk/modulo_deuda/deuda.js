@@ -32,6 +32,9 @@ function actualizarOrdenamiento()
   $("#tbl_historial").trigger("sorton",[sorting]); 
 }
 
+/*
+//se reemplaza por actualizarSuma()
+
 function actualizarCalculadora(id_fila)
 {
   var debe = parseInt($("#hiv_deuda_real_"+id_fila).children("label").html());
@@ -44,6 +47,28 @@ function actualizarCalculadora(id_fila)
     $("#lbl_calculadora").html(valor_actual + (debe * delta));
   else
     $("#lbl_calculadora").html(valor_actual + (total * delta));
+}
+*/
+
+function actualizarSuma()
+{
+  var arreglo_filas = document.getElementsByName('fila_historico');
+  var total_filas = arreglo_filas.length;
+  var total = 0;
+  for(var x = 0; x < total_filas; x++)
+  {
+    var consecutivo_fila = arreglo_filas[x].id.split("_")[2];
+    if($("#hiv_chk_sumar_"+consecutivo_fila).attr("checked"))
+    {
+      var deuda_real = parseInt($("#hiv_deuda_real_"+consecutivo_fila).children().text());
+      var total_real = parseInt($("#hiv_total_"+consecutivo_fila).children().text());
+      if(deuda_real == 0)
+        total += total_real;
+      else
+        total += deuda_real;
+    }
+  }
+  $("#lbl_calculadora").html(total);
 }
 
 function editableDeudaReal(fila_id,editable)
@@ -64,6 +89,7 @@ function editableDeudaReal(fila_id,editable)
       hiv_deuda_real = "0";
     var label_deuda_real = "<label class='cursor_cruz'>"+hiv_deuda_real+"</label>";
     $('#'+fila_id).children().replaceWith(label_deuda_real);
+    actualizarSuma();
   }
 }
 
@@ -107,13 +133,13 @@ function actualizarValor(fila_id,nombre_campo, evento)
 
 function actualizarAjax(actualizo)
 {
-  if(actualizo)
+  /*if(actualizo)
   {
     console.log("actualizado!");
     actualizarOrdenamiento();
   }
   else
-    console.log("no se actualizo ningun valor de la fila");
+    console.log("no se actualizo ningun valor de la fila");*/
 }
 
 function actualizarEstadoPago(id_fila, ultimo_clic)
@@ -146,9 +172,10 @@ function actualizarEstadoPagoAjax(id_actualizado)
 	{
 	  $("#hiv_fila_"+id_actualizado).remove();
     actualizarOrdenamiento();
+    actualizarSuma();
   }  
-	else
-		console.log('Error actualizando estado del pago');
+// 	else
+// 		console.log('Error actualizando estado del pago');
 }
 
 function actualizarHistorialDeudas()

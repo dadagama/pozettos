@@ -585,3 +585,14 @@ CREATE TABLE pozettos_egreso_diario
 	egd_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
 	egd_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena la informacion del total de dinero que sale diariamente en la contabilidad';
+
+/*     ******************************************************************     */
+/*     ******************************************************************     */
+
+CREATE TABLE pozettos_abono_deuda_vieja
+(
+  sav_fecha DATE NOT NULL COMMENT 'Fecha que corresponde al abono de la deuda',
+  sav_saldo INTEGER NOT NULL DEFAULT 0 COLLATE utf8_unicode_ci NOT NULL DEFAULT 0 COMMENT 'Total de dinero abonado',
+  sav_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+  sav_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = MyISAM COMMENT = 'Almacena la informacion del total de abonos de deudas viejas en la contabilidad';

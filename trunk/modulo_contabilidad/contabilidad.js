@@ -27,7 +27,6 @@ function inicializar()
   options_clientes = "";
   options_duracion = "";
   obtenerOptions();
-
   $("#tbl_historial").tablesorter({ headers: {
                                               0: {sorter: 'text' },
                                               1: {sorter: 'digit' },
@@ -64,13 +63,19 @@ function obtenerOptionsAjax(jsonOptions)
   $("#sit_saldo").text(obj_options.sit_saldo);
   $("#egd_saldo").text(obj_options.egd_saldo);
   $("#bas_saldo").text(obj_options.bas_saldo);
+  $("#sav_saldo").text(obj_options.sav_saldo);
 }
 
 function actualizarOrdenamiento()
 {
-  $("#tbl_historial").trigger("update");
-  var sorting = [[0,1],[1,1]];
-  $("#tbl_historial").trigger("sorton",[sorting]); 
+  //añado if para mitigar error javascript cuando intenta ordenar las filas en historial_ventas
+  //y no hay ninguna
+  if(document.getElementsByName('fila_historico').length > 0)
+  {
+    $("#tbl_historial").trigger("update");
+    var sorting = [[0,1],[1,1]];
+    $("#tbl_historial").trigger("sorton",[sorting]); 
+  }
 }
 
 function editableSaldoBase(editable)
@@ -175,6 +180,41 @@ function actualizarSaldoEgresos(evento)
     return false;
 }
 
+function editableSaldoAbonos(editable)
+{
+  if(editable)
+  {
+    var sav_saldo = $('#sav_saldo').text();
+    var input_saldo = "<input id='sav_saldo' type='text' maxlength='7' class='ancho_55 verdana' onBlur='if(actualizarSaldoAbonos(13)){ editableSaldoAbonos(false);}' onKeypress='if(actualizarSaldoAbonos(event.keyCode)){ editableSaldoAbonos(false);}' value='"+sav_saldo+"'/>";
+    $('#sav_saldo').replaceWith(input_saldo);
+    $('#sav_saldo').select();
+  }
+  else
+  {
+    var valor_saldo = $('#sav_saldo').val();
+    var sav_saldo = parseInt(valor_saldo.replace(".", ""));
+    if(sav_saldo == "" || isNaN(sav_saldo))
+      sav_saldo = "0";
+    var label_saldo = "<label id='sav_saldo' class='verdana letra_9 cursor_cruz'>"+sav_saldo+"</label>";
+    $('#sav_saldo').replaceWith(label_saldo);
+  }
+}
+
+function actualizarSaldoAbonos(evento)
+{
+  if(evento == 13)
+  {
+    var valor_saldo = $('#sav_saldo').val();
+    var sav_saldo = parseInt(valor_saldo.replace(".", ""));
+    var sav_fecha = $("#fecha_contabilidad").val();
+    ajax('accion=actualizarSaldoAbonos&sav_saldo='+sav_saldo+"&sav_fecha="+sav_fecha, false, actualizarAjax, false);
+    return true;
+  }
+  else
+    return false;
+}
+
+
 function editableCliente(fila_id,editable)
 {
   if(editable)
@@ -243,6 +283,7 @@ function editableTotal(fila_id,editable)
       hiv_total = "0";
     var label_total = "<label class='cursor_cruz'>"+hiv_total+"</label>";
     $('#'+fila_id).children().replaceWith(label_total);
+    actualizarSuma();
   }
 }
 
@@ -264,6 +305,7 @@ function editableDeudaReal(fila_id,editable)
       hiv_deuda_real = "0";
     var label_deuda_real = "<label class='cursor_cruz'>"+hiv_deuda_real+"</label>";
     $('#'+fila_id).children().replaceWith(label_deuda_real);
+    actualizarSuma();
   }
 }
 
@@ -397,10 +439,11 @@ function actualizarValor(fila_id,nombre_campo, evento)
 
 function actualizarAjax(actualizo)
 {
-  if(actualizo)
-    console.log("actualizado!");
-  else
-    console.log("no se actualizo ningun valor de la fila");
+//Se comenta porque al enviar log a consola hay un bug desconocido y toca tener firebug habilitado
+//   if(actualizo)
+//     console.log("actualizado!");
+//   else
+//     console.log("no se actualizo ningun valor de la fila");
 }
 
 function asignarListenersColores()
@@ -445,8 +488,8 @@ function actualizarCampoColorAjax(json_color)
     actualizarOrdenamiento();
     //$("#tbl_historial").trigger("update");
   }
-  else
-    console.log("No se acualizo ningun color");
+//   else
+//     console.log("No se acualizo ningun color");
 }
 
 function actualizarEstadoPago(id_fila, ultimo_clic)
@@ -457,7 +500,9 @@ function actualizarEstadoPago(id_fila, ultimo_clic)
   if($("#hiv_deuda_real_"+id_fila).children("label").html() != "0")
   {
     if(confirm("Esto coloca la deuda en CERO. �esta seguro?"))
+    {
       ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
+    }
     else
     {
       $('#hiv_chk_pago_'+id_fila).removeAttr('checked');
@@ -466,6 +511,7 @@ function actualizarEstadoPago(id_fila, ultimo_clic)
   }
   else
     ajax("accion=actualizarEstadoPago&id_fila="+id_fila+"&hiv_pago="+hiv_pago+"&hiv_es_tiempo_gratis="+hiv_es_tiempo_gratis+"&ultimo_clic="+ultimo_clic, null, actualizarEstadoPagoAjax, null);
+  actualizarSuma();
 }
 
 function actualizarEstadoPagoAjax(json_estado_pago)
@@ -512,8 +558,8 @@ function actualizarEstadoPagoAjax(json_estado_pago)
       }
     }
   }
-  else
-    console.log('Error actualizando estado del pago');
+//   else
+//     console.log('Error actualizando estado del pago');
 }
 
 function eliminarFila(id)
@@ -527,6 +573,7 @@ function eliminarFilaAjax(id_eliminado)
   {
     $("#"+id_eliminado).remove();
     actualizarOrdenamiento();
+    actualizarSuma();
     //$("#tbl_historial").trigger("update");    
   }
 }
@@ -577,8 +624,8 @@ function agregarFilaHistorialAjax(fila)
     asignarListenersColores();
     actualizarOrdenamiento();
   }
-  else
-    console.log('Error al registrar el servicio');
+//   else
+//     console.log('Error al registrar el servicio');
 }
 
 function obtenerArregloHoraInicio()
@@ -644,6 +691,26 @@ function actualizarHistorialVentasAjax(info_servicios)
   actualizarOrdenamiento();
 }
 
+function actualizarSuma()
+{
+  var arreglo_filas = document.getElementsByName('fila_historico');
+  var total_filas = arreglo_filas.length;
+  var total = 0;
+  for(var x = 0; x < total_filas; x++)
+  {
+    var consecutivo_fila = arreglo_filas[x].id.split("_")[2];
+    if($("#hiv_chk_sumar_"+consecutivo_fila).attr("checked") && !$("#hiv_chk_pago_"+consecutivo_fila).attr("checked"))
+    {
+      var deuda_real = parseInt($("#hiv_deuda_real_"+consecutivo_fila).children().text());
+      var total_real = parseInt($("#hiv_total_"+consecutivo_fila).children().text());
+      if(deuda_real == 0)
+        total += total_real;
+      else
+        total += deuda_real;
+    }
+  }
+  $("#lbl_calculadora").html(total);
+}
 
 /**********************************
 ******* ACCIONES TIMERS     *******

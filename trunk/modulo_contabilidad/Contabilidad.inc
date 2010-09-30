@@ -161,6 +161,21 @@ class Contabilidad
       return false;
   }
   
+  function actualizarSaldoAbonos($sav_saldo, $sav_fecha)
+  {
+    if(!$sav_saldo)
+      $sav_saldo = "0";
+    $sql = "UPDATE pozettos_abono_deuda_vieja
+            SET sav_saldo = '$sav_saldo'
+            WHERE sav_fecha = '$sav_fecha'";
+    //echo $sql;
+    $this->_conexionBD->ejecutarSQL($sql);
+    if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
+      return true;
+    else
+      return false;
+  }
+
   function obtenerOptions()
   {
     $arreglo_options = array();
@@ -254,6 +269,24 @@ class Contabilidad
       $this->_conexionBD->ejecutarSQL($sql);
       $arreglo_options['bas_saldo'] = "0";
     }
+
+    /* SALDO BASE */
+    $sql = "SELECT sav_saldo
+            FROM pozettos_abono_deuda_vieja
+            WHERE sav_fecha='". $this->_fecha_contabilidad ."'
+            AND sav_vigente = 1
+            LIMIT 1";
+    $this->_conexionBD->ejecutarSQL($sql);
+    if($this->_conexionBD->obtenerNumeroFilas())
+      $arreglo_options['sav_saldo'] = $this->_conexionBD->obtenerFilaComoCadena();
+    else
+    {
+      $sql = "INSERT INTO pozettos_abono_deuda_vieja (sav_saldo, sav_fecha)
+              VALUES ('0','". $this->_fecha_contabilidad ."')";
+      $this->_conexionBD->ejecutarSQL($sql);
+      $arreglo_options['sav_saldo'] = "0";
+    }
+
     return json_encode($arreglo_options);
   }
 
@@ -507,6 +540,9 @@ class Contabilidad
       $label_observacion = $this->_html->tag("label", "class='cursor_cruz'", array(utf8_encode($info_tupla_historico['hiv_observacion'])));
       $td_observacion = $this->_html->tag("td", "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Nota adicional si se necesita' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", array($label_observacion));
 
+      $input_sumar = $this->_html->tag("input", "type='checkbox' id='hiv_chk_sumar_".$info_tupla_historico['hiv_id']."' onchange=\"actualizarSuma();\"", "", true);
+      $td_sumar = $this->_html->tag("td", "class='alineacion_centro' title='Suma este valor en la calculadora' id='hiv_suma_".$info_tupla_historico['hiv_id']."'", array($input_sumar));
+
       $img_eliminar = $this->_html->tag("img", "class='imagen_delete' src='../imagenes/delete.png'", "", true);
       $button_eliminar = $this->_html->tag("button", "class='boton_delete' onclick=\"eliminarFila(".$info_tupla_historico['hiv_id'].");\"", array($img_eliminar));
       $td_eliminar = $this->_html->tag("td", "class='alineacion_centro' title='Eliminar esta fila'", array($button_eliminar));
@@ -522,7 +558,7 @@ class Contabilidad
                                       $td_color,$td_nombre,$td_hora,
                                       $td_dus_minutos,$td_hora_termina,
                                       $td_total,$td_deuda_real,$td_pago,/*$td_gratis,
-                                      $td_cliente,*/$td_observacion,$td_eliminar));
+                                      $td_cliente,*/$td_observacion,$td_sumar,$td_eliminar));
     }
     else
       return false;
@@ -634,6 +670,9 @@ class Contabilidad
       $label_observacion = $this->_html->tag("label", "class='cursor_cruz'", array(utf8_encode($info_tupla_historico['hiv_observacion'])));
       $td_observacion = $this->_html->tag("td", "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Nota adicional si se necesita' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", array($label_observacion));
 
+      $input_sumar = $this->_html->tag("input", "type='checkbox' id='hiv_chk_sumar_".$info_tupla_historico['hiv_id']."' onchange=\"actualizarSuma();\"", "", true);
+      $td_sumar = $this->_html->tag("td", "class='alineacion_centro' title='Suma este valor en la calculadora' id='hiv_suma_".$info_tupla_historico['hiv_id']."'", array($input_sumar));
+
       $img_eliminar = $this->_html->tag("img", "class='imagen_delete' src='../imagenes/delete.png'", "", true);
       $button_eliminar = $this->_html->tag("button", "class='boton_delete' onclick=\"eliminarFila(".$info_tupla_historico['hiv_id'].");\"", array($img_eliminar));
       $td_eliminar = $this->_html->tag("td", "class='alineacion_centro' title='Eliminar esta fila'", array($button_eliminar));
@@ -648,7 +687,7 @@ class Contabilidad
                                                   $td_color,$td_nombre,$td_hora,
                                                   $td_dus_minutos,$td_hora_termina,
                                                   $td_total,$td_deuda_real,$td_pago,/*$td_gratis,
-                                                  $td_cliente,*/$td_observacion,$td_eliminar));
+                                                  $td_cliente,*/$td_observacion,$td_sumar,$td_eliminar));
     }
     return $filas_servicios;
   }

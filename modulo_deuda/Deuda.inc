@@ -162,7 +162,7 @@ class Deuda
                                             "class='alineacion_izquierda verdana letra_9 cursor_cruz' title='Información adicional' id='hiv_observacion_".$info_tupla_historico['hiv_id']."' onclick=\"editableObservacion('hiv_observacion_".$info_tupla_historico['hiv_id']."',true);\"", 
                                             array("<label>".utf8_encode($info_tupla_historico['hiv_observacion'])."</label>"));
 
-  		  $input_sumar = $this->_html->tag("input", "type='checkbox' id='hiv_chk_sumar_".$info_tupla_historico['hiv_id']."' onchange=\"actualizarCalculadora(".$info_tupla_historico['hiv_id'].");\"", "", true);
+  		  $input_sumar = $this->_html->tag("input", "type='checkbox' id='hiv_chk_sumar_".$info_tupla_historico['hiv_id']."' onchange=\"actualizarSuma();\"", "", true);
         $td_sumar = $this->_html->tag("td", 
                                       "class='alineacion_centro title='Sumar en la calculadora'", 
                                       array($input_sumar));

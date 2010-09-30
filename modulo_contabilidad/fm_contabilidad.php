@@ -73,8 +73,18 @@
         $lbl_valor_egreso = $html->tag("label", "id='egd_saldo' class='verdana letra_9 cursor_cruz'");
       $td_valor_egreso = $html->tag("td", "class='alineacion_derecha ancho_70 cursor_cruz borde_azul' ondblclick='editableSaldoEgresos(true);'", array($lbl_valor_egreso));
     $tr_egreso = $html->tag("tr", "", array($td_lbl_egreso,$td_valor_egreso));
+    //tr abonos deudas
+        $lbl_abono = $html->tag("label", "class='label_formulario'", array("Abono deudas"));
+      $td_lbl_abono = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_abono));
+        $lbl_valor_abono = $html->tag("label", "id='sav_saldo' class='verdana letra_9 cursor_cruz'");
+      $td_valor_abono = $html->tag("td", "class='alineacion_derecha ancho_70 cursor_cruz borde_azul' ondblclick='editableSaldoAbonos(true);'", array($lbl_valor_abono));
+    $tr_abono = $html->tag("tr", "", array($td_lbl_abono,$td_valor_abono));
+    //tr calculadora
+        $lbl_valor_calculadora = $html->tag("label", "id='lbl_calculadora' class='verdana letra_9'");
+      $td_calculadora = $html->tag("td", "colspan='2' class='alineacion_centro borde_azul alto_23'", array($lbl_valor_calculadora));
+    $tr_calculadora = $html->tag("tr", "", array($td_calculadora));
   //tabla saldos
-  $table_saldos = $html->tag("table", "id='tabla_saldos'", array($tr_base,$tr_titan,$tr_egreso));
+  $table_saldos = $html->tag("table", "id='tabla_saldos'", array($tr_base,$tr_titan,$tr_egreso,$tr_abono,$tr_calculadora));
   
   /*TABLA PRODUCTOS Y SERVICIOS*/
       $td_servicios = $html->tag("td", "", array($objetoContabilidad->obtenerTablaServicios()));
@@ -127,15 +137,16 @@
         $th_duracion = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Duración</label>"));
         $th_termina = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Termina</label>"));
         $th_total = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Total</label>"));
-        $th_deuda_real = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Deuda</label><br/><label class='label_formulario'>Real</label>"));        
+        $th_deuda_real = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Debe</label>"));        
         $th_pago = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Pago</label>"));
         //$th_gratis = $html->tag("th", "class='fondo_azul alineacion_centro ancho_50'",array("<label class='label_formulario'>Gratis</label>"));
         //$th_cliente = $html->tag("th", "class='fondo_azul alineacion_centro ancho_70'",array("<label class='label_formulario'>Cliente</label>"));
         $th_observacion = $html->tag("th", "class='fondo_azul alineacion_centro'",array("<label class='label_formulario'>Observación</label>"));
+        $th_sumar = $html->tag("th", "class='fondo_azul alineacion_centro ancho_25'",array("<label class='label_formulario'>+</label>"));
         $th_eliminar = $html->tag("th", "class='fondo_azul ancho_25'");
       //tr encabezados
       $tr_encabezados = $html->tag("tr", "", array( $th_oculto,$th_oculto,$th_color,$th_servicio,$th_hora,$th_duracion,$th_termina,
-                                                  $th_total,$th_deuda_real,$th_pago,/*$th_gratis,$th_cliente,*/$th_observacion,$th_eliminar));
+                                                  $th_total,$th_deuda_real,$th_pago,/*$th_gratis,$th_cliente,*/$th_observacion,$th_sumar,$th_eliminar));
     //thead encabezados
     $thead_encabezados = $html->tag("thead", "", array($tr_encabezados));
     //tbody historial

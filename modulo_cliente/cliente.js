@@ -54,8 +54,8 @@ function agregarClienteAjax(info_cliente)
     $("#tbl_clientes").trigger("update"); 
     alert("Se agrego un cliente correctamente");
   }
-  else
-    console.log('Error al registrar el cliente');
+//   else
+//     console.log('Error al registrar el cliente');
 }
 
 function editarCampo(fila_id,editable)
@@ -97,8 +97,8 @@ function actualizarValor(fila_id,nombre_campo, evento)
 
 function actualizarValorAjax(actualizo)
 {
-  if(actualizo)
-    console.log("actualizado!");
-  else
-    console.log("no se actualizo ningun valor de la fila");
+//   if(actualizo)
+//     console.log("actualizado!");
+//   else
+//     console.log("no se actualizo ningun valor de la fila");
 }

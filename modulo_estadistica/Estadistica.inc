@@ -28,6 +28,7 @@ class Estadistica
   var $_html;
   var $_resumen_general;
   var $_total_general;
+  var $_deben_general;
   var $_total_venta_fullcarga;
   
   function __construct($parametrosConexion)
@@ -39,6 +40,7 @@ class Estadistica
     $this->_html = new GeneradorHtml2();
     $this->_resumen_general = array();
     $this->_total_general = 0;
+    $this->_deben_general = 0;
     $this->_total_venta_fullcarga = 0;
   }
   
@@ -99,17 +101,26 @@ class Estadistica
   
   function _construirTablaResumenGeneral(&$arreglo_parametros)
   {
-        $th_categoria = $this->_html->tag("th", "class='ancho_140'", array("<label>Nombre Categoria</label>"));
-        $th_total = $this->_html->tag("th", "class='ancho_70'", array("<label>Total por Categoría</label>"));
-      $tr_encabezado = $this->_html->tag("tr", "", array($th_categoria,$th_total));
+        $th_categoria = $this->_html->tag("th", "class='ancho_140'", array("<label> RESUMEN </label>"));
+        $th_total = $this->_html->tag("th", "class='ancho_70'", array("<label>Pagado</label>"));
+        $th_deben = $this->_html->tag("th", "class='ancho_70'", array("<label>Deben</label>"));
+      $tr_encabezado = $this->_html->tag("tr", "", array($th_categoria,$th_total,$th_deben));
     $thead_resumen = $this->_html->tag("thead", "", array($tr_encabezado));
     
     $totales = "";
     foreach ($this->_resumen_general  AS $fila)
       $totales .= $this->_html->tag("tr", "", array($fila));
-      
+
+
+      $td_total = $this->_html->tag("td", "class='celda_total'", array("<label>Total</label>"));
+      $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($this->_total_general)."</label>"));
+      $td_total_deben = $this->_html->tag("td", "class='celda_total alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($this->_deben_general)."</label>"));
+    $tr_total = $this->_html->tag("tr", "", array($td_total,$td_total_entrada,$td_total_deben));
+    $totales .= $tr_total;
+
     //coloco plata que sale
     //y saldo base
+    //y abonos de deudas viejas
     if($arreglo_parametros['opc_alcance'] == "diario")
     {
         $td_label_base = $this->_html->tag("td", "class='celda_subtotal'", array("<label>Base</label>"));
@@ -123,10 +134,25 @@ class Estadistica
           $total_base = $this->_conexionBDAux->obtenerFilaComoCadena();
         else
           $total_base = "0";
-        $td_saldo_base = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_base)."</label>"));
+        $td_saldo_base = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha' colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_base)."</label>"));
       $tr_total_base = $this->_html->tag("tr", "", array($td_label_base,$td_saldo_base));
       $totales .= $tr_total_base;
-    
+
+        $td_label_abonos = $this->_html->tag("td", "class='celda_subtotal'", array("<label>Abonos deudas</label>"));
+        $sql = "SELECT sav_saldo
+                FROM pozettos_abono_deuda_vieja
+                WHERE sav_fecha = '".$arreglo_parametros['opc_fecha']."'
+                AND sav_vigente = 1
+                LIMIT 1";
+        $this->_conexionBDAux->ejecutarSQL($sql);
+        if($this->_conexionBDAux->obtenerNumeroFilas() > 0)
+          $total_abono = $this->_conexionBDAux->obtenerFilaComoCadena();
+        else
+          $total_abono = "0";
+        $td_abono = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'  colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_abono)."</label>"));
+      $tr_total_abonos = $this->_html->tag("tr", "", array($td_label_abonos,$td_abono));
+      $totales .= $tr_total_abonos;
+
         $td_label_egresos = $this->_html->tag("td", "class='celda_total_2'", array("<label>Plata que salió</label>"));
         $sql = "SELECT egd_saldo
                 FROM pozettos_egreso_diario
@@ -138,17 +164,12 @@ class Estadistica
           $total_egreso = $this->_conexionBDAux->obtenerFilaComoCadena();
         else
           $total_egreso = "0";
-        $td_saldo_egreso = $this->_html->tag("td", "class='celda_total_2 alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_egreso)."</label>"));
+        $td_saldo_egreso = $this->_html->tag("td", "class='celda_total_2 alineacion_derecha'  colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_egreso)."</label>"));
       $tr_total_egreso = $this->_html->tag("tr", "", array($td_label_egresos,$td_saldo_egreso));
       $totales .= $tr_total_egreso;
     }
-      
-      $td_total = $this->_html->tag("td", "class='celda_total'", array("<label>Total</label>"));
-      $td_total_entrada = $this->_html->tag("td", "class='celda_total alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($this->_total_general - $total_egreso + $total_base)."</label>"));
-    $tr_total = $this->_html->tag("tr", "", array($td_total,$td_total_entrada));
-    $totales .= $tr_total;
-    $tbody_resumen = $this->_html->tag("tbody", "", array($totales));
     
+    $tbody_resumen = $this->_html->tag("tbody", "", array($totales));
     return $thead_resumen." ".$tbody_resumen;
   }
   
@@ -241,10 +262,12 @@ class Estadistica
 
     //añado totales al arreglo de resumen general
     $td_label_total_general = $this->_html->tag("td", "class='celda_subtotal'", array("<label>$cat_nombre</label>"));
-    $td_total_general = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($total_pagado + $total_deben)."</label>"));
-    $this->_resumen_general[] = $td_label_total_general."".$td_total_general;
-    $this->_total_general += ($total_pagado + $total_deben); 
-    
+    $td_total_general = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($total_pagado)."</label>"));
+    $td_deben_general = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha' colspan='1'", array("<label>".$this->_html->colocarPuntoMiles($total_deben)."</label>"));
+    $this->_resumen_general[] = $td_label_total_general."".$td_total_general."".$td_deben_general;
+    $this->_total_general += $total_pagado;
+    $this->_deben_general += $total_deben;
+
     $trs_titan = "";
     if($mostrar_saldo_titan)
     {

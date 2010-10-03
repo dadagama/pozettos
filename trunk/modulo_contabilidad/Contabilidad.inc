@@ -146,6 +146,21 @@ class Contabilidad
       return false;
   }
   
+  function actualizarSaldoTigo($sti_saldo, $sti_fecha)
+  {
+    if(!$sti_saldo)
+      $sti_saldo = "0";
+    $sql = "UPDATE pozettos_saldo_inicial_tigo
+            SET sti_saldo = '$sti_saldo'
+            WHERE sti_fecha = '$sti_fecha'";
+    //echo $sql;
+    $this->_conexionBD->ejecutarSQL($sql);
+    if ($this->_conexionBD->obtenerNumeroFilasAfectadas())
+      return true;
+    else
+      return false;
+  }
+
   function actualizarSaldoEgresos($egd_saldo, $egd_fecha)
   {
     if(!$egd_saldo)
@@ -236,6 +251,23 @@ class Contabilidad
       $arreglo_options['sit_saldo'] = "0";
     }
     
+    /* SALDO TIGO */
+    $sql = "SELECT sti_saldo
+            FROM pozettos_saldo_inicial_tigo
+            WHERE sti_fecha='". $this->_fecha_contabilidad ."'
+            AND sti_vigente = 1
+            LIMIT 1";
+    $this->_conexionBD->ejecutarSQL($sql);
+    if($this->_conexionBD->obtenerNumeroFilas())
+      $arreglo_options['sti_saldo'] = $this->_conexionBD->obtenerFilaComoCadena();
+    else
+    {
+      $sql = "INSERT INTO pozettos_saldo_inicial_tigo (sti_saldo, sti_fecha)
+              VALUES ('0','". $this->_fecha_contabilidad ."')";
+      $this->_conexionBD->ejecutarSQL($sql);
+      $arreglo_options['sti_saldo'] = "0";
+    }
+
     /* SALDO EGRESOS */
     $sql = "SELECT egd_saldo
             FROM pozettos_egreso_diario

@@ -252,6 +252,10 @@ class Estadistica
         {
           $this->_total_venta_fullcarga = $total_pagado + $total_deben/* + $total_gratis*/;
         }
+        if($info_cabina['ser_id'] == "11")//es recarga TIGO
+        {
+          $this->_total_venta_tigo = $total_pagado + $total_deben/* + $total_gratis*/;
+        }
 
       $trs_servicios .= $this->_html->tag("tr", "", array($td_nombre_servicio,$td_pago,$td_deben,$td_gratis));
     }
@@ -295,7 +299,26 @@ class Estadistica
       $td_saldo_final = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>".$this->_html->colocarPuntoMiles($total - $this->_total_venta_fullcarga)."</label>"));
       $tr_saldo_final = $this->_html->tag("tr", "", array($td_label_saldo_final,$td_saldo_final));
 
-      $trs_titan = $tr_total_titan." ".$tr_saldo_final;
+      //Aprovecho y muestro tambien el saldo final de Tigo
+        $td_label_tigo = $this->_html->tag("td", "class='celda_total_2'", array("<label>Saldo Inicial Tigo</label>"));
+        $sql = "SELECT sti_saldo
+                FROM pozettos_saldo_inicial_tigo
+                WHERE sti_fecha = '$fecha'
+                AND sti_vigente = 1
+                LIMIT 1";
+        $this->_conexionBDAux->ejecutarSQL($sql);
+        if($this->_conexionBDAux->obtenerNumeroFilas() > 0)
+          $total_tigo = $this->_conexionBDAux->obtenerFilaComoCadena();
+        else
+          $total_tigo = "0";
+        $td_saldo_tigo = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>".$this->_html->colocarPuntoMiles($total_tigo)."</label>"));
+      $tr_total_tigo = $this->_html->tag("tr", "", array($td_label_tigo,$td_saldo_tigo));
+
+      $td_label_saldo_final_tigo = $this->_html->tag("td", "class='celda_total_2'", array("<label>Saldo Final Titan</label>"));
+      $td_saldo_final_tigo = $this->_html->tag("td", "class='celda_total_2 alineacion_centro' colspan='3'", array("<label>".$this->_html->colocarPuntoMiles($total_tigo - $this->_total_venta_tigo)."</label>"));
+      $tr_saldo_final_tigo = $this->_html->tag("tr", "", array($td_label_saldo_final_tigo,$td_saldo_final_tigo));
+
+      $trs_titan = $tr_total_titan." ".$tr_saldo_final." ".$tr_total_tigo." ".$tr_saldo_final_tigo;
     }
     $tbody_resumen = $this->_html->tag("tbody", "", array($trs_servicios,$tr_subtotal,$tr_total,$trs_titan));
     return $thead_resumen." ".$tbody_resumen;

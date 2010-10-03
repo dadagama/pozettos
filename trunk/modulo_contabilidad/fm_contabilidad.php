@@ -67,6 +67,12 @@
         $lbl_valor_saldo_titan = $html->tag("label", "id='sit_saldo' class='verdana letra_9 cursor_cruz'");
       $td_valor_saldo_titan = $html->tag("td", "class='alineacion_derecha ancho_70 cursor_cruz borde_azul' ondblclick='editableSaldoTitan(true);'", array($lbl_valor_saldo_titan));
     $tr_titan = $html->tag("tr", "", array($td_lbl_saldo_titan,$td_valor_saldo_titan));
+    //tr saldo tigo
+        $lbl_saldo_tigo = $html->tag("label", "class='label_formulario'", array("Saldo Inicial TIGO"));
+      $td_lbl_saldo_tigo = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_saldo_tigo));
+        $lbl_valor_saldo_tigo = $html->tag("label", "id='sti_saldo' class='verdana letra_9 cursor_cruz'");
+      $td_valor_saldo_tigo = $html->tag("td", "class='alineacion_derecha ancho_70 cursor_cruz borde_azul' ondblclick='editableSaldoTigo(true);'", array($lbl_valor_saldo_tigo));
+    $tr_tigo = $html->tag("tr", "", array($td_lbl_saldo_tigo,$td_valor_saldo_tigo));
     //tr egreso diario
         $lbl_egreso = $html->tag("label", "class='label_formulario'", array("Plata que sale"));
       $td_lbl_egreso = $html->tag("td", "class='alineacion_izquierda verdana letra_9 fondo_azul'", array($lbl_egreso));
@@ -84,7 +90,7 @@
       $td_calculadora = $html->tag("td", "colspan='2' class='alineacion_centro borde_azul alto_23'", array($lbl_valor_calculadora));
     $tr_calculadora = $html->tag("tr", "", array($td_calculadora));
   //tabla saldos
-  $table_saldos = $html->tag("table", "id='tabla_saldos'", array($tr_base,$tr_titan,$tr_egreso,$tr_abono,$tr_calculadora));
+  $table_saldos = $html->tag("table", "id='tabla_saldos'", array($tr_base,$tr_titan,$tr_tigo,$tr_egreso,$tr_abono,$tr_calculadora));
   
   /*TABLA PRODUCTOS Y SERVICIOS*/
       $td_servicios = $html->tag("td", "", array($objetoContabilidad->obtenerTablaServicios()));

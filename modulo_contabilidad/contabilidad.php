@@ -47,6 +47,10 @@ switch($_REQUEST['accion'])
 	case "actualizarSaldoTitan":
 		echo $objetoContabilidad->actualizarSaldoTitan($_REQUEST['sit_saldo'], $_REQUEST['sit_fecha']);
 		break;
+
+  case "actualizarSaldoTigo":
+    echo $objetoContabilidad->actualizarSaldoTigo($_REQUEST['sti_saldo'], $_REQUEST['sti_fecha']);
+    break;
 	
 	case "actualizarSaldoEgresos":
 		echo $objetoContabilidad->actualizarSaldoEgresos($_REQUEST['egd_saldo'], $_REQUEST['egd_fecha']);

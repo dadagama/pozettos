@@ -61,6 +61,7 @@ function obtenerOptionsAjax(jsonOptions)
   options_duracion = obj_options.options_duracion;
   //evitar un llamado adicional de ajax para obtener saldo inicial titan
   $("#sit_saldo").text(obj_options.sit_saldo);
+  $("#sti_saldo").text(obj_options.sti_saldo);
   $("#egd_saldo").text(obj_options.egd_saldo);
   $("#bas_saldo").text(obj_options.bas_saldo);
   $("#sav_saldo").text(obj_options.sav_saldo);
@@ -140,6 +141,40 @@ function actualizarSaldoTitan(evento)
     var sit_saldo = parseInt(valor_saldo.replace(".", ""));
     var sit_fecha = $("#fecha_contabilidad").val();
     ajax('accion=actualizarSaldoTitan&sit_saldo='+sit_saldo+"&sit_fecha="+sit_fecha, false, actualizarAjax, false);
+    return true;
+  }
+  else
+    return false;
+}
+
+function editableSaldoTigo(editable)
+{
+  if(editable)
+  {
+    var sti_saldo = $('#sti_saldo').text();
+    var input_saldo = "<input id='sti_saldo' type='text' maxlength='7' class='ancho_55 verdana' onBlur='if(actualizarSaldoTigo(13)){ editableSaldoTigo(false);}' onKeypress='if(actualizarSaldoTigo(event.keyCode)){ editableSaldoTigo(false);}' value='"+sti_saldo+"'/>";
+    $('#sti_saldo').replaceWith(input_saldo);
+    $('#sti_saldo').select();
+  }
+  else
+  {
+    var valor_saldo = $('#sti_saldo').val();
+    var sti_saldo = parseInt(valor_saldo.replace(".", ""));
+    if(sti_saldo == "" || isNaN(sti_saldo))
+      sti_saldo = "0";
+    var label_saldo = "<label id='sti_saldo' class='verdana letra_9 cursor_cruz'>"+sti_saldo+"</label>";
+    $('#sti_saldo').replaceWith(label_saldo);
+  }
+}
+
+function actualizarSaldoTigo(evento)
+{
+  if(evento == 13)
+  {
+    var valor_saldo = $('#sti_saldo').val();
+    var sti_saldo = parseInt(valor_saldo.replace(".", ""));
+    var sti_fecha = $("#fecha_contabilidad").val();
+    ajax('accion=actualizarSaldoTigo&sti_saldo='+sti_saldo+"&sti_fecha="+sti_fecha, false, actualizarAjax, false);
     return true;
   }
   else

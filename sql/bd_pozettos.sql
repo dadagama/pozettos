@@ -14,18 +14,19 @@
     You should have received a copy of the GNU General Public License
     along with Pozzettos.  If not, see <http://www.gnu.org/licenses/>.
 */
-DROP TABLE IF EXISTS pozettos_base_diaria;
+/*DROP TABLE IF EXISTS pozettos_base_diaria;
 DROP TABLE IF EXISTS pozettos_egreso_diario;
 DROP TABLE IF EXISTS pozettos_duracion_servicio;
-/*DROP TABLE IF EXISTS pozettos_usuario;*/
+DROP TABLE IF EXISTS pozettos_usuario;
 DROP TABLE IF EXISTS pozettos_historico_venta;
 DROP TABLE IF EXISTS pozettos_tarifas_servicio;
 DROP TABLE IF EXISTS pozettos_categoria_servicios;
 DROP TABLE IF EXISTS pozettos_servicio;
 DROP TABLE IF EXISTS pozettos_categoria;
 DROP TABLE IF EXISTS pozettos_cliente;
-/*DROP TABLE IF EXISTS pozettos_timer;*/
+DROP TABLE IF EXISTS pozettos_timer;
 DROP TABLE IF EXISTS pozettos_saldo_inicial_titan;
+DROP TABLE IF EXISTS pozettos_saldo_inicial_tigo;*/
 
 CREATE TABLE pozettos_saldo_inicial_titan
 (
@@ -34,6 +35,14 @@ CREATE TABLE pozettos_saldo_inicial_titan
 	sit_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
 	sit_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = MyISAM COMMENT = 'Almacena la informacion del saldo inicial de TITAN para cada dia de la contabilidad';
+
+CREATE TABLE pozettos_saldo_inicial_tigo
+(
+  sti_fecha DATE NOT NULL COMMENT 'Fecha que corresponde al saldo inicial',
+  sti_saldo INTEGER NOT NULL DEFAULT 0 COLLATE utf8_unicode_ci NOT NULL DEFAULT 0 COMMENT 'saldo inicial diario de Tigo',
+  sti_vigente TINYINT( 1 ) COLLATE utf8_unicode_ci DEFAULT '1' COMMENT 'Bandera para funciones de control',
+  sti_ultima_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = MyISAM COMMENT = 'Almacena la informacion del saldo inicial de TIGO para cada dia de la contabilidad';
 
 /*
 CREATE TABLE pozettos_timer

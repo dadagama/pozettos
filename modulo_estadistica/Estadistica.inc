@@ -134,7 +134,7 @@ class Estadistica
           $total_base = $this->_conexionBDAux->obtenerFilaComoCadena();
         else
           $total_base = "0";
-        $td_saldo_base = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha' colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_base)."</label>"));
+        $td_saldo_base = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_base)."</label>"));
       $tr_total_base = $this->_html->tag("tr", "", array($td_label_base,$td_saldo_base));
       $totales .= $tr_total_base;
 
@@ -149,7 +149,7 @@ class Estadistica
           $total_abono = $this->_conexionBDAux->obtenerFilaComoCadena();
         else
           $total_abono = "0";
-        $td_abono = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'  colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_abono)."</label>"));
+        $td_abono = $this->_html->tag("td", "class='celda_subtotal alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_abono)."</label>"));
       $tr_total_abonos = $this->_html->tag("tr", "", array($td_label_abonos,$td_abono));
       $totales .= $tr_total_abonos;
 
@@ -164,9 +164,15 @@ class Estadistica
           $total_egreso = $this->_conexionBDAux->obtenerFilaComoCadena();
         else
           $total_egreso = "0";
-        $td_saldo_egreso = $this->_html->tag("td", "class='celda_total_2 alineacion_derecha'  colspan='2'", array("<label>".$this->_html->colocarPuntoMiles($total_egreso)."</label>"));
+        $td_saldo_egreso = $this->_html->tag("td", "class='celda_total_2 alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($total_egreso)."</label>"));
       $tr_total_egreso = $this->_html->tag("tr", "", array($td_label_egresos,$td_saldo_egreso));
       $totales .= $tr_total_egreso;
+
+        $td_label_efectivo = $this->_html->tag("td", "class='celda_total'", array("<label>Efectivo Total</label>"));
+        $td_saldo_efectivo = $this->_html->tag("td", "class='celda_total alineacion_derecha'", array("<label>".$this->_html->colocarPuntoMiles($this->_total_general + $total_base + $total_abono - $total_egreso)."</label>"));
+      $tr_total_efectivo = $this->_html->tag("tr", "", array($td_label_efectivo,$td_saldo_efectivo));
+      $totales .= $tr_total_efectivo;
+
     }
     
     $tbody_resumen = $this->_html->tag("tbody", "", array($totales));

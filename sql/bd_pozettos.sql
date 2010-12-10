@@ -160,7 +160,7 @@ INSERT INTO pozettos_servicio VALUES(5,'Cabina 1', '../imagenes/pc1.png','agrega
 INSERT INTO pozettos_servicio VALUES(6,'Cabina 2', '../imagenes/pc2.png','agregarFilaHistorial(6,\'servicio\');','servicio',1,null);
 INSERT INTO pozettos_servicio VALUES(7,'Cabina 3', '../imagenes/pc3.png','agregarFilaHistorial(7,\'servicio\');','servicio',1,null);
 INSERT INTO pozettos_servicio VALUES(8,'Cabina 4', '../imagenes/pc4.png','agregarFilaHistorial(8,\'servicio\');','servicio',1,null);
-INSERT INTO pozettos_servicio VALUES(9,'Wii 1', '../imagenes/wii.png','agregarFilaHistorial(9,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(9,'Wii 1', '../imagenes/wii.png','agregarFilaHistorial(9,\'servicio\');','servicio',0,null);
 INSERT INTO pozettos_servicio VALUES(10,'Recarga FULLCARGA', '../imagenes/fullcarga.png','agregarFilaHistorial(10,\'producto\');','producto',1,null);
 INSERT INTO pozettos_servicio VALUES(11,'Recarga TIGO', '../imagenes/tigo.png','agregarFilaHistorial(11,\'producto\');','producto',1,null);
 INSERT INTO pozettos_servicio VALUES(12,'Minutos Celular', '../imagenes/celular.png','agregarFilaHistorial(12,\'producto\');','producto',1,null);
@@ -174,6 +174,9 @@ INSERT INTO pozettos_servicio VALUES(19,'Papeleria', '../imagenes/papeleria.png'
 INSERT INTO pozettos_servicio VALUES(20,'Quemada', '../imagenes/cd.png','agregarFilaHistorial(20,\'producto\');','producto',1,null);
 INSERT INTO pozettos_servicio VALUES(21,'Mecato', '../imagenes/mecato.png','agregarFilaHistorial(21,\'producto\');','producto',1,null);
 INSERT INTO pozettos_servicio VALUES(22,'Tarjeta YA!', '../imagenes/tarjetaYa.png','agregarFilaHistorial(22,\'producto\');','producto',1,null);
+INSERT INTO pozettos_servicio VALUES(23,'Cabina 5', '../imagenes/pc5.png','agregarFilaHistorial(5,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(24,'Cabina 6', '../imagenes/pc6.png','agregarFilaHistorial(6,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(25,'Cabina 7', '../imagenes/pc7.png','agregarFilaHistorial(7,\'servicio\');','servicio',1,null);
 INSERT INTO pozettos_servicio VALUES(50,'Otro', '../imagenes/otro.png','agregarFilaHistorial(50,\'producto\');','producto',1,null);
 
 
@@ -225,21 +228,35 @@ INSERT INTO pozettos_categoria_servicios VALUES(16,1,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(17,1,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(18,1,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(19,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(20,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(21,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(22,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(23,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(24,1,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(25,1,1,null);
+
 INSERT INTO pozettos_categoria_servicios VALUES(10,2,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(11,2,1,null);
+
 INSERT INTO pozettos_categoria_servicios VALUES(12,3,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(13,3,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(14,3,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(15,3,1,null);
+
 INSERT INTO pozettos_categoria_servicios VALUES(1,4,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(2,4,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(3,4,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(4,4,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(9,4,1,null);
+
 INSERT INTO pozettos_categoria_servicios VALUES(5,5,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(6,5,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(7,5,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(8,5,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(23,5,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(24,5,1,null);
+INSERT INTO pozettos_categoria_servicios VALUES(25,5,1,null);
+
 INSERT INTO pozettos_categoria_servicios VALUES(16,6,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(17,6,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(18,6,1,null);
@@ -248,6 +265,9 @@ INSERT INTO pozettos_categoria_servicios VALUES(20,6,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(21,6,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(22,6,1,null);
 INSERT INTO pozettos_categoria_servicios VALUES(50,6,1,null);
+
+
+
 
 
 /*     ******************************************************************     */

@@ -174,9 +174,9 @@ INSERT INTO pozettos_servicio VALUES(19,'Papeleria', '../imagenes/papeleria.png'
 INSERT INTO pozettos_servicio VALUES(20,'Quemada', '../imagenes/cd.png','agregarFilaHistorial(20,\'producto\');','producto',1,null);
 INSERT INTO pozettos_servicio VALUES(21,'Mecato', '../imagenes/mecato.png','agregarFilaHistorial(21,\'producto\');','producto',1,null);
 INSERT INTO pozettos_servicio VALUES(22,'Tarjeta YA!', '../imagenes/tarjetaYa.png','agregarFilaHistorial(22,\'producto\');','producto',1,null);
-INSERT INTO pozettos_servicio VALUES(23,'Cabina 5', '../imagenes/pc5.png','agregarFilaHistorial(5,\'servicio\');','servicio',1,null);
-INSERT INTO pozettos_servicio VALUES(24,'Cabina 6', '../imagenes/pc6.png','agregarFilaHistorial(6,\'servicio\');','servicio',1,null);
-INSERT INTO pozettos_servicio VALUES(25,'Cabina 7', '../imagenes/pc7.png','agregarFilaHistorial(7,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(23,'Cabina 5', '../imagenes/pc5.png','agregarFilaHistorial(23,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(24,'Cabina 6', '../imagenes/pc6.png','agregarFilaHistorial(24,\'servicio\');','servicio',1,null);
+INSERT INTO pozettos_servicio VALUES(25,'Cabina 7', '../imagenes/pc7.png','agregarFilaHistorial(25,\'servicio\');','servicio',1,null);
 INSERT INTO pozettos_servicio VALUES(50,'Otro', '../imagenes/otro.png','agregarFilaHistorial(50,\'producto\');','producto',1,null);
 
 

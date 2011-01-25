@@ -118,7 +118,8 @@
 	$tr_alcance_conf = $html->tag("tr", "", array($td_alcance_conf));
 	//boton
 	$button_generar = $html->tag("button", "class='letra_azul verdana letra_9' onclick='actualizarEstadisticas();'", array("Generar<br/>Estadísticas"));
-	$td_button_generar = $html->tag("td", "class='alineacion_centro fila_boton_generar' colspan='3'", array($button_generar));
+	$button_backup = $html->tag("button", "class='letra_roja verdana letra_9' onclick='generarBackupBD();'", array("Generar<br/>Backup"));
+	$td_button_generar = $html->tag("td", "class='alineacion_centro fila_boton_generar' colspan='2'", array($button_generar,$button_backup));
 	$tr_button_generar = $html->tag("tr", "", array($td_button_generar));
   $tbody_opciones = $html->tag("tbody", "class='cuerpo_opciones'", array($tr_alcance,$tr_alcance_conf,$tr_button_generar));
 	//tabla y form de opciones

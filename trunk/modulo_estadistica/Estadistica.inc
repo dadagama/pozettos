@@ -323,5 +323,115 @@ class Estadistica
     $tbody_resumen = $this->_html->tag("tbody", "", array($trs_servicios,$tr_subtotal,$tr_total,$trs_titan));
     return $thead_resumen." ".$tbody_resumen;
   }
+  
+  function generarBackupBD()
+  {
+    if(!$this->_crearDumpMYSQL()) return "no se pudo generar el DUMP";
+    if(!$this->_crearZIP())  return "no se pudo generar el ZIP";
+    if(!$this->_enviarCorreo()) return "no se pudo enviar el correo";
+    return true;
+  }
+  
+  function _crearDumpMYSQL()
+  { 
+    $filename = "../backups/backupPozettos.sql";  
+    $usuario = "root"; 
+    $passwd = "root"; 
+    $bd="pozettos";
+    // Funcion para exportar la base de datos
+    //windows 
+    $executa = "C:\\wamp\\bin\\mysql\\mysql5.1.36\\bin\\mysqldump.exe -u $usuario  --password=$passwd --opt $bd > $filename";
+    //linux
+//     $executa = "mysqldump -u $usuario --password=$passwd --opt $bd > $filename";
+    system($executa, $resultado);
+    if($resultado)
+      return false;
+    else
+      return true;
+  }
+  
+  function _crearZIP()
+  {
+    // se debe activar la propiedad de PHP:  zlib output compression
+    $fecha = date("Y-m-d");
+    $struct=array("pozettos[$fecha].sql"=> file_get_contents("../backups/backupPozettos.sql"));
+    $namezip = "../backups/pozettos[$fecha].zip";
+   	$ZipData = array(); 
+  	$Dircont = array(); 
+  	$DirFile = array();
+  	$offseto = 0;		
+  	while(list($file,$data)=each($struct))
+  	{	$file= str_replace("\\", "/", $file);  
+  	    $dir=explode("/",$file);
+  		for($i=0; $i<sizeof($dir); $i++)if($dir[$i]=="")unset($dir[$i]);					
+  		$num=count($dir); //Total de niveles
+  		$ele=0;  		  //Nivel actual
+  		$dirname="";	  //Nombre archivo o directorio
+  		while(list($idx,$val)=each($dir))
+  		{	$ty=(++$ele)==$num?true:false;
+  			$ty=trim($data)!=""?$ty:false;//Compruebar si el ultimo elemento es directorio o archivo
+  			$dirname.=$val.($ty?"":"/");
+  			if(isset($DirFile[$dirname]))continue; else $DirFile[$dirname]=true;			
+  			$gzdata="";				
+  			if($ty)
+  			{	$unziplen=strlen($data);  
+  				$czip=crc32($data);  
+  				$gzdata=gzcompress($data);  
+  				$gzdata=substr(substr($gzdata,0,strlen($gzdata)-4),2); 
+  				$cziplen=strlen($gzdata);  
+  			}						
+  			$ZipData[]="\x50\x4b\x03\x04".($ty?"\x14":"\x0a")."\x00\x00\x00".($ty?"\x08":"\x00")."\x00\x00\x00\x00\x00".
+  					   pack("V",$ty?$czip:0).pack("V",$ty?$cziplen:0).pack("V",$ty?$unziplen:0).pack("v",strlen($dirname)). 
+  					   pack("v",0).$dirname.$gzdata.pack("V",$ty?$czip:0).pack("V",$ty?$cziplen:0).pack("V",$ty?$unziplen:0);
+  			$Dircont[]="\x50\x4b\x01\x02\x00\x00".($ty?"\x14":"\x0a")."\x00\x00\x00".($ty?"\x08":"\x00")."\x00\x00\x00\x00\x00".
+  					   pack("V",$ty?$czip:0).pack("V",$ty?$cziplen:0).pack("V",$ty?$unziplen:0).pack("v",strlen($dirname)). 
+  					   pack("v", 0 ).pack("v",0).pack("v",0).pack("v",0).pack("V",$ty?32:16).pack("V",$offseto).$dirname;  		
+  			$offseto=strlen(implode("",$ZipData));			
+  		}//Fin While dir		
+  	}//Fin While archivos
+  	$data = implode("",$ZipData);  
+  	$cdir = implode("",$Dircont);  	
+  	$data=$data.$cdir."\x50\x4b\x05\x06\x00\x00\x00\x00".pack("v",sizeof($Dircont)).pack("v",sizeof($Dircont)).pack("V",strlen($cdir)).pack("V",strlen($data))."\x00\x00";
+    if($namezip)//Construir el archivo
+    {	if(($fp=fopen($namezip,"wb")))
+   		{	
+        fwrite($fp,$data);
+  			fclose ($fp);
+  			return true;
+		  }else return false;
+    }else return $data;	   
+  }
+
+  function _enviarCorreo()
+  {
+    $fecha = date("Y-m-d");
+    //  se debe activar la extension de php: php_openssl
+    // example on using PHPMailer with GMAIL
+    include("../herramientas/PHPMailer/class.phpmailer.php");
+    include("../herramientas/PHPMailer/class.smtp.php"); // note, this is optional - gets called from main class if not already loaded
+    $mail             = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->SMTPAuth   = true;                  // enable SMTP authentication
+    $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+    $mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
+    $mail->Port       = 465;                   // set the SMTP port 
+    $mail->Username   = "xxx";  // GMAIL username
+    $mail->Password   = "xxx";            // GMAIL password
+    $mail->From       = "xxx@gmail.com";
+    $mail->FromName   = "Pozettos Server";
+    $mail->Subject    = "Backup pozettos [$fecha]";
+    $mail->AltBody    = "Backup de la base de datos Pozettos.net"; //Text Body
+    $mail->MsgHTML("Backup de la base de datos Pozettos.net");
+    $mail->AddAttachment("../backups/pozettos[$fecha].zip");             // attachment
+    $mail->AddAddress("dadagama@gmail.com","Darwin");
+    $mail->IsHTML(true); // send as HTML
+    if(!$mail->Send())
+    {
+//       echo $mail->ErrorInfo;
+      return false;
+    }
+    else
+      return true;
+  }
 }
 ?>

@@ -36,5 +36,9 @@ switch($_REQUEST['accion'])
   case "actualizarEstadisticas":
     echo $objetoEstadistica->actualizarEstadisticas($_REQUEST);
     break;
+    
+  case "generarBackupBD":
+    echo $objetoEstadistica->generarBackupBD();
+    break;
 }
 ?>

@@ -56,3 +56,23 @@ function actualizarEstadisticasAjax(info_estadisticas)
 	$("#tbl_estadisticas").children().remove();
 	$("#tbl_estadisticas").html(info_estadisticas);
 }
+
+function generarBackupBD()
+{
+  if(confirm("Se guardara copia de pozettos, Esta seguro?"))
+  {
+    ajax("accion=generarBackupBD", null, generarBackupBDAjax, null);
+  }
+}
+
+function generarBackupBDAjax(envio)
+{
+  if(envio == 1)
+  {
+    alert("Se ha enviado el correo correctamente");
+  }
+  else
+  {
+    alert("Error: "+envio);
+  }
+}
